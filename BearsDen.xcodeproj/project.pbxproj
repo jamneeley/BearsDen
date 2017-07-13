@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		9D4670A720C5B5DB00D387FD /* TipDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4670A620C5B5DB00D387FD /* TipDetailViewController.swift */; };
+		9D56ED851F17F85900754F24 /* tutorial1.2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D56ED7E1F17F85800754F24 /* tutorial1.2.png */; };
+		9D56ED861F17F85900754F24 /* tutorial1.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D56ED7F1F17F85800754F24 /* tutorial1.1.png */; };
+		9D56ED871F17F85900754F24 /* tutorial1.3.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D56ED801F17F85800754F24 /* tutorial1.3.png */; };
+		9D56ED881F17F85900754F24 /* tutorial1.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D56ED811F17F85900754F24 /* tutorial1.5.png */; };
+		9D56ED891F17F85900754F24 /* tutorial1.4.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D56ED821F17F85900754F24 /* tutorial1.4.png */; };
+		9D56ED8A1F17F85900754F24 /* tutorial1.6.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D56ED831F17F85900754F24 /* tutorial1.6.png */; };
+		9D56ED8B1F17F85900754F24 /* tutorial1.7.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D56ED841F17F85900754F24 /* tutorial1.7.png */; };
 		9D7EA34720A4CF900005563C /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7EA34620A4CF900005563C /* CloudKitManager.swift */; };
 		9D7EA34920A4CF9C0005563C /* CloudItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7EA34820A4CF9C0005563C /* CloudItemController.swift */; };
 		9D7EA34B20A4E17C0005563C /* AddBarcodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */; };
@@ -133,6 +140,13 @@
 
 /* Begin PBXFileReference section */
 		9D4670A620C5B5DB00D387FD /* TipDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipDetailViewController.swift; sourceTree = "<group>"; };
+		9D56ED7E1F17F85800754F24 /* tutorial1.2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial1.2.png; sourceTree = "<group>"; };
+		9D56ED7F1F17F85800754F24 /* tutorial1.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial1.1.png; sourceTree = "<group>"; };
+		9D56ED801F17F85800754F24 /* tutorial1.3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial1.3.png; sourceTree = "<group>"; };
+		9D56ED811F17F85900754F24 /* tutorial1.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial1.5.png; sourceTree = "<group>"; };
+		9D56ED821F17F85900754F24 /* tutorial1.4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial1.4.png; sourceTree = "<group>"; };
+		9D56ED831F17F85900754F24 /* tutorial1.6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial1.6.png; sourceTree = "<group>"; };
+		9D56ED841F17F85900754F24 /* tutorial1.7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial1.7.png; sourceTree = "<group>"; };
 		9D7EA34620A4CF900005563C /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		9D7EA34820A4CF9C0005563C /* CloudItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudItemController.swift; sourceTree = "<group>"; };
 		9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBarcodeViewController.swift; sourceTree = "<group>"; };
@@ -391,6 +405,13 @@
 		9DC82CFE208A50970068DD8E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9D56ED7F1F17F85800754F24 /* tutorial1.1.png */,
+				9D56ED7E1F17F85800754F24 /* tutorial1.2.png */,
+				9D56ED801F17F85800754F24 /* tutorial1.3.png */,
+				9D56ED821F17F85900754F24 /* tutorial1.4.png */,
+				9D56ED811F17F85900754F24 /* tutorial1.5.png */,
+				9D56ED831F17F85900754F24 /* tutorial1.6.png */,
+				9D56ED841F17F85900754F24 /* tutorial1.7.png */,
 				9D99AED920CC9F590079966C /* TrashIcon.png */,
 				9DF445F820C7589F005EB7CC /* ClearBarCodeButton.png */,
 				9DF445F420C5F6AC005EB7CC /* calculatorButton.png */,
@@ -561,6 +582,7 @@
 				9D847793209A72E3005F219B /* settingIconX1.png in Resources */,
 				9D8FEB51208A6CFC00080EEE /* icon_76pt@2x.png in Resources */,
 				9D8FEB49208A6CFC00080EEE /* icon_20pt@3x.png in Resources */,
+				9D56ED881F17F85900754F24 /* tutorial1.5.png in Resources */,
 				9D8FEB53208A6CFC00080EEE /* icon_60pt@2x.png in Resources */,
 				9D8477DA20A295BC005F219B /* ClipBoardButton.png in Resources */,
 				9D847797209A72F6005F219B /* settingIconX3.png in Resources */,
@@ -570,6 +592,7 @@
 				9D8FEB48208A6CFC00080EEE /* icon_29pt@2x.png in Resources */,
 				9D8477C420A0EFC3005F219B /* checkMark2x.png in Resources */,
 				9DC82CF6208A50820068DD8E /* LaunchScreen.storyboard in Resources */,
+				9D56ED8B1F17F85900754F24 /* tutorial1.7.png in Resources */,
 				9D8477C220A0EEB2005F219B /* shoppingCartX2.png in Resources */,
 				9D8FEB4F208A6CFC00080EEE /* icon_20pt.png in Resources */,
 				9DB6172020AD150300B87C6C /* camera.png in Resources */,
@@ -581,7 +604,9 @@
 				9D8FEB47208A6CFC00080EEE /* icon_40pt@3x.png in Resources */,
 				9D8FEB4B208A6CFC00080EEE /* icon_29pt@3x.png in Resources */,
 				9D8FEB4E208A6CFC00080EEE /* icon_60pt@3x.png in Resources */,
+				9D56ED8A1F17F85900754F24 /* tutorial1.6.png in Resources */,
 				9D8477E220A34179005F219B /* AddShelfInstructions.png in Resources */,
+				9D56ED871F17F85900754F24 /* tutorial1.3.png in Resources */,
 				9D8FEB4C208A6CFC00080EEE /* icon_40pt@2x.png in Resources */,
 				9DB6172220AD155200B87C6C /* photoLibrary.png in Resources */,
 				9D99AEDA20CC9F590079966C /* TrashIcon.png in Resources */,
@@ -593,9 +618,12 @@
 				9D8FEB46208A6CFC00080EEE /* icon_20pt@2x.png in Resources */,
 				9D8FEB50208A6CFC00080EEE /* icon_29pt.png in Resources */,
 				9D847795209A72EE005F219B /* settingIconX2.png in Resources */,
+				9D56ED861F17F85900754F24 /* tutorial1.1.png in Resources */,
 				9D8477C820A0F1CA005F219B /* tips2x.png in Resources */,
+				9D56ED851F17F85900754F24 /* tutorial1.2.png in Resources */,
 				9DF445F520C5F6AC005EB7CC /* calculatorButton.png in Resources */,
 				9D847799209A7486005F219B /* addX2.png in Resources */,
+				9D56ED891F17F85900754F24 /* tutorial1.4.png in Resources */,
 				9D8477B2209D0C98005F219B /* settingsGear2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

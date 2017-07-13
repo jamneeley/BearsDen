@@ -147,14 +147,15 @@ struct TutorialDataSource {
     }()
     //Adding shelf/item
     static let instructionOne: [Instruction] = {
-        let test1 = Instruction(image: #imageLiteral(resourceName: "TrashIcon"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
-        let test2 = Instruction(image: #imageLiteral(resourceName: "backX2"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
-        let test3 = Instruction(image: #imageLiteral(resourceName: "camera"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
-        let test4 = Instruction(image: #imageLiteral(resourceName: "checkedBox"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
-        let test5 = Instruction(image: #imageLiteral(resourceName: "flashOn"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS ESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
-        let test6 = Instruction(image: #imageLiteral(resourceName: "BearOnHill"), directions: "THIS ")
+        let test1 = Instruction(image: #imageLiteral(resourceName: "tutorial1.1"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
+        let test2 = Instruction(image: #imageLiteral(resourceName: "tutorial1.2"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
+        let test3 = Instruction(image: #imageLiteral(resourceName: "tutorial1.3"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
+        let test4 = Instruction(image: #imageLiteral(resourceName: "tutorial1.4"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
+        let test5 = Instruction(image: #imageLiteral(resourceName: "tutorial1.5"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS ESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
+        let test6 = Instruction(image: #imageLiteral(resourceName: "tutorial1.6"), directions: "THIS ")
+        let test7 = Instruction(image: #imageLiteral(resourceName: "tutorial1.7"), directions: "THIS ")
         
-        return [test1, test2, test3, test4, test5, test6]
+        return [test1, test2, test3, test4, test5, test6, test7]
     }()
     //How goals work
     static let instructionTwo: [Instruction] = {
