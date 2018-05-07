@@ -46,9 +46,9 @@ class SecondLaunchScreenViewController: UIViewController {
     }
     
     func segueToExistingUser() {
-        let shelvesTableViewController = ShelvesTableViewController()
-        let shelvesNavigationController = UINavigationController(rootViewController: shelvesTableViewController)
-        self.present(shelvesNavigationController, animated: true, completion: nil)
+        let shelvesViewController = ShelvesViewController()
+      
+        self.present(shelvesViewController, animated: true, completion: nil)
     }
         
     func segueToNewUserView() {

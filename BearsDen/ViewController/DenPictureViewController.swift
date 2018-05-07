@@ -54,7 +54,6 @@ class DenPictureViewController: UIViewController, UINavigationControllerDelegate
         let singleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(selectImageTapped))
         singleTap.numberOfTapsRequired = 1
         denImageView.addGestureRecognizer(singleTap)
-        denImageView.isUserInteractionEnabled = true
         denImageView.image = #imageLiteral(resourceName: "imagePlaceHolder")
         setupDenImageViewConstraints()
     }
@@ -123,10 +122,8 @@ class DenPictureViewController: UIViewController, UINavigationControllerDelegate
     @objc func letsStartButtonPressed() {
         guard let image = denImageView.image else {return}
 //        UserController.shared.add(Picture: image)
-        let shelvesTableViewController = ShelvesTableViewController()
-        let shelvesNavigationController = UINavigationController(rootViewController: shelvesTableViewController)
-        
-        self.present(shelvesNavigationController, animated: true, completion: nil)
+        let shelvesViewController = ShelvesViewController()
+        self.present(shelvesViewController, animated: true, completion: nil)
     }
 }
 
