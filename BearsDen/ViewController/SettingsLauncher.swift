@@ -21,7 +21,13 @@ class Setting: NSObject {
 class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     let blackView = UIView()
+    
     var shelvesView: ShelvesViewController?
+    var goalsView: GoalsViewController?
+    var shoppingListView: ShoppingListViewController?
+    var tipsView: TipsViewController?
+    var settingsView: SettingsViewController?
+    
     
     let mainView: UIView = {
         let view = UIView(frame: .zero)
@@ -47,6 +53,7 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .white
+
         return cv
     }()
     

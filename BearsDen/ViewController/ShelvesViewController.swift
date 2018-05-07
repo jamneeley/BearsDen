@@ -16,6 +16,12 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     let navBarLabel = UILabel()
     let tableView = UITableView()
     
+    lazy var settingsLauncher: SettingsLauncher = {
+        let launcher = SettingsLauncher()
+        launcher.shelvesView = self
+        return launcher
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObjects()
@@ -39,6 +45,8 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
+    
+
     
   
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

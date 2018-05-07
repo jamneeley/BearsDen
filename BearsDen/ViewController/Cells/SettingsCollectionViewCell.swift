@@ -13,9 +13,9 @@ class SettingsCollectionViewCell: UICollectionViewCell {
     override var isHighlighted: Bool {
         didSet {
             print(isHighlighted)
-            self.backgroundColor = isHighlighted ? Colors.blue : .white
-            self.nameLabel.textColor = isHighlighted ? Colors.cream : .black
-            iconImageView.tintColor = isHighlighted ? Colors.teal : .black
+            self.backgroundColor = isHighlighted ? Colors.softBlue : .white
+            self.nameLabel.textColor = isHighlighted ? .white : .black
+            iconImageView.tintColor = isHighlighted ? .white : .black
         }
     }
     
@@ -38,6 +38,7 @@ class SettingsCollectionViewCell: UICollectionViewCell {
        let imageView = UIImageView()
         imageView.image = UIImage(named: "settingsGear2x")
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .black
         return imageView
     }()
     
