@@ -40,14 +40,14 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
 
     let cellID = "cellID"
     let settings: [Setting] = {
-        let shelves = Setting(name: "Shelves", imageName: "shelves2x", number: 0)
-        let goals = Setting(name: "Goals", imageName: "checkMark2x", number: 1)
-        let shoppingList = Setting(name: "Shopping List", imageName: "shoppingCartX2", number: 2)
-        let tips = Setting(name: "Tips", imageName: "tips2x", number: 3)
-        let myDen = Setting(name: "My Den", imageName: "bearsDenSideProfile", number: 4)
-        let settings = Setting(name: "Settings", imageName: "settingsGear2x", number: 5)
-        let terms = Setting(name: "terms", imageName: "settingsGear2x", number: 6)
-        let help = Setting(name: "help", imageName: "settingsGear2x", number: 7)
+        let shelves = Setting(name: "Shelves", imageName: "shelves2x", number: 1)
+        let goals = Setting(name: "Goals", imageName: "checkMark2x", number: 2)
+        let shoppingList = Setting(name: "Shopping List", imageName: "shoppingCartX2", number: 3)
+        let tips = Setting(name: "Tips", imageName: "tips2x", number: 4)
+        let myDen = Setting(name: "My Den", imageName: "bearsDenSideProfile", number: 5)
+        let settings = Setting(name: "Settings", imageName: "settingsGear2x", number: 6)
+        let terms = Setting(name: "terms", imageName: "settingsGear2x", number: 7)
+        let help = Setting(name: "help", imageName: "settingsGear2x", number: 8)
         return [shelves, goals, shoppingList, tips, myDen, settings]
     }()
     
@@ -159,7 +159,9 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
             }
         }) { (success) in
             guard let parent = self.mainParentView else {return}
-            if setting.name != "" {
+            print(setting.number)
+            print(setting.name)
+            if setting.number != 0 {
                 parent.showControllerFor(Setting: setting)
             }
         }

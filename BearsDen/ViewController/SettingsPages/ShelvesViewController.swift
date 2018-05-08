@@ -9,7 +9,7 @@
 import UIKit
 
 class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+    
     let tableView = UITableView()
 
     override func viewDidLoad() {
@@ -36,7 +36,7 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return UserController.shared.user?.shelves?.count ?? 0
+        return 8
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -55,8 +55,6 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier = 
+//
 //    }
- 
-
 }

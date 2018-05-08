@@ -10,11 +10,10 @@ import UIKit
 
 class MainViewController: UIViewController {
     
+    //non page dependent objects
     let navBar = UIView()
-    let settingsButton = UIButton()
-    let addButton = UIButton()
+    let settingsButton = UIButton(type: UIButtonType.system)
     let navBarLabel = UILabel()
-    var globalCurrentView: Int?
     
     //viewcontrollers
     let shelvesView = ShelvesViewController()
@@ -24,19 +23,29 @@ class MainViewController: UIViewController {
     let myDenView = MyDenViewController()
     let settingsview = SettingsViewController()
 
-    //buttons
+    //Page Dependent Butto
+    let shelvesAddButton = UIButton(type: UIButtonType.system)
+    let goalsAddButton = UIButton(type: UIButtonType.system)
+    let shoppingAddButton = UIButton(type: UIButtonType.system)
     
+    // current page in containerView property
+    var globalCurrentView: Int?
+    
+    // computed settings launcher....only fires code once
     lazy var settingsLauncher: SettingsLauncher = {
         let launcher = SettingsLauncher()
         launcher.mainParentView = self
         return launcher
     }()
     
+    //MARK: - LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObjects()
-        
     }
+    
+    //MARK: - SetupObjects
     
     func setupObjects() {
         setupNavBar()
@@ -46,28 +55,47 @@ class MainViewController: UIViewController {
     func setupNavBar() {
         view.addSubview(navBar)
         navBar.backgroundColor = Colors.softBlue
+        navBar.tintColor = .white
         navBar.addSubview(settingsButton)
         navBar.addSubview(navBarLabel)
-        navBar.addSubview(addButton)
-        setupButtons()
+        navBar.addSubview(shelvesAddButton)
         setupLabel()
         setupNavBarConstraints()
-        setupButtonConstraints()
-
+        setupSettingsButtonConstraints()
+        setupSettingsButtons()
+        setupShelvesButton()
+        setup(Button: goalsAddButton)
+        setup(Button: shoppingAddButton)
+        setupButtonTargets()
     }
     
-    func setupButtons() {
-        settingsButton.tintColor = Colors.darkPurple
+    func setupSettingsButtons() {
         settingsButton.setImage(#imageLiteral(resourceName: "settingIconX2"), for: .normal)
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
-        addButton.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
-        addButton.tintColor = Colors.darkPurple
-        addButton.addTarget(self, action: #selector(addShelfButtonTapped), for: .touchUpInside)
+    }
+    
+    func setupShelvesButton() {
+        shelvesAddButton.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
+        shelvesAddButton.translatesAutoresizingMaskIntoConstraints = false
+        shelvesAddButton.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
+        shelvesAddButton.trailingAnchor.constraint(equalTo: navBar.trailingAnchor, constant: -8).isActive = true
+    }
+    
+    func setup(Button button: UIButton) {
+        button.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    func setupButtonTargets() {
+        shelvesAddButton.addTarget(self, action: #selector(addShelfButtonTapped), for: .touchUpInside)
+        goalsAddButton.addTarget(self, action: #selector(addGoalButtonTapped), for: .touchUpInside)
+        shoppingAddButton.addTarget(self, action: #selector(addShoppingItemButtonTapped), for: .touchUpInside)
     }
     
     func setupLabel() {
         navBarLabel.text = "Your Shelves"
         navBarLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        navBarLabel.textColor = .white
         setupLabelConstraints()
     }
     
@@ -78,8 +106,10 @@ class MainViewController: UIViewController {
         shelvesView.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         shelvesView.view.frame = CGRect(x: 0, y: view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
         shelvesView.didMove(toParentViewController: self)
-        globalCurrentView = 0
+        globalCurrentView = 1
     }
+    
+    //MARK: - SetupConstraints
     
     func setupNavBarConstraints() {
         navBar.translatesAutoresizingMaskIntoConstraints = false
@@ -89,13 +119,10 @@ class MainViewController: UIViewController {
         navBar.bottomAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.08).isActive = true
     }
     
-    func setupButtonConstraints() {
+    func setupSettingsButtonConstraints() {
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
         settingsButton.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
         settingsButton.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 8).isActive = true
-        addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
-        addButton.trailingAnchor.constraint(equalTo: navBar.trailingAnchor, constant: -8).isActive = true
     }
     
     func setupLabelConstraints() {
@@ -104,183 +131,33 @@ class MainViewController: UIViewController {
         navBarLabel.centerXAnchor.constraint(equalTo: navBar.centerXAnchor, constant: 0).isActive = true
     }
     
-
+    //MARK: - Button Actions
     
     @objc func settingsButtonTapped() {
         settingsLauncher.showSettings()
     }
     
     @objc func addShelfButtonTapped() {
-        let itemsTableView = ItemsViewController()
-        
-        
-    }
-    
-    func showControllerFor(Setting setting: Setting) {
-       
-
-        if globalCurrentView == 0 {
-            if setting.number == 1 {
-                globalCurrentView = 1
-                changefrom(OldVC: shelvesView, newVC: goalsView)
-            }
-            if setting.number == 2 {
-                globalCurrentView = 2
-                changefrom(OldVC: shelvesView, newVC: shoppingView)
-            }
-            if setting.number == 3 {
-                globalCurrentView = 3
-                changefrom(OldVC: shelvesView, newVC: tipsView)
-            }
-            if setting.number == 4 {
-                globalCurrentView = 4
-                changefrom(OldVC: shelvesView, newVC: myDenView)
-            }
-            if setting.number == 5 {
-                globalCurrentView = 5
-                changefrom(OldVC: shelvesView, newVC: settingsview)
-            }
-        } else if globalCurrentView == 1 {
-            if setting.number == 0 {
-                globalCurrentView = 0
-                changefrom(OldVC: goalsView, newVC: shelvesView)
-            }
-            if setting.number == 2 {
-                globalCurrentView = 2
-                changefrom(OldVC: goalsView, newVC: shoppingView)
-            }
-            if setting.number == 3 {
-                globalCurrentView = 3
-                changefrom(OldVC: goalsView, newVC: tipsView)
-            }
-            if setting.number == 4 {
-                globalCurrentView = 4
-                changefrom(OldVC: goalsView, newVC: myDenView)
-            }
-            if setting.number == 5 {
-                globalCurrentView = 5
-                changefrom(OldVC: goalsView, newVC: settingsview)
-            }
-            
-        } else if globalCurrentView == 2 {
-            if setting.number == 1 {
-                globalCurrentView = 1
-                changefrom(OldVC: shoppingView, newVC: goalsView)
-            }
-            if setting.number == 0 {
-                globalCurrentView = 0
-                changefrom(OldVC: shoppingView, newVC: shelvesView)
-            }
-            if setting.number == 3 {
-                globalCurrentView = 3
-                changefrom(OldVC: shoppingView, newVC: tipsView)
-            }
-            if setting.number == 4 {
-                globalCurrentView = 4
-                changefrom(OldVC: shoppingView, newVC: myDenView)
-            }
-            if setting.number == 5 {
-                globalCurrentView = 5
-                changefrom(OldVC: shoppingView, newVC: settingsview)
-            }
-        } else if globalCurrentView == 3 {
-            if setting.number == 1 {
-                globalCurrentView = 1
-                changefrom(OldVC: tipsView, newVC: goalsView)
-            }
-            if setting.number == 2 {
-                globalCurrentView = 2
-                changefrom(OldVC: tipsView, newVC: shoppingView)
-            }
-            if setting.number == 0 {
-                globalCurrentView = 0
-                changefrom(OldVC: tipsView, newVC: shelvesView)
-            }
-            if setting.number == 4 {
-                globalCurrentView = 4
-                changefrom(OldVC: tipsView, newVC: myDenView)
-            }
-            if setting.number == 5 {
-                globalCurrentView = 5
-                changefrom(OldVC: tipsView, newVC: settingsview)
-            }
-        } else if globalCurrentView == 4 {
-            if setting.number == 1 {
-                globalCurrentView = 1
-                changefrom(OldVC: myDenView, newVC: goalsView)
-            }
-            if setting.number == 2 {
-                globalCurrentView = 2
-                changefrom(OldVC: myDenView, newVC: shoppingView)
-            }
-            if setting.number == 3 {
-                globalCurrentView = 3
-                changefrom(OldVC: myDenView, newVC: tipsView)
-            }
-            if setting.number == 0 {
-                globalCurrentView = 0
-                changefrom(OldVC: myDenView, newVC: shelvesView)
-            }
-            if setting.number == 5 {
-                globalCurrentView = 5
-                changefrom(OldVC: myDenView, newVC: settingsview)
-            }
-        } else if globalCurrentView == 5 {
-            if setting.number == 1 {
-                globalCurrentView = 1
-                changefrom(OldVC: settingsview, newVC: goalsView)
-            }
-            if setting.number == 2 {
-                globalCurrentView = 2
-                changefrom(OldVC: settingsview, newVC: shoppingView)
-            }
-            if setting.number == 3 {
-                globalCurrentView = 3
-                changefrom(OldVC: settingsview, newVC: tipsView)
-            }
-            
-            if setting.number == 4 {
-                globalCurrentView = 4
-                changefrom(OldVC: settingsview, newVC: myDenView)
-            }
-            if setting.number == 0 {
-                globalCurrentView = 0
-                changefrom(OldVC: settingsview, newVC: shelvesView)
-            }
-        } else {
-            print("there was an error transitioning to a view")
+        print("addShelfButton Pressed")
+        let alert = UIAlertController(title: "New shelf name", message: nil, preferredStyle: .alert)
+        alert.addTextField { (textField) in
         }
+        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        let save = UIAlertAction(title: "Save", style: .default) { (success) in
+            guard let shelfName = alert.textFields?.first?.text, !shelfName.isEmpty else {return}
+            
+        }
+        alert.addAction(dismiss)
+        alert.addAction(save)
+        present(alert, animated: true, completion: nil)
     }
     
-    func change(OldButtonTo oldButton: UIButton, newButton: UIButton) {
-        oldButton.removeFromSuperview()
-        navBar.addSubview(newButton)
+    @objc func addGoalButtonTapped() {
+        print("AddGoalButton Pressed")
     }
     
-    func hide(Button button: UIButton) {
-        button.isHidden = true
-    }
-    
-    func changefrom(OldVC oldVC: UIViewController, newVC: UIViewController) {
-        
-        let newStartFrame = CGRect(x: 0 + self.view.frame.width, y: 0, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
-        
-        let newEndframe = CGRect(x: 0, y: view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
-        
-        let oldfinishFrame = CGRect(x: 0 - self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-    
-    
-        oldVC.willMove(toParentViewController: nil)
-        self.addChildViewController(newVC)
-        newVC.view.frame = newStartFrame
-        
-        transition(from: oldVC, to: newVC, duration: 0.2, options: [.curveEaseOut], animations: {
-            oldVC.view.frame = oldfinishFrame
-            newVC.view.frame = newEndframe
-        }, completion: { (success) in
-            oldVC.removeFromParentViewController()
-            newVC.willMove(toParentViewController: self)
-        })
+    @objc func addShoppingItemButtonTapped() {
+        print("addShoppingItemButton Pressed")
     }
 }
 

@@ -10,7 +10,7 @@ import Foundation
 
 
 class ShelfController {
-    
+
     func createShelfForUser(User user: User, name: String) {
         let _ = Shelf(name: name, user: user)
         UserController.shared.saveToCoreData()
