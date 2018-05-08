@@ -11,10 +11,12 @@ import UIKit
 class Setting: NSObject {
     let name: String
     let imageName: String
+    let number: Int
     
-    init(name: String, imageName: String) {
+    init(name: String, imageName: String, number: Int) {
         self.name = name
         self.imageName = imageName
+        self.number = number
     }
 }
 
@@ -22,13 +24,16 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     
     let blackView = UIView()
     
-    var shelvesView: ShelvesViewController?
-    var goalsView: GoalsViewController?
-    var shoppingListView: ShoppingListViewController?
-    var tipsView: TipsViewController?
-    var settingsView: SettingsViewController?
     
+    var mainParentView: MainViewController?
+    var currentView: Int?
     
+    let shelvesView = ShelvesViewController()
+    let goalsView = GoalsViewController()
+    let shoppingView = ShoppingListViewController()
+    let tipsView = TipsViewController()
+    let settingsview = SettingsViewController()
+ 
     let mainView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = .yellow
@@ -37,15 +42,13 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
 
     let cellID = "cellID"
     let settings: [Setting] = {
-        
-        let shelves = Setting(name: "Shelves", imageName: "shelves2x")
-        let tips = Setting(name: "Tips", imageName: "tips2x")
-        let goals = Setting(name: "Goals", imageName: "checkMark2x")
-        let shoppingList = Setting(name: "Shopping List", imageName: "shoppingCartX2")
-        let settings = Setting(name: "Settings", imageName: "settingsGear2x")
-        let terms = Setting(name: "terms", imageName: "settingsGear2x")
-        let help = Setting(name: "help", imageName: "settingsGear2x")
-        
+        let shelves = Setting(name: "Shelves", imageName: "shelves2x", number: 0)
+        let goals = Setting(name: "Goals", imageName: "checkMark2x", number: 1)
+        let shoppingList = Setting(name: "Shopping List", imageName: "shoppingCartX2", number: 2)
+        let tips = Setting(name: "Tips", imageName: "tips2x", number: 3)
+        let settings = Setting(name: "Settings", imageName: "settingsGear2x", number: 4)
+        let terms = Setting(name: "terms", imageName: "settingsGear2x", number: 5)
+        let help = Setting(name: "help", imageName: "settingsGear2x", number: 6)
         return [shelves, goals, shoppingList, tips, settings]
     }()
     
@@ -75,7 +78,6 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
         setupDenImageView()
         setupTestLabel()
         setupCollectionViewConstraints()
-
     }
     
     func setupDenImageView() {
@@ -95,6 +97,7 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
 
     func setupDenImageViewConstraints() {
         mainView.addSubview(collectionView)
+        collectionView.clipsToBounds = true
         denImage.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint(item: denImage, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1.0, constant: 0).isActive = true
@@ -124,12 +127,11 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     
     func showSettings() {
         if let window = UIApplication.shared.keyWindow {
-            
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
             blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismiss)))
             window.addSubview(blackView)
             window.addSubview(mainView)
-//            mainView.addSubview(collectionView)
+
             let width = window.frame.width * 0.75
             let height = window.frame.height
           
@@ -149,6 +151,7 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     
     
     @objc func handleDismiss(setting: Setting) {
+        
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             
             self.blackView.alpha = 0
@@ -156,25 +159,10 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
                 self.mainView.frame = CGRect(x: -(window.frame.width), y: 0, width: self.mainView.frame.width, height: self.mainView.frame.height)
             }
         }) { (success) in
-            if setting.name == "Shelves" {
-                // do something specific for whatever sections the user selects
-                self.shelvesView?.showControllerFor(Setting: setting)
-            }
-            
-            if setting.name ==  "Goals "{
-                
-            }
-            
-            if setting.name ==  "Shopping List "{
-                
-            }
-            
-            if setting.name ==  "Tips "{
-                
-            }
-            
-            if setting.name ==  "Settings "{
-                
+            guard let parent = self.mainParentView,
+            let currentView = self.currentView else {return}
+            if self.currentView != setting.number {
+                parent.showControllerFor(Setting: setting, currentView: currentView)
             }
         }
     }
@@ -203,6 +191,8 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let setting = self.settings[indexPath.item]
+        print(currentView)
+        print(setting.number)
         handleDismiss(setting: setting)
     }
 }

@@ -122,8 +122,8 @@ class DenPictureViewController: UIViewController, UINavigationControllerDelegate
     @objc func letsStartButtonPressed() {
         guard let image = denImageView.image else {return}
 //        UserController.shared.add(Picture: image)
-        let shelvesViewController = ShelvesViewController()
-        self.present(shelvesViewController, animated: true, completion: nil)
+        let mainView = MainViewController()
+        self.present(mainView, animated: true, completion: nil)
     }
 }
 

@@ -9,19 +9,9 @@
 import UIKit
 
 class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
-    let navBar = UIView()
-    let settingsButton = UIButton()
-    let addButton = UIButton()
-    let navBarLabel = UILabel()
+
     let tableView = UITableView()
-    
-    lazy var settingsLauncher: SettingsLauncher = {
-        let launcher = SettingsLauncher()
-        launcher.shelvesView = self
-        return launcher
-    }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObjects()
@@ -29,7 +19,6 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func setupObjects() {
-        setupNavBar()
         setupTableView()
     }
     
@@ -40,15 +29,12 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func setupTableViewConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: navBar.bottomAnchor, constant: 0).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
-    
 
-    
-  
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return UserController.shared.user?.shelves?.count ?? 0
     }

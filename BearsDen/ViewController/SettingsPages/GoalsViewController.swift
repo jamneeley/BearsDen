@@ -9,16 +9,25 @@
 import UIKit
 
 class GoalsViewController: UIViewController {
+    
+    let testLabel = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .red
+        setupLabel()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    func setupLabel() {
+        view.addSubview(testLabel)
+        testLabel.text = "TESTING"
+        testLabel.translatesAutoresizingMaskIntoConstraints = false
+        testLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        testLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0 ).isActive = true
     }
     
 
