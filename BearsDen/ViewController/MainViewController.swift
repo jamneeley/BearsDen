@@ -21,18 +21,17 @@ class MainViewController: UIViewController {
     let goalsView = GoalsViewController()
     let shoppingView = ShoppingListViewController()
     let tipsView = TipsViewController()
+    let myDenView = MyDenViewController()
     let settingsview = SettingsViewController()
 
     //buttons
     
     lazy var settingsLauncher: SettingsLauncher = {
-        print("Settings Launcher \(globalCurrentView)")
         let launcher = SettingsLauncher()
         launcher.mainParentView = self
-        launcher.currentView = globalCurrentView
         return launcher
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObjects()
@@ -108,7 +107,6 @@ class MainViewController: UIViewController {
 
     
     @objc func settingsButtonTapped() {
-        print("Setting Button Tapped: \(globalCurrentView)")
         settingsLauncher.showSettings()
     }
     
@@ -118,11 +116,12 @@ class MainViewController: UIViewController {
         
     }
     
-    func showControllerFor(Setting setting: Setting, currentView: Int) {
-        if currentView == 0 {
+    func showControllerFor(Setting setting: Setting) {
+       
+
+        if globalCurrentView == 0 {
             if setting.number == 1 {
                 globalCurrentView = 1
-                print("Changed Global number in show controller \(globalCurrentView)")
                 changefrom(OldVC: shelvesView, newVC: goalsView)
             }
             if setting.number == 2 {
@@ -135,9 +134,13 @@ class MainViewController: UIViewController {
             }
             if setting.number == 4 {
                 globalCurrentView = 4
+                changefrom(OldVC: shelvesView, newVC: myDenView)
+            }
+            if setting.number == 5 {
+                globalCurrentView = 5
                 changefrom(OldVC: shelvesView, newVC: settingsview)
             }
-        } else if currentView == 1 {
+        } else if globalCurrentView == 1 {
             if setting.number == 0 {
                 globalCurrentView = 0
                 changefrom(OldVC: goalsView, newVC: shelvesView)
@@ -152,10 +155,14 @@ class MainViewController: UIViewController {
             }
             if setting.number == 4 {
                 globalCurrentView = 4
+                changefrom(OldVC: goalsView, newVC: myDenView)
+            }
+            if setting.number == 5 {
+                globalCurrentView = 5
                 changefrom(OldVC: goalsView, newVC: settingsview)
             }
             
-        } else if currentView == 2 {
+        } else if globalCurrentView == 2 {
             if setting.number == 1 {
                 globalCurrentView = 1
                 changefrom(OldVC: shoppingView, newVC: goalsView)
@@ -170,9 +177,13 @@ class MainViewController: UIViewController {
             }
             if setting.number == 4 {
                 globalCurrentView = 4
+                changefrom(OldVC: shoppingView, newVC: myDenView)
+            }
+            if setting.number == 5 {
+                globalCurrentView = 5
                 changefrom(OldVC: shoppingView, newVC: settingsview)
             }
-        } else if currentView == 3 {
+        } else if globalCurrentView == 3 {
             if setting.number == 1 {
                 globalCurrentView = 1
                 changefrom(OldVC: tipsView, newVC: goalsView)
@@ -187,9 +198,34 @@ class MainViewController: UIViewController {
             }
             if setting.number == 4 {
                 globalCurrentView = 4
+                changefrom(OldVC: tipsView, newVC: myDenView)
+            }
+            if setting.number == 5 {
+                globalCurrentView = 5
                 changefrom(OldVC: tipsView, newVC: settingsview)
             }
-        } else if currentView == 4 {
+        } else if globalCurrentView == 4 {
+            if setting.number == 1 {
+                globalCurrentView = 1
+                changefrom(OldVC: myDenView, newVC: goalsView)
+            }
+            if setting.number == 2 {
+                globalCurrentView = 2
+                changefrom(OldVC: myDenView, newVC: shoppingView)
+            }
+            if setting.number == 3 {
+                globalCurrentView = 3
+                changefrom(OldVC: myDenView, newVC: tipsView)
+            }
+            if setting.number == 0 {
+                globalCurrentView = 0
+                changefrom(OldVC: myDenView, newVC: shelvesView)
+            }
+            if setting.number == 5 {
+                globalCurrentView = 5
+                changefrom(OldVC: myDenView, newVC: settingsview)
+            }
+        } else if globalCurrentView == 5 {
             if setting.number == 1 {
                 globalCurrentView = 1
                 changefrom(OldVC: settingsview, newVC: goalsView)
@@ -202,6 +238,11 @@ class MainViewController: UIViewController {
                 globalCurrentView = 3
                 changefrom(OldVC: settingsview, newVC: tipsView)
             }
+            
+            if setting.number == 4 {
+                globalCurrentView = 4
+                changefrom(OldVC: settingsview, newVC: myDenView)
+            }
             if setting.number == 0 {
                 globalCurrentView = 0
                 changefrom(OldVC: settingsview, newVC: shelvesView)
@@ -211,6 +252,14 @@ class MainViewController: UIViewController {
         }
     }
     
+    func change(OldButtonTo oldButton: UIButton, newButton: UIButton) {
+        oldButton.removeFromSuperview()
+        navBar.addSubview(newButton)
+    }
+    
+    func hide(Button button: UIButton) {
+        button.isHidden = true
+    }
     
     func changefrom(OldVC oldVC: UIViewController, newVC: UIViewController) {
         

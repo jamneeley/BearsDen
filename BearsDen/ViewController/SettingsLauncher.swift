@@ -26,8 +26,6 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     
     
     var mainParentView: MainViewController?
-    var currentView: Int?
-    
     let shelvesView = ShelvesViewController()
     let goalsView = GoalsViewController()
     let shoppingView = ShoppingListViewController()
@@ -36,7 +34,7 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
  
     let mainView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .yellow
+        view.backgroundColor = .white
         return view
     }()
 
@@ -46,10 +44,11 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
         let goals = Setting(name: "Goals", imageName: "checkMark2x", number: 1)
         let shoppingList = Setting(name: "Shopping List", imageName: "shoppingCartX2", number: 2)
         let tips = Setting(name: "Tips", imageName: "tips2x", number: 3)
-        let settings = Setting(name: "Settings", imageName: "settingsGear2x", number: 4)
-        let terms = Setting(name: "terms", imageName: "settingsGear2x", number: 5)
-        let help = Setting(name: "help", imageName: "settingsGear2x", number: 6)
-        return [shelves, goals, shoppingList, tips, settings]
+        let myDen = Setting(name: "My Den", imageName: "bearsDenSideProfile", number: 4)
+        let settings = Setting(name: "Settings", imageName: "settingsGear2x", number: 5)
+        let terms = Setting(name: "terms", imageName: "settingsGear2x", number: 6)
+        let help = Setting(name: "help", imageName: "settingsGear2x", number: 7)
+        return [shelves, goals, shoppingList, tips, myDen, settings]
     }()
     
     let collectionView: UICollectionView = {
@@ -76,7 +75,7 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     
     func setupObjects() {
         setupDenImageView()
-        setupTestLabel()
+        setupDenLabel()
         setupCollectionViewConstraints()
     }
     
@@ -87,26 +86,23 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
         setupDenImageViewConstraints()
     }
     
-    func setupTestLabel() {
+    func setupDenLabel() {
         mainView.addSubview(denNameLabel)
         denNameLabel.text = "TEST"
         denNameLabel.font = UIFont.boldSystemFont(ofSize: 14)
         denNameLabel.textAlignment = .center
-        setuptestLabelConstraints()
+        setupDenLabelConstraints()
     }
 
     func setupDenImageViewConstraints() {
-        mainView.addSubview(collectionView)
-        collectionView.clipsToBounds = true
         denImage.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint(item: denImage, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: denImage, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1.0, constant: 200).isActive = true
         NSLayoutConstraint(item: denImage, attribute: .leading, relatedBy: .equal, toItem: mainView, attribute: .leading, multiplier: 1.0, constant: 0).isActive = true
          NSLayoutConstraint(item: denImage, attribute: .trailing, relatedBy: .equal, toItem: mainView, attribute: .trailing, multiplier: 1.0, constant: 0).isActive = true
     }
     
-    func setuptestLabelConstraints() {
+    func setupDenLabelConstraints() {
         denNameLabel.translatesAutoresizingMaskIntoConstraints = false
          NSLayoutConstraint(item: denNameLabel, attribute: .top, relatedBy: .equal, toItem: denImage, attribute: .bottom, multiplier: 1.0, constant: 5).isActive = true
          NSLayoutConstraint(item: denNameLabel, attribute: .bottom, relatedBy: .equal, toItem: denImage, attribute: .bottom, multiplier: 1.0, constant: 35).isActive = true
@@ -115,15 +111,16 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     }
     
     func setupCollectionViewConstraints() {
+        mainView.addSubview(collectionView)
+        collectionView.clipsToBounds = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(item: collectionView, attribute: .top, relatedBy: .equal, toItem: denNameLabel, attribute: .bottom, multiplier: 1.0, constant: 10).isActive = true
-        NSLayoutConstraint(item: collectionView, attribute: .leading, relatedBy: .equal, toItem: mainView, attribute: .leading, multiplier: 1.0, constant: 0).isActive = true
-        NSLayoutConstraint(item: collectionView, attribute: .trailing, relatedBy: .equal, toItem: mainView, attribute: .trailing, multiplier: 1.0, constant: 0).isActive = true
-        NSLayoutConstraint(item: collectionView, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1.0, constant: 0).isActive = true
-        
+        if let window = UIApplication.shared.keyWindow {
+            collectionView.frame = CGRect(x: -(window.frame.width), y: 235, width: window.frame.width * 0.75, height: window.frame.height - 235)
+        }
     }
     
     //LOCAL FUNCTIONS
+
     
     func showSettings() {
         if let window = UIApplication.shared.keyWindow {
@@ -145,6 +142,7 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.blackView.alpha = 1
                 self.mainView.frame = CGRect(x: 0, y: 0, width: self.mainView.frame.width, height: self.mainView.frame.height)
+                self.collectionView.frame = CGRect(x: 0, y: 235, width: window.frame.width * 0.75, height: window.frame.height - 235)
             }, completion: nil)
         }
     }
@@ -157,12 +155,12 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
             self.blackView.alpha = 0
             if let window = UIApplication.shared.keyWindow {
                 self.mainView.frame = CGRect(x: -(window.frame.width), y: 0, width: self.mainView.frame.width, height: self.mainView.frame.height)
+                self.collectionView.frame = CGRect(x: -(window.frame.width), y: 235, width: window.frame.width * 0.75, height: window.frame.height - 235)
             }
         }) { (success) in
-            guard let parent = self.mainParentView,
-            let currentView = self.currentView else {return}
-            if self.currentView != setting.number {
-                parent.showControllerFor(Setting: setting, currentView: currentView)
+            guard let parent = self.mainParentView else {return}
+            if setting.name != "" {
+                parent.showControllerFor(Setting: setting)
             }
         }
     }
@@ -191,8 +189,6 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let setting = self.settings[indexPath.item]
-        print(currentView)
-        print(setting.number)
         handleDismiss(setting: setting)
     }
 }

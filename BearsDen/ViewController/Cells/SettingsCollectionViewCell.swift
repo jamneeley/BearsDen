@@ -12,7 +12,6 @@ class SettingsCollectionViewCell: UICollectionViewCell {
     
     override var isHighlighted: Bool {
         didSet {
-            print(isHighlighted)
             self.backgroundColor = isHighlighted ? Colors.softBlue : .white
             self.nameLabel.textColor = isHighlighted ? .white : .black
             iconImageView.tintColor = isHighlighted ? .white : .black
