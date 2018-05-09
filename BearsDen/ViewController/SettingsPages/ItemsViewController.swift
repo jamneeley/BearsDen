@@ -47,7 +47,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func setupManualAddButton() {
         manualAddButton.frame = CGRect(x: view.frame.width * 0.35 - 30, y: view.frame.height * 0.88, width: 60, height: 60)
-        navigationController?.view.addSubview(manualAddButton)
+        view.addSubview(manualAddButton)
         manualAddButton.layer.cornerRadius = 0.5 * manualAddButton.bounds.size.width
         manualAddButton.clipsToBounds = true
         manualAddButton.imageView?.tintColor = nil
@@ -60,7 +60,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     func setupBarCodeAddButton() {
         barCodeAddButton.frame = CGRect(x: view.frame.width * 0.65 - 30, y: view.frame.height * 0.88, width: 60, height: 60)
-        navigationController?.view.addSubview(barCodeAddButton)
+        view.addSubview(barCodeAddButton)
         barCodeAddButton.layer.cornerRadius = 0.5 * manualAddButton.bounds.size.width
         barCodeAddButton.clipsToBounds = true
         barCodeAddButton.imageView?.tintColor = nil
@@ -102,10 +102,14 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     @objc func addManualButtonPressed() {
         stopHighlightManual()
+        let addManualView = AddManualItemViewController()
+        navigationController?.pushViewController(addManualView, animated: true)
     }
     
     @objc func addBarButtonPressed() {
         stopHighlightBar()
+        let addBarView = AddBarCodeItemViewController()
+        navigationController?.pushViewController(addBarView, animated: true)
     }
 
     

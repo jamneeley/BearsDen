@@ -31,7 +31,7 @@ class DenPictureViewController: UIViewController, UINavigationControllerDelegate
     
     func setupBackGroundView() {
         view.addSubview(backGroundView)
-        backGroundView.backgroundColor = .white
+        backGroundView.backgroundColor = Colors.softBlue
         setupBackGroundViewConstraints()
     }
     func setupPromptLabel() {
@@ -60,11 +60,13 @@ class DenPictureViewController: UIViewController, UINavigationControllerDelegate
     
     func setupLetsStartButton() {
         view.addSubview(letsStartButton)
-        letsStartButton.setTitle("Lets Begin", for: .normal)
+        letsStartButton.frame = CGRect(x: view.frame.width * 0.5 - 32.5, y: view.frame.height * 0.88, width: 65, height: 65)
+        letsStartButton.setTitle("Next", for: .normal)
         letsStartButton.setTitleColor(.white, for: .normal)
-        letsStartButton.backgroundColor = Colors.softBlue
+        letsStartButton.backgroundColor = Colors.green
+        letsStartButton.layer.cornerRadius = 0.5 * letsStartButton.bounds.size.width
+        letsStartButton.clipsToBounds = true
         letsStartButton.addTarget(self, action: #selector(letsStartButtonPressed), for: .touchUpInside)
-        setupLetsStartButtonConstraints()
     }
     
     func setupBackGroundViewConstraints() {
@@ -75,14 +77,6 @@ class DenPictureViewController: UIViewController, UINavigationControllerDelegate
         backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
     }
     
-    func setupLetsStartButtonConstraints() {
-        letsStartButton.translatesAutoresizingMaskIntoConstraints = false
-        letsStartButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        letsStartButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        letsStartButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        letsStartButton.topAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.43).isActive = true
-        
-    }
     func setupPromptLabelConstraints() {
         promptLabel.translatesAutoresizingMaskIntoConstraints = false
         promptLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.05).isActive = true

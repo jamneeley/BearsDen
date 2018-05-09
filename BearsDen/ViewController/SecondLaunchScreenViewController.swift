@@ -23,14 +23,15 @@ class SecondLaunchScreenViewController: UIViewController {
     }
     
     func isNewUser() {
-        if UserDefaults.standard.object(forKey: "isCurrentUser") as? Bool == true {
-            segueToExistingUser()
-            UserController.shared.loadFromCoreData()
-            print("existing user")
-        } else {
-            segueToNewUserView()
-            print("new user")
-        }
+//        if UserDefaults.standard.object(forKey: "isCurrentUser") as? Bool == true {
+//            segueToExistingUser()
+//            UserController.shared.loadFromCoreData()
+//            print("existing user")
+//        } else {
+//            segueToNewUserView()
+//            print("new user")
+//        }
+        segueToNewUserView()
     }
     
     func segueToExistingUser() {

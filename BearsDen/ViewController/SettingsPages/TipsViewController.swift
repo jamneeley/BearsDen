@@ -10,15 +10,19 @@ import UIKit
 
 class TipsViewController: UIViewController {
 
+    let testLabel = UILabel()
     override func viewDidLoad() {
         super.viewDidLoad()
-
-       view.backgroundColor = .orange
+        view.backgroundColor = .white
+        setupLabel()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func setupLabel() {
+        view.addSubview(testLabel)
+        testLabel.text = "Tips And Stuff"
+        testLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        testLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        testLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0).isActive = true
     }
-
 }

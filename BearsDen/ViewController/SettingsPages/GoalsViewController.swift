@@ -14,20 +14,15 @@ class GoalsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = .white
         setupLabel()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     func setupLabel() {
         view.addSubview(testLabel)
-        testLabel.text = "TESTING"
+        testLabel.text = "Goals"
         testLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        testLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        testLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        testLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        testLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0).isActive = true
     }
 }
