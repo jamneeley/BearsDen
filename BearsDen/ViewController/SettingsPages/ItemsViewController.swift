@@ -12,8 +12,8 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     let itemTableView = UITableView()
     var shelf: Shelf?
-    let manualAddButton = UIButton()
-    let barCodeAddButton = UIButton()
+    let manualAddButton = UIButton(type: .custom)
+    let barCodeAddButton = UIButton(type: .custom)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +27,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         setupNavigationBar()
         setupManualAddButton()
         setupBarCodeAddButton()
-        
     }
     
     func setupTableView() {
@@ -40,27 +39,36 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .plain, target: self, action: #selector(backButtonPressed))
         navigationController?.navigationBar.tintColor = .white
+        navigationItem.title = shelf?.name
+        let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.barTintColor = Colors.softBlue
     }
     
     func setupManualAddButton() {
-        itemTableView.addSubview(manualAddButton)
+        manualAddButton.frame = CGRect(x: view.frame.width * 0.35 - 30, y: view.frame.height * 0.88, width: 60, height: 60)
+        navigationController?.view.addSubview(manualAddButton)
         manualAddButton.layer.cornerRadius = 0.5 * manualAddButton.bounds.size.width
         manualAddButton.clipsToBounds = true
-        manualAddButton.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
+        manualAddButton.imageView?.tintColor = nil
+        manualAddButton.setImage(#imageLiteral(resourceName: "ClipBoardButton"), for: .normal)
         manualAddButton.backgroundColor = Colors.green
+        manualAddButton.addTarget(self, action: #selector(startHighlightManual), for: .touchDown)
         manualAddButton.addTarget(self, action: #selector(addManualButtonPressed), for: .touchUpInside)
-        manualAddButton.frame = CGRect(x: view.frame.height * 0.85, y: view.frame.width * 0.4, width: 50, height: 50)
+        manualAddButton.addTarget(self, action: #selector(stopHighlightManual), for: .touchUpOutside)
     }
-    
+
     func setupBarCodeAddButton() {
-        itemTableView.addSubview(barCodeAddButton)
+        barCodeAddButton.frame = CGRect(x: view.frame.width * 0.65 - 30, y: view.frame.height * 0.88, width: 60, height: 60)
+        navigationController?.view.addSubview(barCodeAddButton)
         barCodeAddButton.layer.cornerRadius = 0.5 * manualAddButton.bounds.size.width
         barCodeAddButton.clipsToBounds = true
-        barCodeAddButton.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
+        barCodeAddButton.imageView?.tintColor = nil
+        barCodeAddButton.setImage(#imageLiteral(resourceName: "barCodeButton"), for: .normal)
         barCodeAddButton.backgroundColor = Colors.green
-        barCodeAddButton.addTarget(self, action: #selector(addManualButtonPressed), for: .touchUpInside)
-        barCodeAddButton.frame = CGRect(x: view.frame.height * 0.85, y: view.frame.width * 0.6, width: 50, height: 50)
+        barCodeAddButton.addTarget(self, action: #selector(startHighlightBar), for: .touchDown)
+        barCodeAddButton.addTarget(self, action: #selector(addBarButtonPressed), for: .touchUpInside)
+        barCodeAddButton.addTarget(self, action: #selector(stopHighlightBar), for: .touchUpOutside)
     }
     
     func setupTableViewConstraints() {
@@ -76,9 +84,28 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
     }
-    
+    @objc func startHighlightManual() {
+        manualAddButton.layer.backgroundColor = Colors.softBlue.cgColor
+        manualAddButton.imageView?.tintColor = .white
+    }
+    @objc func stopHighlightManual() {
+        manualAddButton.layer.backgroundColor = Colors.green.cgColor
+        manualAddButton.imageView?.tintColor = nil
+    }
+    @objc func startHighlightBar() {
+        barCodeAddButton.layer.backgroundColor = Colors.softBlue.cgColor
+        barCodeAddButton.imageView?.tintColor = .white
+    }
+    @objc func stopHighlightBar() {
+        barCodeAddButton.layer.backgroundColor = Colors.green.cgColor
+        barCodeAddButton.imageView?.tintColor = nil
+    }
     @objc func addManualButtonPressed() {
-        
+        stopHighlightManual()
+    }
+    
+    @objc func addBarButtonPressed() {
+        stopHighlightBar()
     }
 
     

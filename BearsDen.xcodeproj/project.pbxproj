@@ -37,6 +37,8 @@
 		9D8477CE20A218AF005F219B /* MyDenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477CD20A218AF005F219B /* MyDenViewController.swift */; };
 		9D8477D020A21AB5005F219B /* bearsDenSideProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8477CF20A21AB4005F219B /* bearsDenSideProfile.png */; };
 		9D8477D220A237DB005F219B /* ContainerViewTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477D120A237DB005F219B /* ContainerViewTransitions.swift */; };
+		9D8477D420A291EC005F219B /* barCodeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8477D320A291EC005F219B /* barCodeButton.png */; };
+		9D8477DA20A295BC005F219B /* ClipBoardButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8477D920A295BC005F219B /* ClipBoardButton.png */; };
 		9D8FEB46208A6CFC00080EEE /* icon_20pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8FEB37208A6CFB00080EEE /* icon_20pt@2x.png */; };
 		9D8FEB47208A6CFC00080EEE /* icon_40pt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8FEB38208A6CFB00080EEE /* icon_40pt@3x.png */; };
 		9D8FEB48208A6CFC00080EEE /* icon_29pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8FEB39208A6CFB00080EEE /* icon_29pt@2x.png */; };
@@ -113,6 +115,8 @@
 		9D8477CD20A218AF005F219B /* MyDenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDenViewController.swift; sourceTree = "<group>"; };
 		9D8477CF20A21AB4005F219B /* bearsDenSideProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bearsDenSideProfile.png; sourceTree = "<group>"; };
 		9D8477D120A237DB005F219B /* ContainerViewTransitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewTransitions.swift; sourceTree = "<group>"; };
+		9D8477D320A291EC005F219B /* barCodeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = barCodeButton.png; sourceTree = "<group>"; };
+		9D8477D920A295BC005F219B /* ClipBoardButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClipBoardButton.png; sourceTree = "<group>"; };
 		9D8FEB37208A6CFB00080EEE /* icon_20pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_20pt@2x.png"; sourceTree = "<group>"; };
 		9D8FEB38208A6CFB00080EEE /* icon_40pt@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_40pt@3x.png"; sourceTree = "<group>"; };
 		9D8FEB39208A6CFB00080EEE /* icon_29pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_29pt@2x.png"; sourceTree = "<group>"; };
@@ -235,6 +239,8 @@
 		9DC82CFE208A50970068DD8E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9D8477D920A295BC005F219B /* ClipBoardButton.png */,
+				9D8477D320A291EC005F219B /* barCodeButton.png */,
 				9D8477CF20A21AB4005F219B /* bearsDenSideProfile.png */,
 				9D8477C720A0F1CA005F219B /* tips2x.png */,
 				9D8477C520A0F1C2005F219B /* shelves2x.png */,
@@ -388,6 +394,7 @@
 				9D8FEB51208A6CFC00080EEE /* icon_76pt@2x.png in Resources */,
 				9D8FEB49208A6CFC00080EEE /* icon_20pt@3x.png in Resources */,
 				9D8FEB53208A6CFC00080EEE /* icon_60pt@2x.png in Resources */,
+				9D8477DA20A295BC005F219B /* ClipBoardButton.png in Resources */,
 				9D847797209A72F6005F219B /* settingIconX3.png in Resources */,
 				9D8FEB48208A6CFC00080EEE /* icon_29pt@2x.png in Resources */,
 				9D8477C420A0EFC3005F219B /* checkMark2x.png in Resources */,
@@ -397,6 +404,7 @@
 				9D8FEB4A208A6CFC00080EEE /* icon_83.5@2x.png in Resources */,
 				9DC82CF3208A50820068DD8E /* Assets.xcassets in Resources */,
 				9D8FEB4D208A6CFC00080EEE /* icon_76pt.png in Resources */,
+				9D8477D420A291EC005F219B /* barCodeButton.png in Resources */,
 				9DC23BC32097DCED00C2F111 /* BearsDenLogo.png in Resources */,
 				9D8FEB47208A6CFC00080EEE /* icon_40pt@3x.png in Resources */,
 				9D8FEB4B208A6CFC00080EEE /* icon_29pt@3x.png in Resources */,
