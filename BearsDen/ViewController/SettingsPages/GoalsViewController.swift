@@ -26,8 +26,9 @@ class GoalsViewController: UIViewController {
         view.addSubview(testLabel)
         testLabel.text = "TESTING"
         testLabel.translatesAutoresizingMaskIntoConstraints = false
-        testLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
-        testLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0 ).isActive = true
+        
+        testLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        testLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
     
 

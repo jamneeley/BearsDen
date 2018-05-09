@@ -93,7 +93,7 @@ class MainViewController: UIViewController {
     }
     
     func setupLabel() {
-        navBarLabel.text = "Your Shelves"
+        navBarLabel.text = "Your shelves"
         navBarLabel.font = UIFont.boldSystemFont(ofSize: 20)
         navBarLabel.textColor = .white
         setupLabelConstraints()
@@ -144,8 +144,10 @@ class MainViewController: UIViewController {
         }
         let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
         let save = UIAlertAction(title: "Save", style: .default) { (success) in
-            guard let shelfName = alert.textFields?.first?.text, !shelfName.isEmpty else {return}
-            
+            guard let shelfName = alert.textFields?.first?.text, !shelfName.isEmpty,
+            let user = UserController.shared.user else {return}
+            ShelfController.shared.createShelfForUser(User: user, name: shelfName)
+            self.shelvesView.update = true
         }
         alert.addAction(dismiss)
         alert.addAction(save)

@@ -11,6 +11,13 @@ import UIKit
 class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let tableView = UITableView()
+    
+    var update: Bool = false {
+        didSet {
+            tableView.reloadData()
+            update = false
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,12 +25,15 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "shelfCell")
     }
     
+    
     func setupObjects() {
         setupTableView()
     }
     
     func setupTableView() {
         view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
         setupTableViewConstraints()
     }
     
@@ -36,25 +46,35 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 8
+        return UserController.shared.user?.shelves?.count ?? 0
     }
+
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = ShelfTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "shelfCell")
         tableView.dequeueReusableCell(withIdentifier: "shelfCell", for: indexPath)
-        cell.textLabel?.text = "first"
-        cell.detailTextLabel?.text = "second"
-        return cell
+        if let shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf {
+            cell.textLabel?.text = "\(shelf.name ?? "")"
+            cell.detailTextLabel?.text = "\(shelf.items?.count ?? 0) Items"
+            return cell
+        } else {
+            return UITableViewCell()
+        }
     }
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
+            guard let shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf else {return}
+            ShelfController.shared.delete(Shelf: shelf)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//
-//    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let itemView = ItemsViewController()
+        guard let shelf: Shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf else {return}
+        itemView.shelf = shelf
+        let navItem = UINavigationController(rootViewController: itemView)
+        present(navItem, animated: true, completion: nil)
+    }
 }

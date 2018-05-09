@@ -23,32 +23,19 @@ class SecondLaunchScreenViewController: UIViewController {
     }
     
     func isNewUser() {
-        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-        let url = NSURL(fileURLWithPath: path)
-        if let pathComponent = url.appendingPathComponent("bearsDenUser") {
-            let filePath = pathComponent.path
-            let fileManager = FileManager.default
-            if fileManager.fileExists(atPath: filePath) {
-//                animateLogo()
-                segueToExistingUser()
-                UserController.shared.loadFromCoreData()
-                print("existing user")
-            } else {
-//                animateLogo()
-                segueToNewUserView()
-                print("new user")
-            }
+        if UserDefaults.standard.object(forKey: "isCurrentUser") as? Bool == true {
+            segueToExistingUser()
+            UserController.shared.loadFromCoreData()
+            print("existing user")
         } else {
-//            animateLogo()
             segueToNewUserView()
-            print("error but new user")
+            print("new user")
         }
     }
     
     func segueToExistingUser() {
-        let shelvesViewController = ShelvesViewController()
-      
-        self.present(shelvesViewController, animated: true, completion: nil)
+        let mainView = MainViewController()
+        self.present(mainView, animated: true, completion: nil)
     }
         
     func segueToNewUserView() {

@@ -106,9 +106,9 @@ class NewDenNameViewController: UIViewController {
     
     @objc func letsStartButtonPressed() {
         guard let denName = houseTextField.text, !denName.isEmpty else {return}
-        //save the den name and move on
-//        UserController.shared.createUser(housHouldName: denName)
+        UserController.shared.createUser(housHouldName: denName)
         let pictureView = DenPictureViewController()
         self.present(pictureView, animated: true, completion: nil)
+        UserDefaults.standard.set(true, forKey: "isCurrentUser")
     }
 }

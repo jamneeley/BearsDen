@@ -297,8 +297,8 @@
 		9DC82D01208A50B20068DD8E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9DC23BE9209913A900C2F111 /* CoreDataStack.swift */,
 				9DC23BE62099101400C2F111 /* User.xcdatamodeld */,
+				9DC23BE9209913A900C2F111 /* CoreDataStack.swift */,
 				9DC23BE22099033400C2F111 /* User+Convenience.swift */,
 				9DC82D02208A53420068DD8E /* Shelf+Convenience.swift */,
 				9DC82D04208A53490068DD8E /* Item+Convenience.swift */,

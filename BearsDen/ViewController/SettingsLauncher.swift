@@ -61,6 +61,8 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     
     let denImage = UIImageView()
     let denNameLabel = UILabel()
+    let seperator = UIView()
+    let collectionViewYPosition = CGFloat(280)
     
     // VIEWDIDLOAD!!!!!
     
@@ -76,22 +78,32 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     func setupObjects() {
         setupDenImageView()
         setupDenLabel()
+        setupSeperator()
         setupCollectionViewConstraints()
     }
     
     func setupDenImageView() {
         mainView.addSubview(denImage)
         denImage.clipsToBounds = true
-        denImage.image = #imageLiteral(resourceName: "imagePlaceHolder")
+        guard let data = UserController.shared.user?.picture else {return}
+        let denImageFromData = UIImage(data: data)
+        denImage.image = denImageFromData
         setupDenImageViewConstraints()
     }
     
     func setupDenLabel() {
         mainView.addSubview(denNameLabel)
-        denNameLabel.text = "TEST"
+        guard let name = UserController.shared.user?.houseHoldName else {return}
+        denNameLabel.text = "\(name)"
         denNameLabel.font = UIFont.boldSystemFont(ofSize: 14)
         denNameLabel.textAlignment = .center
         setupDenLabelConstraints()
+    }
+    
+    func setupSeperator() {
+        mainView.addSubview(seperator)
+        seperator.backgroundColor = Colors.lightGray
+        setupSeperatorConstraints()
     }
 
     func setupDenImageViewConstraints() {
@@ -110,12 +122,20 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
          NSLayoutConstraint(item: denNameLabel, attribute: .trailing, relatedBy: .equal, toItem: mainView, attribute: .trailing, multiplier: 1.0, constant: 0).isActive = true
     }
     
+    func setupSeperatorConstraints() {
+        seperator.translatesAutoresizingMaskIntoConstraints = false
+        seperator.topAnchor.constraint(equalTo: denNameLabel.bottomAnchor, constant: 5).isActive = true
+        seperator.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 20).isActive = true
+        seperator.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -20).isActive = true
+        seperator.bottomAnchor.constraint(equalTo: denNameLabel.bottomAnchor, constant: 7).isActive = true
+    }
+    
     func setupCollectionViewConstraints() {
         mainView.addSubview(collectionView)
         collectionView.clipsToBounds = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         if let window = UIApplication.shared.keyWindow {
-            collectionView.frame = CGRect(x: -(window.frame.width), y: 235, width: window.frame.width * 0.75, height: window.frame.height - 235)
+            collectionView.frame = CGRect(x: -(window.frame.width), y: collectionViewYPosition, width: window.frame.width * 0.75, height: window.frame.height - collectionViewYPosition)
         }
     }
     
@@ -142,20 +162,19 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.blackView.alpha = 1
                 self.mainView.frame = CGRect(x: 0, y: 0, width: self.mainView.frame.width, height: self.mainView.frame.height)
-                self.collectionView.frame = CGRect(x: 0, y: 235, width: window.frame.width * 0.75, height: window.frame.height - 235)
+                self.collectionView.frame = CGRect(x: 0, y: self.collectionViewYPosition, width: window.frame.width * 0.75, height: window.frame.height - self.collectionViewYPosition)
             }, completion: nil)
         }
     }
     
     
     @objc func handleDismiss(setting: Setting) {
-        
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             
             self.blackView.alpha = 0
             if let window = UIApplication.shared.keyWindow {
                 self.mainView.frame = CGRect(x: -(window.frame.width), y: 0, width: self.mainView.frame.width, height: self.mainView.frame.height)
-                self.collectionView.frame = CGRect(x: -(window.frame.width), y: 235, width: window.frame.width * 0.75, height: window.frame.height - 235)
+                self.collectionView.frame = CGRect(x: -(window.frame.width), y: self.collectionViewYPosition, width: window.frame.width * 0.75, height: window.frame.height - self.collectionViewYPosition)
             }
         }) { (success) in
             guard let parent = self.mainParentView else {return}
@@ -168,7 +187,6 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     }
 
     //COLLECTION VIEW FUNCTIONS
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return settings.count
@@ -186,7 +204,7 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 15
+        return 25
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

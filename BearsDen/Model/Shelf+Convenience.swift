@@ -10,10 +10,9 @@ import Foundation
 import CoreData
 
 extension Shelf {
-    convenience init(name: String, user: User,  Context: NSManagedObjectContext = CoreDataStack.context) {
+    convenience init(name: String, user: User, Context: NSManagedObjectContext = CoreDataStack.context) {
         self.init(context: Context)
         self.name =  name
         self.user = user
-        
     }
 }

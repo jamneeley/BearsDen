@@ -11,6 +11,9 @@ import UIKit
 class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     let itemTableView = UITableView()
+    var shelf: Shelf?
+    let manualAddButton = UIButton()
+    let barCodeAddButton = UIButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +25,9 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func setupObjects() {
         setupTableView()
         setupNavigationBar()
+        setupManualAddButton()
+        setupBarCodeAddButton()
+        
     }
     
     func setupTableView() {
@@ -33,9 +39,28 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .plain, target: self, action: #selector(backButtonPressed))
+        navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.barTintColor = Colors.softBlue
-        navigationItem.rightBarButtonItem?.tintColor = Colors.darkPurple
-        navigationItem.leftBarButtonItem?.tintColor = Colors.darkPurple
+    }
+    
+    func setupManualAddButton() {
+        itemTableView.addSubview(manualAddButton)
+        manualAddButton.layer.cornerRadius = 0.5 * manualAddButton.bounds.size.width
+        manualAddButton.clipsToBounds = true
+        manualAddButton.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
+        manualAddButton.backgroundColor = Colors.green
+        manualAddButton.addTarget(self, action: #selector(addManualButtonPressed), for: .touchUpInside)
+        manualAddButton.frame = CGRect(x: view.frame.height * 0.85, y: view.frame.width * 0.4, width: 50, height: 50)
+    }
+    
+    func setupBarCodeAddButton() {
+        itemTableView.addSubview(barCodeAddButton)
+        barCodeAddButton.layer.cornerRadius = 0.5 * manualAddButton.bounds.size.width
+        barCodeAddButton.clipsToBounds = true
+        barCodeAddButton.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
+        barCodeAddButton.backgroundColor = Colors.green
+        barCodeAddButton.addTarget(self, action: #selector(addManualButtonPressed), for: .touchUpInside)
+        barCodeAddButton.frame = CGRect(x: view.frame.height * 0.85, y: view.frame.width * 0.6, width: 50, height: 50)
     }
     
     func setupTableViewConstraints() {
@@ -44,23 +69,35 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         itemTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         itemTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         itemTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        
     }
+
     
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
     
+    @objc func addManualButtonPressed() {
+        
+    }
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return shelf?.items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = ItemTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "itemCell")
        itemTableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath)
-        cell.textLabel?.text = "first item"
-        cell.detailTextLabel?.text = "first item detail"
-        return cell
+        if shelf != nil {
+            if let item = shelf?.items?[indexPath.row] as? Item {
+                cell.textLabel?.text = "\(item.name ?? "")"
+                cell.detailTextLabel?.text = "\(item.expirationDate ?? Date())"
+                return cell
+            }
+        } else {
+            return UITableViewCell()
+        }
+        return UITableViewCell()
     }
 }

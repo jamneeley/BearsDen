@@ -19,6 +19,7 @@ class UserController {
             let newUser = User(houseHoldName: housHouldName)
             self.user = newUser
             saveToCoreData()
+            print("new user created")
         } else {
             print("A User already exists")
         }
@@ -38,6 +39,7 @@ class UserController {
             let data = UIImagePNGRepresentation(picture)
             user.picture = data
             saveToCoreData()
+            print("Picture added to user")
         } else {
             print("there is no user to save the picture to")
         }

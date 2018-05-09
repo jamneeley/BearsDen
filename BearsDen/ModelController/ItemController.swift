@@ -10,6 +10,8 @@ import Foundation
 
 class ItemController {
     
+    static let shared = ItemController()
+    
     func createItem(name: String, quantity: Double, stocked: Date, expirationDate: Date, shelf: Shelf) {
         let _ = Item(name: name, quantity: quantity, stocked: stocked, expirationDate: expirationDate, shelf: shelf)
         UserController.shared.saveToCoreData()
