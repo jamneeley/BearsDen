@@ -5,6 +5,8 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="goals" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
+        <attribute name="barcode" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="ckRecordID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="expirationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="quantity" attributeType="Double" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -24,7 +26,7 @@
     </entity>
     <elements>
         <element name="Goal" positionX="-207" positionY="366" width="128" height="73"/>
-        <element name="Item" positionX="250" positionY="231" width="128" height="118"/>
+        <element name="Item" positionX="250" positionY="231" width="128" height="150"/>
         <element name="Shelf" positionX="115" positionY="18" width="128" height="88"/>
         <element name="User" positionX="-108" positionY="-135" width="128" height="103"/>
     </elements>

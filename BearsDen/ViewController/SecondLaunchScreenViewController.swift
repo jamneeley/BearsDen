@@ -23,15 +23,14 @@ class SecondLaunchScreenViewController: UIViewController {
     }
     
     func isNewUser() {
-//        if UserDefaults.standard.object(forKey: "isCurrentUser") as? Bool == true {
-//            segueToExistingUser()
-//            UserController.shared.loadFromCoreData()
-//            print("existing user")
-//        } else {
-//            segueToNewUserView()
-//            print("new user")
-//        }
-        segueToNewUserView()
+        if UserDefaults.standard.object(forKey: "isCurrentUser") as? Bool == true {
+            segueToExistingUser()
+            UserController.shared.loadFromCoreData()
+            print("existing user")
+        } else {
+            segueToNewUserView()
+            print("new user")
+        }
     }
     
     func segueToExistingUser() {
@@ -40,6 +39,7 @@ class SecondLaunchScreenViewController: UIViewController {
     }
         
     func segueToNewUserView() {
+        print("attempted to make new user")
         let newUser = NewDenNameViewController()
         self.present(newUser, animated: true, completion: nil)
     }

@@ -8,14 +8,12 @@
 
 import UIKit
 
-class DenPictureViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class AddShelfInstructions: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     let backGroundView = UIView()
-    let newUserStackView = UIStackView()
-    let promptLabel =  UILabel()
     let denImageView = UIImageView()
+    let promptLabel =  UILabel()
     let letsStartButton = UIButton()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,24 +35,18 @@ class DenPictureViewController: UIViewController, UINavigationControllerDelegate
     func setupPromptLabel() {
         view.addSubview(promptLabel)
         promptLabel.textAlignment = .center
-        promptLabel.textColor = .black
-        promptLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
-        promptLabel.text = "Would you like to add a picture of the people in your household? \nTouch the image below and select a picture, otherwise press \"lets Begin\"."
+        promptLabel.textColor = .white
+        promptLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
+        promptLabel.text = "With Bears Den you can organize your food storage into shelves. Just click the + button to create a new shelf."
         promptLabel.numberOfLines = 0
         setupPromptLabelConstraints()
     }
     
     func setupDenImageView() {
         view.addSubview(denImageView)
-        denImageView.isUserInteractionEnabled = true
         denImageView.clipsToBounds = true
         denImageView.layer.masksToBounds = false
-        denImageView.layer.borderWidth = 2.0
-        denImageView.layer.borderColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0).cgColor
-        let singleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(selectImageTapped))
-        singleTap.numberOfTapsRequired = 1
-        denImageView.addGestureRecognizer(singleTap)
-        denImageView.image = #imageLiteral(resourceName: "imagePlaceHolder")
+        denImageView.image = #imageLiteral(resourceName: "AddShelfInstructions")
         setupDenImageViewConstraints()
     }
     
@@ -79,48 +71,24 @@ class DenPictureViewController: UIViewController, UINavigationControllerDelegate
     
     func setupPromptLabelConstraints() {
         promptLabel.translatesAutoresizingMaskIntoConstraints = false
-        promptLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.05).isActive = true
+        promptLabel.bottomAnchor.constraint(equalTo: letsStartButton.topAnchor, constant: -30).isActive = true
+        promptLabel.topAnchor.constraint(equalTo: letsStartButton.topAnchor , constant: -130).isActive = true
         promptLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
         promptLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
-        promptLabel.bottomAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.25).isActive = true
+
     }
     
     func  setupDenImageViewConstraints() {
         denImageView.translatesAutoresizingMaskIntoConstraints = false
-        denImageView.topAnchor.constraint(equalTo: promptLabel.bottomAnchor, constant: view.frame.height * 0.05).isActive = true
-        denImageView.bottomAnchor.constraint(equalTo: letsStartButton.topAnchor, constant: view.frame.height * -0.05).isActive = true
-        denImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
-        denImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width
-         * -0.1).isActive = true
-    }
-
-    @objc func selectImageTapped() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        imagePicker.allowsEditing = false
-        self.present(imagePicker, animated: true) {
-            
-        }
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            denImageView.image = image
-        } else {
-            print("error picking image from imagepicker")
-        }
-        self.dismiss(animated: true, completion: nil)
+        NSLayoutConstraint(item: denImageView, attribute: .height, relatedBy: .equal, toItem: denImageView, attribute: .width, multiplier: 1.0 / 0.6, constant: 0).isActive = true
+        denImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+        denImageView.bottomAnchor.constraint(equalTo: promptLabel.topAnchor, constant: -10).isActive = true
+        denImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        
     }
     
     @objc func letsStartButtonPressed() {
-        guard let image = denImageView.image else {return}
-        UserController.shared.add(Picture: image)
         let mainView = MainViewController()
         self.present(mainView, animated: true, completion: nil)
     }
 }
-
-
-
-

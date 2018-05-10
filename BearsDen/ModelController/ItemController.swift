@@ -12,8 +12,8 @@ class ItemController {
     
     static let shared = ItemController()
     
-    func createItem(name: String, quantity: Double, stocked: Date, expirationDate: Date, shelf: Shelf) {
-        let _ = Item(name: name, quantity: quantity, stocked: stocked, expirationDate: expirationDate, shelf: shelf)
+    func createItemWithAll(name: String, quantity: Double, stocked: Date, expirationDate: Date, barcode: Int64, shelf: Shelf) {
+        let _ = Item(name: name, quantity: quantity, expirationDate: expirationDate, stocked: stocked, barcode: barcode, shelf: shelf)
         UserController.shared.saveToCoreData()
     }
     

@@ -8,17 +8,25 @@
 
 import UIKit
 
-class NewDenNameViewController: UIViewController {
+class NewDenNameViewController: UIViewController, UITextFieldDelegate {
+    
+    //MARK: - Properties
+    
     let backGroundView = UIView()
     let bearHillView = UIImageView()
     let promptLabel =  UILabel()
     let houseTextField = UITextField()
     let letsStartButton = UIButton()
-    
+    let singleTap = UITapGestureRecognizer()
+
+    //MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObjects()
+        self.houseTextField.delegate = self;
+        NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil);
     }
 
     func setupObjects() {
@@ -27,7 +35,15 @@ class NewDenNameViewController: UIViewController {
         setupBearHillView()
         setupHouseTextField()
         setupPromptLabel()
+        setupSingleTap()
         
+    }
+    
+    //MARK: - Setup Objects methods
+    
+    func setupSingleTap() {
+        singleTap.numberOfTapsRequired = 1
+        singleTap.addTarget(self, action: #selector(disableKeyBoard))
     }
     
     func setupBackGroundView() {
@@ -52,18 +68,28 @@ class NewDenNameViewController: UIViewController {
         setupPromptLabelConstraints()
     }
     
-    //FIXME: - Split up the label into two labels and change the font size of the two
-    
-    
     func setupHouseTextField() {
         view.addSubview(houseTextField)
         houseTextField.backgroundColor = .white
         houseTextField.placeholder = "The Smiths den..."
         houseTextField.layer.cornerRadius = 12
         setupHouseTextFieldConstraints()
+        houseTextField.returnKeyType = .done
+        houseTextField.autocorrectionType = .no
     }
     
-
+    func setupLetsStartButton() {
+        view.addSubview(letsStartButton)
+        letsStartButton.frame = CGRect(x: view.frame.width * 0.5 - 32.5, y: view.frame.height * 0.88, width: 65, height: 65)
+        letsStartButton.setTitle("Next", for: .normal)
+        letsStartButton.setTitleColor(.white, for: .normal)
+        letsStartButton.backgroundColor = Colors.green
+        letsStartButton.layer.cornerRadius = 0.5 * letsStartButton.bounds.size.width
+        letsStartButton.clipsToBounds = true
+        letsStartButton.addTarget(self, action: #selector(letsStartButtonPressed), for: .touchUpInside)
+    }
+    
+    //MARK: - Constraints
     
     func setupBearHillViewConstraints() {
         bearHillView.translatesAutoresizingMaskIntoConstraints = false
@@ -81,6 +107,7 @@ class NewDenNameViewController: UIViewController {
         backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
     }
     
+    
     func setupPromptLabelConstraints() {
         promptLabel.translatesAutoresizingMaskIntoConstraints = false
         promptLabel.topAnchor.constraint(equalTo: bearHillView.bottomAnchor, constant: -25).isActive = true
@@ -97,22 +124,34 @@ class NewDenNameViewController: UIViewController {
         houseTextField.heightAnchor.constraint(equalToConstant: view.frame.height * 0.06).isActive = true
     }
     
-    func setupLetsStartButton() {
-        view.addSubview(letsStartButton)
-        letsStartButton.frame = CGRect(x: view.frame.width * 0.5 - 32.5, y: view.frame.height * 0.88, width: 65, height: 65)
-        letsStartButton.setTitle("Next", for: .normal)
-        letsStartButton.setTitleColor(.white, for: .normal)
-        letsStartButton.backgroundColor = Colors.green
-        letsStartButton.layer.cornerRadius = 0.5 * letsStartButton.bounds.size.width
-        letsStartButton.clipsToBounds = true
-        letsStartButton.addTarget(self, action: #selector(letsStartButtonPressed), for: .touchUpInside)
+    //MARK: - Keyboard methods
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true
     }
+    
+    @objc func keyBoardWillShow() {
+        self.view.frame.origin.y = -150
+        view.addGestureRecognizer(singleTap)
+    }
+    
+    @objc func disableKeyBoard() {
+        view.endEditing(true)
+    }
+    
+    @objc func keyboardWillHide() {
+        self.view.frame.origin.y = 0
+    }
+    
+    //MARK: - ButtonPressed
     
     @objc func letsStartButtonPressed() {
         guard let denName = houseTextField.text, !denName.isEmpty else {return}
         UserController.shared.createUser(housHouldName: denName)
-        let pictureView = DenPictureViewController()
-        self.present(pictureView, animated: true, completion: nil)
+        UserController.shared.add(Picture: #imageLiteral(resourceName: "BearOnHill"))
+        let addShelfInstructions = AddShelfInstructions()
+        self.present(addShelfInstructions, animated: true, completion: nil)
         UserDefaults.standard.set(true, forKey: "isCurrentUser")
     }
 }

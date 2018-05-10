@@ -103,13 +103,17 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @objc func addManualButtonPressed() {
         stopHighlightManual()
         let addManualView = AddManualItemViewController()
+        addManualView.shelf = self.shelf
         navigationController?.pushViewController(addManualView, animated: true)
     }
     
     @objc func addBarButtonPressed() {
         stopHighlightBar()
-        let addBarView = AddBarCodeItemViewController()
-        navigationController?.pushViewController(addBarView, animated: true)
+        let codeScannerViewController = BarcodeScannerViewController()
+        codeScannerViewController.codeDelegate = self
+        codeScannerViewController.errorDelegate = self
+        codeScannerViewController.dismissalDelegate = self
+        navigationController?.pushViewController(codeScannerViewController, animated: true)
     }
 
     
@@ -132,3 +136,34 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return UITableViewCell()
     }
 }
+
+extension ItemsViewController: BarcodeScannerCodeDelegate {
+    func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
+    barcodeScanner(controller, didCaptureCode: code, type: type)
+    }
+    
+    func barcodeScanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
+        print(code)
+    }
+}
+
+extension ItemsViewController: BarcodeScannerErrorDelegate {
+    func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
+        print("we got an error")
+    }
+    
+    func barcodeScanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
+        print(error)
+    }
+}
+
+extension ItemsViewController: BarcodeScannerDismissalDelegate {
+    func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
+        print("scanner did dismiss")
+    }
+    
+    func barcodeScannerDidDismiss(_ controller: BarcodeScannerViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+}
+

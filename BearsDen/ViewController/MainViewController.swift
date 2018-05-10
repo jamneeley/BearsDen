@@ -16,14 +16,26 @@ class MainViewController: UIViewController {
     let navBarLabel = UILabel()
     
     //viewcontrollers
-    let shelvesView = ShelvesViewController()
-    let goalsView = GoalsViewController()
-    let shoppingView = ShoppingListViewController()
-    let tipsView = TipsViewController()
-    let myDenView = MyDenViewController()
-    let settingsview = SettingsViewController()
+    lazy var shelvesView: ShelvesViewController = {
+        return ShelvesViewController()
+    }()
+    lazy var goalsView: GoalsViewController = {
+        return GoalsViewController()
+    }()
+    lazy var shoppingView: ShoppingListViewController = {
+        return ShoppingListViewController()
+    }()
+    lazy var tipsView: TipsViewController = {
+        return TipsViewController()
+    }()
+    lazy var myDenView: MyDenViewController = {
+        return MyDenViewController()
+    }()
+    lazy var settingsview: SettingsViewController = {
+        return SettingsViewController()
+    }()
 
-    //Page Dependent Butto
+    //Page Dependent Button
     let shelvesAddButton = UIButton(type: UIButtonType.system)
     let goalsAddButton = UIButton(type: UIButtonType.system)
     let shoppingAddButton = UIButton(type: UIButtonType.system)

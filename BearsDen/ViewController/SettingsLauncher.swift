@@ -26,11 +26,7 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     
     
     var mainParentView: MainViewController?
-    let shelvesView = ShelvesViewController()
-    let goalsView = GoalsViewController()
-    let shoppingView = ShoppingListViewController()
-    let tipsView = TipsViewController()
-    let settingsview = SettingsViewController()
+
  
     let mainView: UIView = {
         let view = UIView(frame: .zero)
@@ -62,7 +58,7 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     let denImage = UIImageView()
     let denNameLabel = UILabel()
     let seperator = UIView()
-    let collectionViewYPosition = CGFloat(280)
+    let collectionViewYPosition = CGFloat(300)
     
     // VIEWDIDLOAD!!!!!
     
@@ -109,9 +105,9 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     func setupDenImageViewConstraints() {
         denImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(item: denImage, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1.0, constant: 0).isActive = true
-        NSLayoutConstraint(item: denImage, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1.0, constant: 200).isActive = true
-        NSLayoutConstraint(item: denImage, attribute: .leading, relatedBy: .equal, toItem: mainView, attribute: .leading, multiplier: 1.0, constant: 0).isActive = true
-         NSLayoutConstraint(item: denImage, attribute: .trailing, relatedBy: .equal, toItem: mainView, attribute: .trailing, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: denImage, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1.0, constant: 220).isActive = true
+        NSLayoutConstraint(item: denImage, attribute: .height, relatedBy: .equal, toItem: denImage, attribute: .width, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: denImage, attribute: .centerX, relatedBy: .equal, toItem: mainView, attribute: .centerX, multiplier: 1.0, constant: 0).isActive = true
     }
     
     func setupDenLabelConstraints() {
