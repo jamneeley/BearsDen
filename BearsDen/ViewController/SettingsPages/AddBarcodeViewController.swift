@@ -1,14 +1,14 @@
 //
-//  AddManualItemViewController.swift
+//  AddBarcodeViewController.swift
 //  BearsDen
 //
-//  Created by James Neeley on 5/8/18.
+//  Created by James Neeley on 5/10/18.
 //  Copyright © 2018 JamesNeeley. All rights reserved.
 //
 
 import UIKit
 
-class AddManualItemViewController: UIViewController, UITextFieldDelegate {
+class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
     
     let nameLabel = UILabel()
     let nameTextField = UITextField()
@@ -21,40 +21,29 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
     let barCodeStack = UIStackView()
     let entryStack = UIStackView()
     let saveButton = UIButton(type: .custom)
-    let barcodeButton = UIButton(type: .custom)
-    var shelf: Shelf?
     let tapView = UIView()
     let singleTap = UITapGestureRecognizer()
     
-    var barcode: String? {
+    var cloudItem: CloudItem? {
         didSet {
-            barcodeTextField.text = barcode
-        }
-    }
-    
-    var itemExists: Bool?
-    
-    func doesItemExist() {
-        guard let itemExist = itemExists else {return}
-        if itemExist {
-            print("item exists?")
-            return
-        } else {
-            presentSaveAlert(WithTitle: "Sorry, that item isnt in our database", message: "Save the item with a barcode and next time it will :)")
+            updateViews()
         }
     }
 
+    var shelf: Shelf?
+    
+    func updateViews() {
+        guard let cloudItem = cloudItem else {return}
+        nameTextField.text =  cloudItem.name
+        barcodeTextField.text = cloudItem.barcode
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupObjects()
         NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil);
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-        doesItemExist()
     }
     
     func setupObjects() {
@@ -69,7 +58,6 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
         setupSaveButton()
         setupDateLabel()
         setupDatePicker()
-        setupBarCodeButton()
         setupSingleTap()
     }
     
@@ -150,19 +138,6 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
         barcodeTextField.layer.borderColor = Colors.softBlue.cgColor
     }
     
-    func setupBarCodeButton() {
-        view.addSubview(barcodeButton)
-        barcodeButton.frame = CGRect(x: view.frame.height * 0.5 - 50, y: view.frame.width - 70, width: 50, height: 50)
-        barcodeButton.setImage(#imageLiteral(resourceName: "barCodeButton"), for: .normal)
-        barcodeButton.setTitleColor(.white, for: .normal)
-        barcodeButton.backgroundColor = Colors.green
-        barcodeButton.layer.cornerRadius = 0.5 * barcodeButton.bounds.size.width
-        barcodeButton.clipsToBounds = true
-        barcodeButton.addTarget(self, action: #selector(barcodeButtonPressed), for: .touchUpInside)
-        barcodeButton.addTarget(self, action: #selector(startHighlightBarCode), for: .touchDown)
-        barcodeButton.addTarget(self, action: #selector(stopHighlightBarCode), for: .touchUpOutside)
-    }
-    
     func setupDateLabel() {
         view.addSubview(dateLabel)
         dateLabel.text = "Expiration Date"
@@ -208,7 +183,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
         barCodeStack.translatesAutoresizingMaskIntoConstraints = false
         barCodeStack.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: 20).isActive = true
         barCodeStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
-        barCodeStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.35).isActive = true
+        barCodeStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
         barCodeStack.topAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * -0.1).isActive = true
     }
     
@@ -241,16 +216,6 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
         view.removeGestureRecognizer(singleTap)
     }
     
-    @objc func startHighlightBarCode() {
-        barcodeButton.layer.backgroundColor = Colors.softBlue.cgColor
-        barcodeButton.imageView?.tintColor = .white
-    }
-    
-    @objc func stopHighlightBarCode() {
-        barcodeButton.layer.backgroundColor = Colors.green.cgColor
-        barcodeButton.imageView?.tintColor = nil
-    }
-    
     @objc func startHighlightSave() {
         saveButton.layer.backgroundColor = Colors.softBlue.cgColor
         saveButton.imageView?.tintColor = .white
@@ -259,16 +224,6 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
     @objc func stopHighlightSave() {
         saveButton.layer.backgroundColor = Colors.green.cgColor
         saveButton.imageView?.tintColor = nil
-    }
-    
-    @objc func barcodeButtonPressed() {
-        print("bar code button pressed")
-        stopHighlightBarCode()
-        let scannerViewController = BarcodeScannerViewController()
-        scannerViewController.codeDelegate = self
-        scannerViewController.errorDelegate = self
-        scannerViewController.dismissalDelegate = self
-        navigationController?.pushViewController(scannerViewController, animated: true)
     }
     
     @objc func saveButtonPressed() {
@@ -282,10 +237,12 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
             let barcodeNumber = barcodeTextField.text
             let quantity = Double(quantityAsString)
             
-            if barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)){
+            if let cloudItem = self.cloudItem, barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)) {
+                
                 ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: barcodeNumber!, shelf: shelf)
-                self.view.isUserInteractionEnabled = false
-                CloudItemController.shared.createCloudItem(withName: name, barcode: barcodeNumber!) { (success) in
+                    barcodeTextField.text = ""
+                print("item saved with barcode")
+                CloudItemController.shared.update(cloudItem: cloudItem, name: name) { (success) in
                     if success {
                         DispatchQueue.main.async {
                             self.presentSaveAlert(WithTitle: "Saved to phone and database", message: "thank you for helping us maintain our database")
@@ -304,10 +261,9 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
                 }
             } else {
                 ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: "", shelf: shelf)
-                presentSaveAlert(WithTitle: "Saved to phone", message: "")
-                nameTextField.text = ""
-                barcodeTextField.text = ""
+                print("item saved without barcode")
             }
+            navigationController?.popViewController(animated: true)
         } else {
             presentSaveAlert(WithTitle: "Uh Oh", message: "Your item needs a quantity")
         }
@@ -328,38 +284,6 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return true
-    }
-}
-
-extension AddManualItemViewController: BarcodeScannerCodeDelegate {
-    func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        print(code)
-        barcodeScanner(controller, didCaptureCode: code, type: type)
-    }
-    
-    func barcodeScanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        barcodeTextField.text = code
-        navigationController?.popViewController(animated: true)
-    }
-}
-
-extension AddManualItemViewController: BarcodeScannerErrorDelegate {
-    func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
-        print("we got an error")
-    }
-    
-    func barcodeScanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
-        print(error)
-    }
-}
-
-extension AddManualItemViewController: BarcodeScannerDismissalDelegate {
-    func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
-        print("scanner did dismiss")
-    }
-    
-    func barcodeScannerDidDismiss(_ controller: BarcodeScannerViewController) {
-        controller.dismiss(animated: true, completion: nil)
     }
 }
 

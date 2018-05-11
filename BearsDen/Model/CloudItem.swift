@@ -16,18 +16,18 @@ class CloudItem {
     static let barcodeTextKey = "barcode"
     static let ckRecordIDKey = "recordID"
     
-    let name: String
-    let barcode: Int
+    var name: String
+    let barcode: String
     var ckRecordID: CKRecordID?
     
-    init(name: String, barcode: Int) {
+    init(name: String, barcode: String) {
         self.name = name
         self.barcode = barcode
     }
     
     init?(cloudKitRecord: CKRecord) {
         guard let name = cloudKitRecord[CloudItem.nameTextKey] as? String,
-            let barcode = cloudKitRecord[CloudItem.barcodeTextKey] as? Int,
+            let barcode = cloudKitRecord[CloudItem.barcodeTextKey] as? String,
             let ckRecordID = cloudKitRecord[CloudItem.ckRecordIDKey] as? CKRecordID else {return nil}
         
         self.name = name

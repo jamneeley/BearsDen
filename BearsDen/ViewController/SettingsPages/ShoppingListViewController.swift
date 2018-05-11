@@ -8,22 +8,55 @@
 
 import UIKit
 
-class ShoppingListViewController: UIViewController {
+class ShoppingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    let testLabel = UILabel()
+    let shoppingListTableView = UITableView()
+    
+    var update: Bool? {
+        didSet {
+            shoppingListTableView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        shoppingListTableView.delegate = self
+        shoppingListTableView.dataSource = self
+        shoppingListTableView.register(UITableViewCell.self, forCellReuseIdentifier: "shoppingCell")
+        setupTableView()
 
-        view.backgroundColor = .white
-        setupLabel()
     }
     
-    func setupLabel() {
-        view.addSubview(testLabel)
-        testLabel.text = "Shopping List"
-        testLabel.translatesAutoresizingMaskIntoConstraints = false
-        testLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
-        testLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0).isActive = true
+    func setupTableView() {
+        view.addSubview(shoppingListTableView)
+        shoppingListTableView.translatesAutoresizingMaskIntoConstraints = false
+        shoppingListTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        shoppingListTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        shoppingListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        shoppingListTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let number = UserController.shared.user?.shoppingItems?.count ?? 0
+        return number
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = ShoppingListTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "shoppingCell")
+        tableView.dequeueReusableCell(withIdentifier: "shoppingCell", for: indexPath)
+        if let shoppingItem = UserController.shared.user?.shoppingItems?[indexPath.row] as? ShoppingItem {
+            cell.shoppingItem = shoppingItem
+            return cell
+        } else {
+            return UITableViewCell()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            guard let item = UserController.shared.user?.shoppingItems?[indexPath.row] as? ShoppingItem else {return}
+            ShoppingItemController.shared.delete(ShoppingItem: item)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
     }
 }

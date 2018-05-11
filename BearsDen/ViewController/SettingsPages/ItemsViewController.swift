@@ -8,18 +8,24 @@
 
 import UIKit
 
-class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ItemCellDelegate {
 
     let itemTableView = UITableView()
     var shelf: Shelf?
     let manualAddButton = UIButton(type: .custom)
     let barCodeAddButton = UIButton(type: .custom)
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         itemTableView.register(UITableViewCell.self, forCellReuseIdentifier: "itemCell")
+        itemTableView.delegate = self
         setupObjects()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        itemTableView.reloadData()
     }
     
     func setupObjects() {
@@ -46,10 +52,16 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func setupManualAddButton() {
-        manualAddButton.frame = CGRect(x: view.frame.width * 0.35 - 30, y: view.frame.height * 0.88, width: 60, height: 60)
+        manualAddButton.frame = CGRect(x: view.frame.width * 0.35 - 30, y: view.frame.height * 0.88, width: 65, height: 65)
         view.addSubview(manualAddButton)
         manualAddButton.layer.cornerRadius = 0.5 * manualAddButton.bounds.size.width
-        manualAddButton.clipsToBounds = true
+        manualAddButton.layer.shadowColor = Colors.mediumGray.cgColor
+        manualAddButton.layer.shadowOffset = CGSize(width: 0.0, height: 7.0)
+        manualAddButton.layer.shadowColor = Colors.mediumGray.cgColor
+        manualAddButton.layer.masksToBounds = false
+        manualAddButton.layer.shadowOpacity = 1.0
+        manualAddButton.layer.shadowRadius = 10.0
+        manualAddButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         manualAddButton.imageView?.tintColor = nil
         manualAddButton.setImage(#imageLiteral(resourceName: "ClipBoardButton"), for: .normal)
         manualAddButton.backgroundColor = Colors.green
@@ -57,12 +69,16 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         manualAddButton.addTarget(self, action: #selector(addManualButtonPressed), for: .touchUpInside)
         manualAddButton.addTarget(self, action: #selector(stopHighlightManual), for: .touchUpOutside)
     }
-
+    
     func setupBarCodeAddButton() {
-        barCodeAddButton.frame = CGRect(x: view.frame.width * 0.65 - 30, y: view.frame.height * 0.88, width: 60, height: 60)
+        barCodeAddButton.frame = CGRect(x: view.frame.width * 0.65 - 30, y: view.frame.height * 0.88, width: 65, height: 65)
         view.addSubview(barCodeAddButton)
         barCodeAddButton.layer.cornerRadius = 0.5 * manualAddButton.bounds.size.width
-        barCodeAddButton.clipsToBounds = true
+        barCodeAddButton.layer.shadowColor = Colors.mediumGray.cgColor
+        barCodeAddButton.layer.masksToBounds = false
+        barCodeAddButton.layer.shadowOpacity = 1.0
+        barCodeAddButton.layer.shadowRadius = 10.0
+        barCodeAddButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         barCodeAddButton.imageView?.tintColor = nil
         barCodeAddButton.setImage(#imageLiteral(resourceName: "barCodeButton"), for: .normal)
         barCodeAddButton.backgroundColor = Colors.green
@@ -78,7 +94,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         itemTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         itemTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
-
+    
     
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
@@ -115,7 +131,13 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         codeScannerViewController.dismissalDelegate = self
         navigationController?.pushViewController(codeScannerViewController, animated: true)
     }
-
+    
+    func addedToShoppingList(itemName: String) {
+        let alert = UIAlertController(title: "\(itemName) has been added to your shopping list", message: nil, preferredStyle: .alert)
+        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        alert.addAction(dismiss)
+        present(alert, animated: true, completion: nil)
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return shelf?.items?.count ?? 0
@@ -123,11 +145,12 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = ItemTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "itemCell")
-       itemTableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath)
+        
+        itemTableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath)
         if shelf != nil {
             if let item = shelf?.items?[indexPath.row] as? Item {
-                cell.textLabel?.text = "\(item.name ?? "")"
-                cell.detailTextLabel?.text = "\(item.expirationDate ?? Date())"
+                cell.delegate = self
+                cell.item = item
                 return cell
             }
         } else {
@@ -135,15 +158,46 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         return UITableViewCell()
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            guard let shelf = self.shelf,
+            let item = shelf.items?[indexPath.row] as? Item else {return}
+            ItemController.shared.delete(Item: item)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
 }
 
 extension ItemsViewController: BarcodeScannerCodeDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-    barcodeScanner(controller, didCaptureCode: code, type: type)
+        print(code)
+        self.barcodeScanner(controller, didCaptureCode: code, type: type)
     }
     
     func barcodeScanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        print(code)
+        
+        CloudItemController.shared.fetchCloudItem(WithBarcode: code) { (cloudItem) in
+            if let cloudItem = cloudItem {
+                DispatchQueue.main.async {
+                    guard let shelf = self.shelf else {return}
+                    let barCodeController = AddBarcodeViewController()
+                    self.navigationController?.popViewController(animated: true)
+                    self.navigationController?.pushViewController(barCodeController, animated: true)
+                    barCodeController.cloudItem = cloudItem
+                    barCodeController.shelf = shelf
+                }
+            } else {
+                DispatchQueue.main.async {
+                    let addManualController = AddManualItemViewController()
+                    self.navigationController?.popViewController(animated: true)
+                    self.navigationController?.pushViewController(addManualController, animated: true)
+                    addManualController.shelf = self.shelf
+                    addManualController.barcode = code
+                    addManualController.itemExists = false
+                }
+            }
+        }
     }
 }
 
@@ -166,4 +220,5 @@ extension ItemsViewController: BarcodeScannerDismissalDelegate {
         controller.dismiss(animated: true, completion: nil)
     }
 }
+
 

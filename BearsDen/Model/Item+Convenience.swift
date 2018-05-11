@@ -12,7 +12,7 @@ import CloudKit
 
 extension Item {
 
-    convenience init(name: String, quantity: Double, expirationDate: Date, stocked: Date, barcode: Int64, shelf: Shelf, Context: NSManagedObjectContext = CoreDataStack.context) {
+    convenience init(name: String, quantity: Double, expirationDate: Date, stocked: Date, barcode: String, shelf: Shelf, Context: NSManagedObjectContext = CoreDataStack.context) {
         self.init(context: Context)
         self.name = name
         self.quantity = quantity

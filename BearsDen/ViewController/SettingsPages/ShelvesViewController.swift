@@ -15,7 +15,6 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     var update: Bool = false {
         didSet {
             tableView.reloadData()
-            update = false
         }
     }
 
@@ -23,6 +22,10 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         setupObjects()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "shelfCell")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
     }
     
     
@@ -49,13 +52,11 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
         return UserController.shared.user?.shelves?.count ?? 0
     }
 
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = ShelfTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "shelfCell")
         tableView.dequeueReusableCell(withIdentifier: "shelfCell", for: indexPath)
         if let shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf {
-            cell.textLabel?.text = "\(shelf.name ?? "")"
-            cell.detailTextLabel?.text = "\(shelf.items?.count ?? 0) Items"
+            cell.shelf = shelf
             return cell
         } else {
             return UITableViewCell()

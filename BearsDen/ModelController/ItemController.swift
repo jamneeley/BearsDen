@@ -12,7 +12,7 @@ class ItemController {
     
     static let shared = ItemController()
     
-    func createItemWithAll(name: String, quantity: Double, stocked: Date, expirationDate: Date, barcode: Int64, shelf: Shelf) {
+    func createItemWithAll(name: String, quantity: Double, stocked: Date, expirationDate: Date, barcode: String, shelf: Shelf) {
         let _ = Item(name: name, quantity: quantity, expirationDate: expirationDate, stocked: stocked, barcode: barcode, shelf: shelf)
         UserController.shared.saveToCoreData()
     }
@@ -28,5 +28,11 @@ class ItemController {
     func delete(Item item: Item) {
         item.managedObjectContext?.delete(item)
         UserController.shared.saveToCoreData()
+    }
+    
+    func adjustQuantityFor(Item item: Item, quantity: Double) {
+        item.quantity = quantity
+        UserController.shared.saveToCoreData()
+        print("item number adjusted")
     }
 }

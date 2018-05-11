@@ -6,15 +6,16 @@
 //  Copyright © 2018 JamesNeeley. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CoreData
 
 class ShelfController {
     
     static let shared = ShelfController()
 
-    func createShelfForUser(User user: User, name: String) {
-        let _ = Shelf(name: name, user: user)
+    func createShelfForUser(User user: User, name: String, photo: UIImage) {
+        guard let image = UIImagePNGRepresentation(photo) else {return}
+        let _ = Shelf(name: name, user: user, photo: image)
         UserController.shared.saveToCoreData()
         print("shelf created")
         

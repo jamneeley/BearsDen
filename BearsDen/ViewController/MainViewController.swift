@@ -158,7 +158,7 @@ class MainViewController: UIViewController {
         let save = UIAlertAction(title: "Save", style: .default) { (success) in
             guard let shelfName = alert.textFields?.first?.text, !shelfName.isEmpty,
             let user = UserController.shared.user else {return}
-            ShelfController.shared.createShelfForUser(User: user, name: shelfName)
+            ShelfController.shared.createShelfForUser(User: user, name: shelfName, photo: #imageLiteral(resourceName: "BearOnHill"))
             self.shelvesView.update = true
         }
         alert.addAction(dismiss)
@@ -171,7 +171,21 @@ class MainViewController: UIViewController {
     }
     
     @objc func addShoppingItemButtonTapped() {
-        print("addShoppingItemButton Pressed")
+        let alert = UIAlertController(title: "Add shopping item", message: nil, preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.autocorrectionType = UITextAutocorrectionType.no
+            textField.returnKeyType = .done
+        }
+        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        let save = UIAlertAction(title: "Save", style: .default) { (success) in
+            guard let name = alert.textFields?.first?.text, !name.isEmpty,
+            let user = UserController.shared.user else {return}
+            ShoppingItemController.shared.createShoppingItem(ForUser: user, name: name)
+            self.shoppingView.update = true
+        }
+        alert.addAction(dismiss)
+        alert.addAction(save)
+        present(alert, animated: true, completion: nil)
     }
 }
 
