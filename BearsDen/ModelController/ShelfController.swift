@@ -34,8 +34,10 @@ class ShelfController {
         UserController.shared.saveToCoreData()
     }
     
-    func update(Shelf shelf: Shelf, name: String) {
+    func update(Shelf shelf: Shelf, name: String, photo: UIImage) {
+        let photoAsData = UIImagePNGRepresentation(photo)
         shelf.name = name
+        shelf.photo = photoAsData
         UserController.shared.saveToCoreData()
     }
     

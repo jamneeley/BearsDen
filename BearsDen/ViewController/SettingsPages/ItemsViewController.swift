@@ -44,6 +44,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .plain, target: self, action: #selector(backButtonPressed))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editShelfButtonPressed))
         navigationController?.navigationBar.tintColor = .white
         navigationItem.title = shelf?.name
         let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
@@ -100,6 +101,11 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
     }
+    
+    @objc func editShelfButtonPressed() {
+        
+    }
+    
     @objc func startHighlightManual() {
         manualAddButton.layer.backgroundColor = Colors.softBlue.cgColor
         manualAddButton.imageView?.tintColor = .white
@@ -130,6 +136,11 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         codeScannerViewController.errorDelegate = self
         codeScannerViewController.dismissalDelegate = self
         navigationController?.pushViewController(codeScannerViewController, animated: true)
+    }
+    
+    @objc func changeShelfImageTapped(){
+        print("tapped")
+        
     }
     
     func addedToShoppingList(itemName: String) {
