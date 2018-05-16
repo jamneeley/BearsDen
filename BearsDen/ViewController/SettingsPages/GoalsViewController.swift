@@ -17,7 +17,14 @@ class GoalsViewController: UIViewController {
         view.backgroundColor = .white
         setupLabel()
     }
+}
 
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension GoalsViewController {
     func setupLabel() {
         view.addSubview(testLabel)
         testLabel.text = "Goals"

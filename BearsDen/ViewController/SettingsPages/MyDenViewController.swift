@@ -30,6 +30,42 @@ class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UI
         setupDenImageView()
     }
     
+    
+    
+    @objc func selectImageTapped() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePicker.allowsEditing = false
+        self.present(imagePicker, animated: true) {
+            
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            denImageView.image = image
+        } else {
+            print("error picking image from imagepicker")
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func letsStartButtonPressed() {
+        guard let image = denImageView.image else {return}
+        UserController.shared.add(Picture: image)
+        let mainView = MainViewController()
+        self.present(mainView, animated: true, completion: nil)
+    }
+}
+
+
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension MyDenViewController {
     func setupBackGroundView() {
         view.addSubview(backGroundView)
         backGroundView.backgroundColor = Colors.softBlue
@@ -94,30 +130,5 @@ class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UI
         denImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width
             * -0.1).isActive = true
     }
-    
-    @objc func selectImageTapped() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        imagePicker.allowsEditing = false
-        self.present(imagePicker, animated: true) {
-            
-        }
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            denImageView.image = image
-        } else {
-            print("error picking image from imagepicker")
-        }
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func letsStartButtonPressed() {
-        guard let image = denImageView.image else {return}
-        UserController.shared.add(Picture: image)
-        let mainView = MainViewController()
-        self.present(mainView, animated: true, completion: nil)
-    }
 }
+

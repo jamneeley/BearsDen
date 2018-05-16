@@ -36,10 +36,44 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
         setupHouseTextField()
         setupPromptLabel()
         setupSingleTap()
-        
     }
     
-    //MARK: - Setup Objects methods
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true
+    }
+    
+    @objc func keyBoardWillShow() {
+        self.view.frame.origin.y = -150
+        view.addGestureRecognizer(singleTap)
+    }
+    
+    @objc func disableKeyBoard() {
+        view.endEditing(true)
+    }
+    
+    @objc func keyboardWillHide() {
+        view.removeGestureRecognizer(singleTap)
+        self.view.frame.origin.y = 0
+    }
+    //MARK: - ButtonPressed
+    
+    @objc func letsStartButtonPressed() {
+        guard let denName = houseTextField.text, !denName.isEmpty else {return}
+        UserController.shared.createUser(housHouldName: denName)
+        UserController.shared.add(Picture: #imageLiteral(resourceName: "BearOnHill"))
+        let addShelfInstructions = AddShelfInstructionsViewController()
+        self.present(addShelfInstructions, animated: true, completion: nil)
+        UserDefaults.standard.set(true, forKey: "isCurrentUser")
+    }
+}
+
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension NewDenNameViewController {
     
     func setupSingleTap() {
         singleTap.numberOfTapsRequired = 1
@@ -89,8 +123,6 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
         letsStartButton.addTarget(self, action: #selector(letsStartButtonPressed), for: .touchUpInside)
     }
     
-    //MARK: - Constraints
-    
     func setupBearHillViewConstraints() {
         bearHillView.translatesAutoresizingMaskIntoConstraints = false
         bearHillView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.05).isActive = true
@@ -98,7 +130,7 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
         bearHillView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
         bearHillView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.55).isActive = true
     }
-
+    
     func setupBackGroundViewConstraints() {
         backGroundView.translatesAutoresizingMaskIntoConstraints = false
         backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
@@ -123,35 +155,5 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
         houseTextField.bottomAnchor.constraint(equalTo: letsStartButton.topAnchor , constant: -30).isActive = true
         houseTextField.heightAnchor.constraint(equalToConstant: view.frame.height * 0.06).isActive = true
     }
-    
-    //MARK: - Keyboard methods
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return true
-    }
-    
-    @objc func keyBoardWillShow() {
-        self.view.frame.origin.y = -150
-        view.addGestureRecognizer(singleTap)
-    }
-    
-    @objc func disableKeyBoard() {
-        view.endEditing(true)
-    }
-    
-    @objc func keyboardWillHide() {
-        self.view.frame.origin.y = 0
-    }
-    
-    //MARK: - ButtonPressed
-    
-    @objc func letsStartButtonPressed() {
-        guard let denName = houseTextField.text, !denName.isEmpty else {return}
-        UserController.shared.createUser(housHouldName: denName)
-        UserController.shared.add(Picture: #imageLiteral(resourceName: "BearOnHill"))
-        let addShelfInstructions = AddShelfInstructions()
-        self.present(addShelfInstructions, animated: true, completion: nil)
-        UserDefaults.standard.set(true, forKey: "isCurrentUser")
-    }
 }
+

@@ -17,6 +17,11 @@ class SecondLaunchScreenViewController: UIViewController {
         setupObjects()
     }
     
+    func setupObjects() {
+        setupBackGroundView()
+        setupLogoImage()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         isNewUser()
@@ -44,10 +49,20 @@ class SecondLaunchScreenViewController: UIViewController {
         self.present(newUser, animated: true, completion: nil)
     }
     
-    func setupObjects() {
-        setupBackGroundView()
-        setupLogoImage()
+    func animateLogo() {
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut], animations: {
+            self.logoView.frame.origin.y = -self.view.frame.height
+        }) { (success) in
+        }
     }
+}
+
+
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+///////////////////////////////////////////////////////
+extension SecondLaunchScreenViewController {
     
     func setupBackGroundView() {
         view.addSubview(backGroundView)
@@ -69,6 +84,7 @@ class SecondLaunchScreenViewController: UIViewController {
         backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
     }
+    
     func setupLogoImageConstraints() {
         logoView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -76,13 +92,6 @@ class SecondLaunchScreenViewController: UIViewController {
         logoView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -200 ).isActive = true
         logoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
         logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
-    }
-    
-    func animateLogo() {
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut], animations: {
-            self.logoView.frame.origin.y = -self.view.frame.height
-        }) { (success) in
-        }
     }
 }
 

@@ -16,7 +16,14 @@ class TipsViewController: UIViewController {
         view.backgroundColor = .white
         setupLabel()
     }
+}
 
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension TipsViewController {
     func setupLabel() {
         view.addSubview(testLabel)
         testLabel.text = "Tips And Stuff"

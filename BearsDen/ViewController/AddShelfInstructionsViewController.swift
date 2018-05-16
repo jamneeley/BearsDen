@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddShelfInstructions: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class AddShelfInstructionsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     let backGroundView = UIView()
     let denImageView = UIImageView()
@@ -27,6 +27,18 @@ class AddShelfInstructions: UIViewController, UINavigationControllerDelegate, UI
         setupDenImageView()
     }
     
+    @objc func letsStartButtonPressed() {
+        let mainView = MainViewController()
+        self.present(mainView, animated: true, completion: nil)
+    }
+}
+
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension AddShelfInstructionsViewController {
     func setupBackGroundView() {
         view.addSubview(backGroundView)
         backGroundView.backgroundColor = Colors.softBlue
@@ -75,7 +87,7 @@ class AddShelfInstructions: UIViewController, UINavigationControllerDelegate, UI
         promptLabel.topAnchor.constraint(equalTo: letsStartButton.topAnchor , constant: -130).isActive = true
         promptLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
         promptLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
-
+        
     }
     
     func  setupDenImageViewConstraints() {
@@ -84,11 +96,6 @@ class AddShelfInstructions: UIViewController, UINavigationControllerDelegate, UI
         denImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
         denImageView.bottomAnchor.constraint(equalTo: promptLabel.topAnchor, constant: -10).isActive = true
         denImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
-        
-    }
-    
-    @objc func letsStartButtonPressed() {
-        let mainView = MainViewController()
-        self.present(mainView, animated: true, completion: nil)
     }
 }
+

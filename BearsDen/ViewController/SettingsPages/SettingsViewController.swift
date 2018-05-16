@@ -17,7 +17,13 @@ class SettingsViewController: UIViewController {
         view.backgroundColor = .white
         setupLabel()
     }
+}
 
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension SettingsViewController {
     func setupLabel() {
         view.addSubview(testLabel)
         testLabel.text = "Settings"

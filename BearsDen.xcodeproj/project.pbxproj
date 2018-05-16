@@ -11,7 +11,7 @@
 		9D7EA34920A4CF9C0005563C /* CloudItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7EA34820A4CF9C0005563C /* CloudItemController.swift */; };
 		9D7EA34B20A4E17C0005563C /* AddBarcodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */; };
 		9D847781209925B9005F219B /* ewDenNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D847780209925B9005F219B /* ewDenNameViewController.swift */; };
-		9D847785209A4B59005F219B /* AddShelfInstructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D847784209A4B59005F219B /* AddShelfInstructions.swift */; };
+		9D847785209A4B59005F219B /* AddShelfInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D847784209A4B59005F219B /* AddShelfInstructionsViewController.swift */; };
 		9D84778B209A5D06005F219B /* imagePlaceHolder.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D84778A209A5D05005F219B /* imagePlaceHolder.png */; };
 		9D847793209A72E3005F219B /* settingIconX1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D847792209A72E3005F219B /* settingIconX1.png */; };
 		9D847795209A72EE005F219B /* settingIconX2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D847794209A72EE005F219B /* settingIconX2.png */; };
@@ -75,6 +75,7 @@
 		9D8FEB54208A6CFC00080EEE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8FEB45208A6CFC00080EEE /* Icon.png */; };
 		9DAD6F8B20A4B9BC001F777F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DAD6F8A20A4B9BC001F777F /* CloudKit.framework */; };
 		9DAD6F8D20A4C32D001F777F /* CloudItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAD6F8C20A4C32D001F777F /* CloudItem.swift */; };
+		9DB6171B20ACD23900B87C6C /* ShelfEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6171A20ACD23900B87C6C /* ShelfEditViewController.swift */; };
 		9DC23BC32097DCED00C2F111 /* BearsDenLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DC23BC22097DCED00C2F111 /* BearsDenLogo.png */; };
 		9DC23BE32099033400C2F111 /* User+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC23BE22099033400C2F111 /* User+Convenience.swift */; };
 		9DC23BE52099041C00C2F111 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC23BE42099041C00C2F111 /* UserController.swift */; };
@@ -115,7 +116,7 @@
 		9D7EA34820A4CF9C0005563C /* CloudItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudItemController.swift; sourceTree = "<group>"; };
 		9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBarcodeViewController.swift; sourceTree = "<group>"; };
 		9D847780209925B9005F219B /* ewDenNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ewDenNameViewController.swift; sourceTree = "<group>"; };
-		9D847784209A4B59005F219B /* AddShelfInstructions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddShelfInstructions.swift; sourceTree = "<group>"; };
+		9D847784209A4B59005F219B /* AddShelfInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddShelfInstructionsViewController.swift; sourceTree = "<group>"; };
 		9D84778A209A5D05005F219B /* imagePlaceHolder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imagePlaceHolder.png; sourceTree = "<group>"; };
 		9D847792209A72E3005F219B /* settingIconX1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settingIconX1.png; sourceTree = "<group>"; };
 		9D847794209A72EE005F219B /* settingIconX2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settingIconX2.png; sourceTree = "<group>"; };
@@ -184,6 +185,7 @@
 		9DAD6F8820A4B9B9001F777F /* BearsDen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BearsDen.entitlements; sourceTree = "<group>"; };
 		9DAD6F8A20A4B9BC001F777F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		9DAD6F8C20A4C32D001F777F /* CloudItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudItem.swift; sourceTree = "<group>"; };
+		9DB6171A20ACD23900B87C6C /* ShelfEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfEditViewController.swift; sourceTree = "<group>"; };
 		9DC23BC22097DCED00C2F111 /* BearsDenLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BearsDenLogo.png; sourceTree = "<group>"; };
 		9DC23BE22099033400C2F111 /* User+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Convenience.swift"; sourceTree = "<group>"; };
 		9DC23BE42099041C00C2F111 /* UserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
@@ -378,9 +380,10 @@
 			children = (
 				9DC82D32208A552A0068DD8E /* SecondLaunchScreenViewController.swift */,
 				9D847780209925B9005F219B /* ewDenNameViewController.swift */,
-				9D847784209A4B59005F219B /* AddShelfInstructions.swift */,
+				9D847784209A4B59005F219B /* AddShelfInstructionsViewController.swift */,
 				9D8477C920A10F9F005F219B /* MainViewController.swift */,
 				9D8477AD209CFA4E005F219B /* SettingsLauncher.swift */,
+				9DB6171A20ACD23900B87C6C /* ShelfEditViewController.swift */,
 				9D8477B3209D2164005F219B /* Cells */,
 				9D8477B620A0A1BD005F219B /* SettingsPages */,
 				9D84779C209A766F005F219B /* Extensions */,
@@ -406,10 +409,10 @@
 			isa = PBXGroup;
 			children = (
 				9DC23BE62099101400C2F111 /* User.xcdatamodeld */,
+				9DC82D04208A53490068DD8E /* Item+Convenience.swift */,
 				9DC23BE9209913A900C2F111 /* CoreDataStack.swift */,
 				9DC23BE22099033400C2F111 /* User+Convenience.swift */,
 				9DC82D02208A53420068DD8E /* Shelf+Convenience.swift */,
-				9DC82D04208A53490068DD8E /* Item+Convenience.swift */,
 				9DC82D06208A53550068DD8E /* Goal+Convenience.swift */,
 				9DCF094420A60B54009471F8 /* ShoppingItem + Convenience.swift */,
 				9DAD6F8C20A4C32D001F777F /* CloudItem.swift */,
@@ -533,8 +536,9 @@
 			files = (
 				9D84780220A35DDB005F219B /* UIView+Extensions.swift in Sources */,
 				9D8477BA20A0A1EB005F219B /* TipsViewController.swift in Sources */,
+				9DB6171B20ACD23900B87C6C /* ShelfEditViewController.swift in Sources */,
 				9D8477FA20A35DD5005F219B /* TorchMode.swift in Sources */,
-				9D847785209A4B59005F219B /* AddShelfInstructions.swift in Sources */,
+				9D847785209A4B59005F219B /* AddShelfInstructionsViewController.swift in Sources */,
 				9DCF094520A60B54009471F8 /* ShoppingItem + Convenience.swift in Sources */,
 				9D84780620A35DDF005F219B /* VideoPermissionService.swift in Sources */,
 				9D8477F820A35DD5005F219B /* FocusViewType.swift in Sources */,
