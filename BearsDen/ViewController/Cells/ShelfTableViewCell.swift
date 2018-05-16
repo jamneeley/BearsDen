@@ -40,6 +40,7 @@ class ShelfTableViewCell: UITableViewCell {
         shelfImageView.image = photo ?? #imageLiteral(resourceName: "imagePlaceHolder")
         ShelfNameLabel.text = shelf.name
         itemCountLabel.text = "\(shelf.items?.count ?? 0) Items"
+        shelfImageView.layer.cornerRadius = shelfImageView.bounds.size.width * 0.5 
     }
     
     override var isHighlighted: Bool {

@@ -60,6 +60,101 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
         setupSingleTap()
     }
     
+    
+    
+    @objc func keyBoardWillShow() {
+        view.addGestureRecognizer(singleTap)
+    }
+    
+    @objc func disableKeyBoard(){
+        view.endEditing(true)
+    }
+    
+    @objc func keyboardWillHide() {
+        self.view.frame.origin.y = 0
+        view.removeGestureRecognizer(singleTap)
+    }
+    
+    @objc func startHighlightSave() {
+        saveButton.layer.backgroundColor = Colors.softBlue.cgColor
+        saveButton.imageView?.tintColor = .white
+    }
+    
+    @objc func stopHighlightSave() {
+        saveButton.layer.backgroundColor = Colors.green.cgColor
+        saveButton.imageView?.tintColor = nil
+    }
+    
+    @objc func saveButtonPressed() {
+        stopHighlightSave()
+        guard let name = nameTextField.text,
+            let quantityAsString = quantityTextField.text,
+            let shelf = self.shelf else {return}
+        let date = datePicker.date
+        //does item and quantity exist and is quantity a number?
+        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) && quantityAsString != "" && name != ""{
+            let barcodeNumber = barcodeTextField.text
+            let quantity = Double(quantityAsString)
+            //does cloudItem, barcode number exist?
+            if let cloudItem = self.cloudItem, barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)) {
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: barcodeNumber!, shelf: shelf)
+                    barcodeTextField.text = ""
+                CloudItemController.shared.update(cloudItem: cloudItem, name: name) { (success) in
+                    if success {
+                        //success updating cloud
+                        DispatchQueue.main.async {
+                            self.presentSaveAlert(WithTitle: "Saved Successfully", message: "")
+                            self.view.isUserInteractionEnabled = true
+                            self.nameTextField.text = ""
+                            self.barcodeTextField.text = ""
+                        }
+                        //saved to phone because update was unsuccessful
+                    } else {
+                        DispatchQueue.main.async {
+                            self.presentSaveAlert(WithTitle: "Saved Successfully", message: "")
+                            self.view.isUserInteractionEnabled = true
+                            self.nameTextField.text = ""
+                            self.barcodeTextField.text = ""
+                        }
+                    }
+                }
+            //cloudItem doesnt exist or barcode doesnt exist
+            } else {
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: "", shelf: shelf)
+                presentSaveAlert(WithTitle: "Saved Successfully", message: "")
+            }
+            navigationController?.popViewController(animated: true)
+        //quantity doesnt exist or its not a number
+        } else {
+            presentSaveAlert(WithTitle: "Uh Oh", message: "You need both an item name and quantity")
+        }
+    }
+    
+    func presentSaveAlert(WithTitle title: String, message: String) {
+        var alert = UIAlertController()
+        if message == "" {
+            alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        } else {
+            alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        }
+        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        alert.addAction(dismiss)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true
+    }
+}
+
+
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension AddBarcodeViewController {
     func setupSingleTap() {
         singleTap.numberOfTapsRequired = 1
         singleTap.addTarget(self, action: #selector(disableKeyBoard))
@@ -200,91 +295,6 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
         datePicker.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -20).isActive = true
         datePicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
         datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
-    }
-    
-    @objc func keyBoardWillShow() {
-        view.addGestureRecognizer(singleTap)
-    }
-    
-    @objc func disableKeyBoard(){
-        view.endEditing(true)
-    }
-    
-    @objc func keyboardWillHide() {
-        self.view.frame.origin.y = 0
-        view.removeGestureRecognizer(singleTap)
-    }
-    
-    @objc func startHighlightSave() {
-        saveButton.layer.backgroundColor = Colors.softBlue.cgColor
-        saveButton.imageView?.tintColor = .white
-    }
-    
-    @objc func stopHighlightSave() {
-        saveButton.layer.backgroundColor = Colors.green.cgColor
-        saveButton.imageView?.tintColor = nil
-    }
-    
-    @objc func saveButtonPressed() {
-        stopHighlightSave()
-        guard let name = nameTextField.text,
-            let quantityAsString = quantityTextField.text,
-            let shelf = self.shelf else {return}
-        let date = datePicker.date
-        //does item and quantity exist and is quantity a number?
-        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) && quantityAsString != "" && name != ""{
-            let barcodeNumber = barcodeTextField.text
-            let quantity = Double(quantityAsString)
-            //does cloudItem, barcode number exist?
-            if let cloudItem = self.cloudItem, barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)) {
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: barcodeNumber!, shelf: shelf)
-                    barcodeTextField.text = ""
-                CloudItemController.shared.update(cloudItem: cloudItem, name: name) { (success) in
-                    if success {
-                        //success updating cloud
-                        DispatchQueue.main.async {
-                            self.presentSaveAlert(WithTitle: "Saved Successfully", message: "")
-                            self.view.isUserInteractionEnabled = true
-                            self.nameTextField.text = ""
-                            self.barcodeTextField.text = ""
-                        }
-                        //saved to phone because update was unsuccessful
-                    } else {
-                        DispatchQueue.main.async {
-                            self.presentSaveAlert(WithTitle: "Saved Successfully", message: "")
-                            self.view.isUserInteractionEnabled = true
-                            self.nameTextField.text = ""
-                            self.barcodeTextField.text = ""
-                        }
-                    }
-                }
-            //cloudItem doesnt exist or barcode doesnt exist
-            } else {
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: "", shelf: shelf)
-                presentSaveAlert(WithTitle: "Saved Successfully", message: "")
-            }
-            navigationController?.popViewController(animated: true)
-        //quantity doesnt exist or its not a number
-        } else {
-            presentSaveAlert(WithTitle: "Uh Oh", message: "You need both an item name and quantity")
-        }
-    }
-    
-    func presentSaveAlert(WithTitle title: String, message: String) {
-        var alert = UIAlertController()
-        if message == "" {
-            alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        } else {
-            alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        }
-        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-        alert.addAction(dismiss)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return true
     }
 }
 

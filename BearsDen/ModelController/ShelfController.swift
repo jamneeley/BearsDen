@@ -26,7 +26,6 @@ class ShelfController {
         } catch {
             print("Error decoding data from filemanager: \(error), \(error.localizedDescription)")
         }
-    
     }
     
     func delete(Shelf shelf: Shelf) {
@@ -34,11 +33,14 @@ class ShelfController {
         UserController.shared.saveToCoreData()
     }
     
-    func update(Shelf shelf: Shelf, name: String, photo: UIImage) {
+    func ChangePictureforShelf(Shelf shelf: Shelf, photo: UIImage) {
         let photoAsData = UIImagePNGRepresentation(photo)
-        shelf.name = name
         shelf.photo = photoAsData
         UserController.shared.saveToCoreData()
     }
     
+    func updateName(Shelf shelf: Shelf, name: String) {
+        shelf.name = name
+        UserController.shared.saveToCoreData()
+    }
 }

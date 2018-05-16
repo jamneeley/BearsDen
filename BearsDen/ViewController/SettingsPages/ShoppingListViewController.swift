@@ -27,15 +27,6 @@ class ShoppingListViewController: UIViewController, UITableViewDelegate, UITable
 
     }
     
-    func setupTableView() {
-        view.addSubview(shoppingListTableView)
-        shoppingListTableView.translatesAutoresizingMaskIntoConstraints = false
-        shoppingListTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        shoppingListTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        shoppingListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        shoppingListTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let number = UserController.shared.user?.shoppingItems?.count ?? 0
         return number
@@ -58,5 +49,21 @@ class ShoppingListViewController: UIViewController, UITableViewDelegate, UITable
             ShoppingItemController.shared.delete(ShoppingItem: item)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+}
+
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension ShoppingListViewController {
+    func setupTableView() {
+        view.addSubview(shoppingListTableView)
+        shoppingListTableView.translatesAutoresizingMaskIntoConstraints = false
+        shoppingListTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        shoppingListTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        shoppingListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        shoppingListTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
     }
 }

@@ -28,7 +28,6 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.reloadData()
     }
     
-    
     func setupObjects() {
         setupTableView()
     }
@@ -40,13 +39,6 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
         setupTableViewConstraints()
     }
     
-    func setupTableViewConstraints() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return UserController.shared.user?.shelves?.count ?? 0
@@ -77,5 +69,20 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
         itemView.shelf = shelf
         let navItem = UINavigationController(rootViewController: itemView)
         present(navItem, animated: true, completion: nil)
+    }
+}
+
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension ShelvesViewController {
+    func setupTableViewConstraints() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }

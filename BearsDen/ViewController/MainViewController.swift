@@ -63,7 +63,7 @@ class MainViewController: UIViewController {
         setupNavBar()
         setupShelvesView()
     }
-
+    
     func setupNavBar() {
         view.addSubview(navBar)
         navBar.backgroundColor = Colors.softBlue
@@ -80,19 +80,7 @@ class MainViewController: UIViewController {
         setup(Button: shoppingAddButton)
         setupButtonTargets()
     }
-    
-    func setupSettingsButtons() {
-        settingsButton.setImage(#imageLiteral(resourceName: "settingIconX2"), for: .normal)
-        settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
-    }
-    
-    func setupShelvesButton() {
-        shelvesAddButton.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
-        shelvesAddButton.translatesAutoresizingMaskIntoConstraints = false
-        shelvesAddButton.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
-        shelvesAddButton.trailingAnchor.constraint(equalTo: navBar.trailingAnchor, constant: -8).isActive = true
-    }
-    
+
     func setup(Button button: UIButton) {
         button.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -104,12 +92,7 @@ class MainViewController: UIViewController {
         shoppingAddButton.addTarget(self, action: #selector(addShoppingItemButtonTapped), for: .touchUpInside)
     }
     
-    func setupLabel() {
-        navBarLabel.text = "Your shelves"
-        navBarLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        navBarLabel.textColor = .white
-        setupLabelConstraints()
-    }
+
     
     func setupShelvesView() {
         shelvesView.willMove(toParentViewController: self)
@@ -119,28 +102,6 @@ class MainViewController: UIViewController {
         shelvesView.view.frame = CGRect(x: 0, y: view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
         shelvesView.didMove(toParentViewController: self)
         globalCurrentView = 1
-    }
-    
-    //MARK: - SetupConstraints
-    
-    func setupNavBarConstraints() {
-        navBar.translatesAutoresizingMaskIntoConstraints = false
-        navBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        navBar.bottomAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.08).isActive = true
-    }
-    
-    func setupSettingsButtonConstraints() {
-        settingsButton.translatesAutoresizingMaskIntoConstraints = false
-        settingsButton.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
-        settingsButton.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 8).isActive = true
-    }
-    
-    func setupLabelConstraints() {
-        navBarLabel.translatesAutoresizingMaskIntoConstraints = false
-        navBarLabel.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
-        navBarLabel.centerXAnchor.constraint(equalTo: navBar.centerXAnchor, constant: 0).isActive = true
     }
     
     //MARK: - Button Actions
@@ -188,4 +149,51 @@ class MainViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 }
+
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension MainViewController {
+    
+    func setupLabel() {
+        navBarLabel.text = "Your shelves"
+        navBarLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        navBarLabel.textColor = .white
+        setupLabelConstraints()
+    }
+    
+    func setupSettingsButtons() {
+        settingsButton.setImage(#imageLiteral(resourceName: "settingIconX2"), for: .normal)
+        settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
+    }
+    
+    func setupShelvesButton() {
+        shelvesAddButton.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
+        shelvesAddButton.translatesAutoresizingMaskIntoConstraints = false
+        shelvesAddButton.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
+        shelvesAddButton.trailingAnchor.constraint(equalTo: navBar.trailingAnchor, constant: -8).isActive = true
+    }
+    func setupNavBarConstraints() {
+        navBar.translatesAutoresizingMaskIntoConstraints = false
+        navBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        navBar.bottomAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.08).isActive = true
+    }
+    
+    func setupSettingsButtonConstraints() {
+        settingsButton.translatesAutoresizingMaskIntoConstraints = false
+        settingsButton.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
+        settingsButton.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 8).isActive = true
+    }
+    
+    func setupLabelConstraints() {
+        navBarLabel.translatesAutoresizingMaskIntoConstraints = false
+        navBarLabel.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
+        navBarLabel.centerXAnchor.constraint(equalTo: navBar.centerXAnchor, constant: 0).isActive = true
+    }
+}
+
 
