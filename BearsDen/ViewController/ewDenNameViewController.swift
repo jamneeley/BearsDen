@@ -36,10 +36,9 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
         setupHouseTextField()
         setupPromptLabel()
         setupSingleTap()
-        
     }
     
-    //MARK: - Setup Objects methods
+    //MARK: - Setup Object methods
     
     func setupSingleTap() {
         singleTap.numberOfTapsRequired = 1
@@ -141,9 +140,9 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func keyboardWillHide() {
+        view.removeGestureRecognizer(singleTap)
         self.view.frame.origin.y = 0
     }
-    
     //MARK: - ButtonPressed
     
     @objc func letsStartButtonPressed() {

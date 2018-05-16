@@ -406,10 +406,10 @@
 			isa = PBXGroup;
 			children = (
 				9DC23BE62099101400C2F111 /* User.xcdatamodeld */,
+				9DC82D04208A53490068DD8E /* Item+Convenience.swift */,
 				9DC23BE9209913A900C2F111 /* CoreDataStack.swift */,
 				9DC23BE22099033400C2F111 /* User+Convenience.swift */,
 				9DC82D02208A53420068DD8E /* Shelf+Convenience.swift */,
-				9DC82D04208A53490068DD8E /* Item+Convenience.swift */,
 				9DC82D06208A53550068DD8E /* Goal+Convenience.swift */,
 				9DCF094420A60B54009471F8 /* ShoppingItem + Convenience.swift */,
 				9DAD6F8C20A4C32D001F777F /* CloudItem.swift */,

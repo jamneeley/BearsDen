@@ -22,17 +22,19 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
     let entryStack = UIStackView()
     let saveButton = UIButton(type: .custom)
     let barcodeButton = UIButton(type: .custom)
+    let clearButton = UIButton(type: .custom)
     var shelf: Shelf?
     let tapView = UIView()
     let singleTap = UITapGestureRecognizer()
     
+    var inDataBase: Bool?
+    var itemExists: Bool?
+    var cloudItem : CloudItem?
     var barcode: String? {
         didSet {
             barcodeTextField.text = barcode
         }
     }
-    
-    var itemExists: Bool?
     
     func doesItemExist() {
         guard let itemExist = itemExists else {return}
@@ -41,9 +43,10 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
             return
         } else {
             presentSaveAlert(WithTitle: "Sorry, that item isnt in our database", message: "Save the item with a barcode and next time it will :)")
+            itemExists = nil
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -58,6 +61,11 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
     }
     
     func setupObjects() {
+        setupSaveButton()
+        setupDateLabel()
+        setupDatePicker()
+        setupBarCodeButton()
+        setupClearButton()
         setupBarcodeStack()
         setupStackView()
         setupNameLabel()
@@ -66,10 +74,6 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
         setupQuantityTextField()
         setupBarcodeLabel()
         setupBarCodeTextField()
-        setupSaveButton()
-        setupDateLabel()
-        setupDatePicker()
-        setupBarCodeButton()
         setupSingleTap()
     }
     
@@ -137,7 +141,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
     
     func setupBarcodeLabel() {
         barcodeLabel.text = "Barcode Number"
-        barcodeLabel.textAlignment = .left
+        barcodeLabel.textAlignment = .center
         barcodeLabel.tintColor = .white
     }
     
@@ -152,7 +156,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
     
     func setupBarCodeButton() {
         view.addSubview(barcodeButton)
-        barcodeButton.frame = CGRect(x: view.frame.height * 0.5 - 50, y: view.frame.width - 70, width: 50, height: 50)
+        barcodeButton.frame = CGRect(x: view.frame.width * 0.95 - 50, y: view.frame.height * 0.5 - 28, width: 50, height: 50)
         barcodeButton.setImage(#imageLiteral(resourceName: "barCodeButton"), for: .normal)
         barcodeButton.setTitleColor(.white, for: .normal)
         barcodeButton.backgroundColor = Colors.green
@@ -163,6 +167,20 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
         barcodeButton.addTarget(self, action: #selector(stopHighlightBarCode), for: .touchUpOutside)
     }
     
+    func setupClearButton() {
+        view.addSubview(clearButton)
+        clearButton.frame = CGRect(x: view.frame.width * 0.05, y: view.frame.height * 0.5 - 28, width: 50, height: 50)
+        clearButton.setTitle("Clear", for: .normal)
+        clearButton.setTitleColor(.black, for: .normal)
+        clearButton.backgroundColor = Colors.green
+        clearButton.layer.cornerRadius = 0.5 * barcodeButton.bounds.size.width
+        clearButton.clipsToBounds = true
+        clearButton.addTarget(self, action: #selector(clearButtonPressed), for: .touchUpInside)
+        clearButton.addTarget(self, action: #selector(startHighlightclear), for: .touchDown)
+        clearButton.addTarget(self, action: #selector(stopHighlightclear), for: .touchUpOutside)
+    }
+    
+
     func setupDateLabel() {
         view.addSubview(dateLabel)
         dateLabel.text = "Expiration Date"
@@ -207,8 +225,8 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
     func setupBarcodeStackConstraints() {
         barCodeStack.translatesAutoresizingMaskIntoConstraints = false
         barCodeStack.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: 20).isActive = true
-        barCodeStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
-        barCodeStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.35).isActive = true
+        barCodeStack.leadingAnchor.constraint(equalTo: clearButton.trailingAnchor, constant: 10).isActive = true
+        barCodeStack.trailingAnchor.constraint(equalTo: barcodeButton.leadingAnchor, constant: -10).isActive = true
         barCodeStack.topAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * -0.1).isActive = true
     }
     
@@ -240,7 +258,17 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
         self.view.frame.origin.y = 0
         view.removeGestureRecognizer(singleTap)
     }
+
+    @objc func startHighlightclear() {
+        clearButton.layer.backgroundColor = Colors.softBlue.cgColor
+        clearButton.setTitleColor(.white, for: .normal)
+    }
     
+    @objc func stopHighlightclear() {
+        clearButton.layer.backgroundColor = Colors.green.cgColor
+        clearButton.setTitleColor(.black, for: .normal)
+    }
+
     @objc func startHighlightBarCode() {
         barcodeButton.layer.backgroundColor = Colors.softBlue.cgColor
         barcodeButton.imageView?.tintColor = .white
@@ -261,6 +289,11 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
         saveButton.imageView?.tintColor = nil
     }
     
+    @objc func clearButtonPressed() {
+        stopHighlightclear()
+        barcodeTextField.text = ""
+    }
+    
     @objc func barcodeButtonPressed() {
         print("bar code button pressed")
         stopHighlightBarCode()
@@ -272,45 +305,59 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func saveButtonPressed() {
+    self.view.isUserInteractionEnabled = false
         stopHighlightSave()
-        guard let name = nameTextField.text, !name.isEmpty,
+        guard let name = nameTextField.text,
             let quantityAsString = quantityTextField.text,
             let shelf = self.shelf else {return}
         let date = datePicker.date
         
-        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) && quantityAsString != "" {
+        //is there a quantity and is it a number?
+        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) && quantityAsString != "" && name != ""{
             let barcodeNumber = barcodeTextField.text
             let quantity = Double(quantityAsString)
             
+            //is there a barcode and is it a number?
             if barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)){
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: barcodeNumber!, shelf: shelf)
-                self.view.isUserInteractionEnabled = false
-                CloudItemController.shared.createCloudItem(withName: name, barcode: barcodeNumber!) { (success) in
-                    if success {
+                //does this barcode already exist in the DB?
+                if cloudItem != nil && inDataBase == true {
+                    CloudItemController.shared.update(cloudItem: self.cloudItem!, name: name) { (success) in
+                        //reset the clouditem
+                        self.cloudItem = nil
+                        self.inDataBase = nil
+                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
-                            self.presentSaveAlert(WithTitle: "Saved to phone and database", message: "thank you for helping us maintain our database")
-                            self.view.isUserInteractionEnabled = true
+                            self.presentSaveAlert(WithTitle: "Saved to phone and database updated", message: "Thank you for helping to maintain our database!")
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
                         }
-                    } else {
+                    }
+                // barcode doesnt exists in the database
+                } else {
+                    CloudItemController.shared.createCloudItem(withName: name, barcode: barcodeNumber!) { (success) in
+                        //reset the clouditem
+                        self.cloudItem = nil
+                        self.inDataBase = nil
+                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
-                            self.presentSaveAlert(WithTitle: "Success saving to phone", message: "")
-                            self.view.isUserInteractionEnabled = true
+                      self.presentSaveAlert(WithTitle: "Saved to phone and database", message: "thank you for contributing to our database")
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
                         }
                     }
                 }
+            //there isnt a barcode number or it isnt a number
             } else {
                 ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: "", shelf: shelf)
-                presentSaveAlert(WithTitle: "Saved to phone", message: "")
+                presentSaveAlert(WithTitle: "Saved Successfully", message: "")
                 nameTextField.text = ""
                 barcodeTextField.text = ""
             }
+        //itemName and quantity doesnt exist or quantity isnt a number
         } else {
-            presentSaveAlert(WithTitle: "Uh Oh", message: "Your item needs a quantity")
+            presentSaveAlert(WithTitle: "Uh Oh", message: "You need an item name and quantity")
         }
+        self.view.isUserInteractionEnabled = true
     }
     
     func presentSaveAlert(WithTitle title: String, message: String) {
@@ -338,8 +385,26 @@ extension AddManualItemViewController: BarcodeScannerCodeDelegate {
     }
     
     func barcodeScanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        barcodeTextField.text = code
-        navigationController?.popViewController(animated: true)
+        CloudItemController.shared.fetchCloudItem(WithBarcode: code) { (cloudItem) in
+            if let localClouditem = cloudItem {
+                DispatchQueue.main.async {
+                    self.inDataBase = true
+                    self.cloudItem = localClouditem
+                    self.nameTextField.text = localClouditem.name
+                    self.barcodeTextField.text = code
+                    self.navigationController?.popViewController(animated: true)
+                    print("exists")
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.inDataBase = false
+                    self.cloudItem = nil
+                    self.barcodeTextField.text = code
+                    self.navigationController?.popViewController(animated: true)
+                    print("doesnt exist")
+                }
+            }
+        }
     }
 }
 
@@ -362,5 +427,3 @@ extension AddManualItemViewController: BarcodeScannerDismissalDelegate {
         controller.dismiss(animated: true, completion: nil)
     }
 }
-
-

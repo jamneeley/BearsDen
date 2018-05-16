@@ -197,6 +197,7 @@ extension ItemsViewController: BarcodeScannerCodeDelegate {
                     self.navigationController?.pushViewController(barCodeController, animated: true)
                     barCodeController.cloudItem = cloudItem
                     barCodeController.shelf = shelf
+                    
                 }
             } else {
                 DispatchQueue.main.async {

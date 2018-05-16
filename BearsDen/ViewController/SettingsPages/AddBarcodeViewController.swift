@@ -24,14 +24,13 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
     let tapView = UIView()
     let singleTap = UITapGestureRecognizer()
     
+    var shelf: Shelf?
     var cloudItem: CloudItem? {
         didSet {
             updateViews()
         }
     }
 
-    var shelf: Shelf?
-    
     func updateViews() {
         guard let cloudItem = cloudItem else {return}
         nameTextField.text =  cloudItem.name
@@ -228,44 +227,46 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
     
     @objc func saveButtonPressed() {
         stopHighlightSave()
-        guard let name = nameTextField.text, !name.isEmpty,
+        guard let name = nameTextField.text,
             let quantityAsString = quantityTextField.text,
             let shelf = self.shelf else {return}
         let date = datePicker.date
-        
-        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) && quantityAsString != "" {
+        //does item and quantity exist and is quantity a number?
+        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) && quantityAsString != "" && name != ""{
             let barcodeNumber = barcodeTextField.text
             let quantity = Double(quantityAsString)
-            
+            //does cloudItem, barcode number exist?
             if let cloudItem = self.cloudItem, barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)) {
-                
                 ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: barcodeNumber!, shelf: shelf)
                     barcodeTextField.text = ""
-                print("item saved with barcode")
                 CloudItemController.shared.update(cloudItem: cloudItem, name: name) { (success) in
                     if success {
+                        //success updating cloud
                         DispatchQueue.main.async {
-                            self.presentSaveAlert(WithTitle: "Saved to phone and database", message: "thank you for helping us maintain our database")
+                            self.presentSaveAlert(WithTitle: "Saved Successfully", message: "")
                             self.view.isUserInteractionEnabled = true
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
                         }
+                        //saved to phone because update was unsuccessful
                     } else {
                         DispatchQueue.main.async {
-                            self.presentSaveAlert(WithTitle: "Success saving to phone", message: "")
+                            self.presentSaveAlert(WithTitle: "Saved Successfully", message: "")
                             self.view.isUserInteractionEnabled = true
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
                         }
                     }
                 }
+            //cloudItem doesnt exist or barcode doesnt exist
             } else {
                 ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: "", shelf: shelf)
-                print("item saved without barcode")
+                presentSaveAlert(WithTitle: "Saved Successfully", message: "")
             }
             navigationController?.popViewController(animated: true)
+        //quantity doesnt exist or its not a number
         } else {
-            presentSaveAlert(WithTitle: "Uh Oh", message: "Your item needs a quantity")
+            presentSaveAlert(WithTitle: "Uh Oh", message: "You need both an item name and quantity")
         }
     }
     
