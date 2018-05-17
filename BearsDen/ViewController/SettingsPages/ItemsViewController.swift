@@ -8,14 +8,15 @@
 
 import UIKit
 
-class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ItemCellDelegate {
-
+class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ItemCellDelegate, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
     let itemTableView = UITableView()
     var shelf: Shelf?
     let manualAddButton = UIButton(type: .custom)
     let barCodeAddButton = UIButton(type: .custom)
     let blackView = UIView()
-    let mainView = UIView()
+    let editShelfView = ShelfEditView()
+
     
     var newShelfName: String?
     var newShelfImage: UIImage?
@@ -26,6 +27,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         itemTableView.register(UITableViewCell.self, forCellReuseIdentifier: "itemCell")
         itemTableView.delegate = self
         setupObjects()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -40,13 +42,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         setupBarCodeAddButton()
     }
     
-    func setupTableView() {
-        view.addSubview(itemTableView)
-        itemTableView.delegate = self
-        itemTableView.dataSource = self
-        setupTableViewConstraints()
-    }
-    
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
@@ -57,18 +52,22 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
             blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismiss)))
             window.addSubview(blackView)
-            window.addSubview(mainView)
-            mainView.backgroundColor = .white
+            window.addSubview(editShelfView)
+            editShelfView.delegate = self
+            
+            if let shelf = self.shelf {
+                editShelfView.shelf = shelf
+            }
             
             let width = window.frame.width * 0.8
             let height = window.frame.height * 0.75
             
-            mainView.frame = CGRect(x: (window.frame.width - width), y: -(window.frame.height), width: width, height: height)
+            editShelfView.frame = CGRect(x: (window.frame.width - width), y: -(window.frame.height), width: width, height: height)
             blackView.frame = window.frame
             blackView.alpha = 0
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.blackView.alpha = 1
-                self.mainView.frame = CGRect(x: (window.frame.width - width) / 2, y: (window.frame.height - height) / 2, width: self.mainView.frame.width, height: self.mainView.frame.height)
+                self.editShelfView.frame = CGRect(x: (window.frame.width - width) / 2, y: (window.frame.height - height) / 2, width: self.editShelfView.frame.width, height: self.editShelfView.frame.height)
             }, completion: nil)
         }
     }
@@ -78,10 +77,28 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             
             self.blackView.alpha = 0
             if let window = UIApplication.shared.keyWindow {
-                self.mainView.frame = CGRect(x: -(window.frame.width), y: 0, width: self.mainView.frame.width, height: self.mainView.frame.height)
+                self.editShelfView.frame = CGRect(x: -(window.frame.width), y: 0, width: self.editShelfView.frame.width, height: self.editShelfView.frame.height)
             }
         }) { (success) in
             print("animation complete")
+        }
+    }
+    
+    func selectLibraryPhoto() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePicker.allowsEditing = false
+        self.present(imagePicker, animated: true) {
+        }
+    }
+    
+    func selectCameraPhoto() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+        imagePicker.allowsEditing = false
+        self.present(imagePicker, animated: true) {
         }
     }
     
@@ -89,6 +106,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             guard let shelf = self.shelf else {return}
             ShelfController.shared.ChangePictureforShelf(Shelf: shelf, photo: image)
+            editShelfView.shelfImage = image
         } else {
             print("error picking image from imagepicker")
         }
@@ -106,6 +124,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @objc func startHighlightBar() {
         barCodeAddButton.layer.backgroundColor = Colors.softBlue.cgColor
         barCodeAddButton.imageView?.tintColor = .white
+
     }
     @objc func stopHighlightBar() {
         barCodeAddButton.layer.backgroundColor = Colors.green.cgColor
@@ -226,6 +245,13 @@ extension ItemsViewController: BarcodeScannerDismissalDelegate {
 
 extension ItemsViewController {
     
+    func setupTableView() {
+        view.addSubview(itemTableView)
+        itemTableView.delegate = self
+        itemTableView.dataSource = self
+        setupTableViewConstraints()
+    }
+
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .plain, target: self, action: #selector(backButtonPressed))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editShelfButtonPressed))

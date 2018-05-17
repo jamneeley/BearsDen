@@ -111,12 +111,10 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
             }
         }) { (success) in
             
-            
-            
+        
             // FIXME - CRASH WHEN TOUCHING BLACKVIEW
             
-            
-        
+
             guard let parent = self.mainParentView else {return}
             print(setting.number)
             print(setting.name)
