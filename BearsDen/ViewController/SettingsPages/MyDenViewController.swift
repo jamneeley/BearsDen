@@ -38,7 +38,6 @@ class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UI
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         imagePicker.allowsEditing = false
         self.present(imagePicker, animated: true) {
-            
         }
     }
     

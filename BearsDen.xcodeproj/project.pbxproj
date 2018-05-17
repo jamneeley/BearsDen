@@ -76,6 +76,8 @@
 		9DAD6F8B20A4B9BC001F777F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DAD6F8A20A4B9BC001F777F /* CloudKit.framework */; };
 		9DAD6F8D20A4C32D001F777F /* CloudItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAD6F8C20A4C32D001F777F /* CloudItem.swift */; };
 		9DB6171B20ACD23900B87C6C /* ShelfEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6171A20ACD23900B87C6C /* ShelfEditViewController.swift */; };
+		9DB6172020AD150300B87C6C /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DB6171F20AD150300B87C6C /* camera.png */; };
+		9DB6172220AD155200B87C6C /* photoLibrary.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DB6172120AD155100B87C6C /* photoLibrary.png */; };
 		9DC23BC32097DCED00C2F111 /* BearsDenLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DC23BC22097DCED00C2F111 /* BearsDenLogo.png */; };
 		9DC23BE32099033400C2F111 /* User+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC23BE22099033400C2F111 /* User+Convenience.swift */; };
 		9DC23BE52099041C00C2F111 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC23BE42099041C00C2F111 /* UserController.swift */; };
@@ -186,6 +188,8 @@
 		9DAD6F8A20A4B9BC001F777F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		9DAD6F8C20A4C32D001F777F /* CloudItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudItem.swift; sourceTree = "<group>"; };
 		9DB6171A20ACD23900B87C6C /* ShelfEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfEditViewController.swift; sourceTree = "<group>"; };
+		9DB6171F20AD150300B87C6C /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		9DB6172120AD155100B87C6C /* photoLibrary.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photoLibrary.png; sourceTree = "<group>"; };
 		9DC23BC22097DCED00C2F111 /* BearsDenLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BearsDenLogo.png; sourceTree = "<group>"; };
 		9DC23BE22099033400C2F111 /* User+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Convenience.swift"; sourceTree = "<group>"; };
 		9DC23BE42099041C00C2F111 /* UserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
@@ -332,6 +336,8 @@
 		9DC82CFE208A50970068DD8E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9DB6172120AD155100B87C6C /* photoLibrary.png */,
+				9DB6171F20AD150300B87C6C /* camera.png */,
 				9DCF094C20A61A07009471F8 /* checkMarkBox.png */,
 				9DCF094A20A619FF009471F8 /* checkedBox.png */,
 				9D8477E820A35D91005F219B /* cameraRotate@3x.png */,
@@ -503,6 +509,7 @@
 				9DC82CF6208A50820068DD8E /* LaunchScreen.storyboard in Resources */,
 				9D8477C220A0EEB2005F219B /* shoppingCartX2.png in Resources */,
 				9D8FEB4F208A6CFC00080EEE /* icon_20pt.png in Resources */,
+				9DB6172020AD150300B87C6C /* camera.png in Resources */,
 				9D8FEB4A208A6CFC00080EEE /* icon_83.5@2x.png in Resources */,
 				9DC82CF3208A50820068DD8E /* Assets.xcassets in Resources */,
 				9D8FEB4D208A6CFC00080EEE /* icon_76pt.png in Resources */,
@@ -513,6 +520,7 @@
 				9D8FEB4E208A6CFC00080EEE /* icon_60pt@3x.png in Resources */,
 				9D8477E220A34179005F219B /* AddShelfInstructions.png in Resources */,
 				9D8FEB4C208A6CFC00080EEE /* icon_40pt@2x.png in Resources */,
+				9DB6172220AD155200B87C6C /* photoLibrary.png in Resources */,
 				9D8477AA209B90D5005F219B /* BackLargeX1.png in Resources */,
 				9D8477A8209A86BB005F219B /* backX2.png in Resources */,
 				9D84778B209A5D06005F219B /* imagePlaceHolder.png in Resources */,
