@@ -15,11 +15,11 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let manualAddButton = UIButton(type: .custom)
     let barCodeAddButton = UIButton(type: .custom)
     let blackView = UIView()
-    let editShelfView = ShelfEditView()
-
     
-    var newShelfName: String?
-    var newShelfImage: UIImage?
+    lazy var editShelfViewController: ShelfEditViewController = {
+        let view = ShelfEditViewController()
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +40,8 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         setupNavigationBar()
         setupManualAddButton()
         setupBarCodeAddButton()
+        guard let shelf = shelf else {return}
+        editShelfViewController.shelf = shelf
     }
     
     @objc func backButtonPressed() {
@@ -48,36 +50,39 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     @objc func editShelfButtonPressed() {
+        guard let shelfEditView = editShelfViewController.view, let shelfImageData = shelf?.photo  else {return}
         if let window = UIApplication.shared.keyWindow {
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
             blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismiss)))
+        
+            self.addChildViewController(editShelfViewController)
+            view.addSubview(shelfEditView)
             window.addSubview(blackView)
-            window.addSubview(editShelfView)
-            editShelfView.delegate = self
-            
-            if let shelf = self.shelf {
-                editShelfView.shelf = shelf
-            }
-            
+            window.addSubview(shelfEditView)
+            editShelfViewController.delegate = self
+            let image = UIImage(data: shelfImageData)
+            editShelfViewController.shelfImage = image
             let width = window.frame.width * 0.8
             let height = window.frame.height * 0.75
             
-            editShelfView.frame = CGRect(x: (window.frame.width - width), y: -(window.frame.height), width: width, height: height)
+            shelfEditView.frame = CGRect(x: (window.frame.width - width), y: -(window.frame.height), width: width, height: height)
             blackView.frame = window.frame
             blackView.alpha = 0
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.blackView.alpha = 1
-                self.editShelfView.frame = CGRect(x: (window.frame.width - width) / 2, y: (window.frame.height - height) / 2, width: self.editShelfView.frame.width, height: self.editShelfView.frame.height)
+                shelfEditView.frame = CGRect(x: (window.frame.width - width) / 2, y: (window.frame.height - height) / 2, width: shelfEditView.frame.width, height: shelfEditView.frame.height)
             }, completion: nil)
         }
     }
     
     @objc func handleDismiss() {
+        guard let shelfEditView = editShelfViewController.view,
+        let shelf = shelf else {return}
+        navigationItem.title = shelf.name
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            
             self.blackView.alpha = 0
             if let window = UIApplication.shared.keyWindow {
-                self.editShelfView.frame = CGRect(x: -(window.frame.width), y: 0, width: self.editShelfView.frame.width, height: self.editShelfView.frame.height)
+                shelfEditView.frame = CGRect(x: -(window.frame.width), y: 0, width: shelfEditView.frame.width, height: shelfEditView.frame.height)
             }
         }) { (success) in
             print("animation complete")
@@ -104,9 +109,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            guard let shelf = self.shelf else {return}
-            ShelfController.shared.ChangePictureforShelf(Shelf: shelf, photo: image)
-            editShelfView.shelfImage = image
+            editShelfViewController.shelfImage = image
         } else {
             print("error picking image from imagepicker")
         }

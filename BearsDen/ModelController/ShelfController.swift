@@ -14,7 +14,7 @@ class ShelfController {
     static let shared = ShelfController()
 
     func createShelfForUser(User user: User, name: String, photo: UIImage) {
-        guard let image = UIImagePNGRepresentation(photo) else {return}
+        guard let image = UIImageJPEGRepresentation(photo, 1.0) else {return}
         let _ = Shelf(name: name, user: user, photo: image)
         UserController.shared.saveToCoreData()
         print("shelf created")

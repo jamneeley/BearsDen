@@ -26,12 +26,17 @@ class ShelfTableViewCell: UITableViewCell {
         addSubview(shelfImageView)
         addSubview(ShelfNameLabel)
         addSubview(itemCountLabel)
-        addConstraintsWithFormat(format: "H:|-8-[v0(100)]-10-[v1]-[v2]-10-|", views: shelfImageView, ShelfNameLabel, itemCountLabel)
-        addConstraintsWithFormat(format: "V:|-50-[v0]-50-|", views: ShelfNameLabel)
+        ShelfNameLabel.numberOfLines = 3
+        addConstraintsWithFormat(format: "H:|-8-[v0(100)]-10-[v1]-80-|", views: shelfImageView, ShelfNameLabel)
+        addConstraintsWithFormat(format: "H:[v0]-10-|", views: itemCountLabel)
+        ShelfNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        ShelfNameLabel.centerYAnchor.constraint(equalTo: shelfImageView.centerYAnchor, constant: 0).isActive = true
+//        addConstraintsWithFormat(format: "V:|-50-[v0]-50-|", views: ShelfNameLabel)
         addConstraintsWithFormat(format: "V:|-50-[v0]-50-|", views: itemCountLabel)
         addConstraintsWithFormat(format: "V:[v0(100)]", views: shelfImageView)
         shelfImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
     }
+
     
     func setupViews() {
         guard let shelf = shelf, let imageAsData = shelf.photo else {return}

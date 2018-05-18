@@ -103,24 +103,20 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     }
     
     @objc func handleDismiss(setting: Setting) {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+        //FIXME: Crash when touching blackview
+        guard let parent = self.mainParentView else {return}
+        print(setting.number)
+        print(setting.name)
+        if setting.number != 0 {
+            parent.showControllerFor(Setting: setting)
+        }
+        UIView.animate(withDuration: 0.5, delay: 0.03, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.blackView.alpha = 0
             if let window = UIApplication.shared.keyWindow {
                 self.mainView.frame = CGRect(x: -(window.frame.width), y: 0, width: self.mainView.frame.width, height: self.mainView.frame.height)
                 self.collectionView.frame = CGRect(x: -(window.frame.width), y: self.collectionViewYPosition, width: window.frame.width * 0.75, height: window.frame.height - self.collectionViewYPosition)
             }
         }) { (success) in
-            
-        
-            // FIXME - CRASH WHEN TOUCHING BLACKVIEW
-            
-
-            guard let parent = self.mainParentView else {return}
-            print(setting.number)
-            print(setting.name)
-            if setting.number != 0 {
-                parent.showControllerFor(Setting: setting)
-            }
         }
     }
     

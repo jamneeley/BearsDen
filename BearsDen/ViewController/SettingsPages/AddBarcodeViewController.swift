@@ -189,6 +189,7 @@ extension AddBarcodeViewController {
     }
     
     func setupNameTextField() {
+        nameTextField.setLeftPaddingPoints(5)
         nameTextField.placeholder = "Great Value Applesauce"
         nameTextField.layer.cornerRadius = 12
         nameTextField.backgroundColor = .white
@@ -206,6 +207,7 @@ extension AddBarcodeViewController {
     }
     
     func setupQuantityTextField() {
+        quantityTextField.setLeftPaddingPoints(5)
         quantityTextField.layer.cornerRadius = 12
         quantityTextField.backgroundColor = .white
         quantityTextField.keyboardType = .numberPad
@@ -224,9 +226,10 @@ extension AddBarcodeViewController {
     }
     
     func setupBarCodeTextField() {
+        barcodeTextField.setLeftPaddingPoints(5)
         barcodeTextField.backgroundColor = .white
         barcodeTextField.isUserInteractionEnabled = false
-        barcodeTextField.placeholder = "  Use Barcode Scanner ->"
+        barcodeTextField.placeholder = "Use Barcode Scanner ->"
         barcodeTextField.layer.cornerRadius = 12
         barcodeTextField.layer.borderWidth = 1
         barcodeTextField.layer.borderColor = Colors.softBlue.cgColor

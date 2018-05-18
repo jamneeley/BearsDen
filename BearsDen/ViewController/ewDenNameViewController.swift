@@ -103,6 +103,7 @@ extension NewDenNameViewController {
     }
     
     func setupHouseTextField() {
+        houseTextField.setLeftPaddingPoints(5)
         view.addSubview(houseTextField)
         houseTextField.backgroundColor = .white
         houseTextField.placeholder = "The Smiths den..."

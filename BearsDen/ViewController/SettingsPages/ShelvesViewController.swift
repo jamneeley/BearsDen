@@ -11,6 +11,7 @@ import UIKit
 class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let tableView = UITableView()
+
     
     var update: Bool = false {
         didSet {
@@ -38,7 +39,6 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.dataSource = self
         setupTableViewConstraints()
     }
-    
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return UserController.shared.user?.shelves?.count ?? 0

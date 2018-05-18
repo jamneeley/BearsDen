@@ -8,8 +8,9 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
-    
+class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+
     //non page dependent objects
     let navBar = UIView()
     let settingsButton = UIButton(type: UIButtonType.system)
@@ -33,6 +34,13 @@ class MainViewController: UIViewController {
     }()
     lazy var settingsview: SettingsViewController = {
         return SettingsViewController()
+    }()
+
+    let blackView = UIView()
+    
+    lazy var editShelfViewController: ShelfEditViewController = {
+        let view = ShelfEditViewController()
+        return view
     }()
 
     //Page Dependent Button
@@ -63,6 +71,114 @@ class MainViewController: UIViewController {
         setupNavBar()
         setupShelvesView()
     }
+
+    
+    //MARK: - Button Actions
+    
+    @objc func settingsButtonTapped() {
+        settingsLauncher.showSettings()
+    }
+    
+        // SHELF METHODS
+    @objc func addShelfButtonTapped() {
+        print("addShelfButton Pressed")
+        guard let shelfEditView = editShelfViewController.view else {return}
+        if let window = UIApplication.shared.keyWindow {
+            blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+            blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismiss)))
+            
+            self.addChildViewController(editShelfViewController)
+            view.addSubview(shelfEditView)
+            window.addSubview(blackView)
+            window.addSubview(shelfEditView)
+            editShelfViewController.delegate = self
+            editShelfViewController.shelfImage = #imageLiteral(resourceName: "BearOnHill")
+            let width = window.frame.width * 0.8
+            let height = window.frame.height * 0.75
+            
+            shelfEditView.frame = CGRect(x: (window.frame.width - width), y: -(window.frame.height), width: width, height: height)
+            blackView.frame = window.frame
+            blackView.alpha = 0
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.blackView.alpha = 1
+                shelfEditView.frame = CGRect(x: (window.frame.width - width) / 2, y: (window.frame.height - height) / 2, width: shelfEditView.frame.width, height: shelfEditView.frame.height)
+            }, completion: nil)
+        }
+    }
+    @objc func handleDismiss() {
+        self.shelvesView.update = true
+        guard let shelfEditView = editShelfViewController.view else {return}
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.blackView.alpha = 0
+            if let window = UIApplication.shared.keyWindow {
+                shelfEditView.frame = CGRect(x: -(window.frame.width), y: 0, width: shelfEditView.frame.width, height: shelfEditView.frame.height)
+            }
+        }) { (success) in
+            print("animation complete")
+        }
+    }
+    
+    func selectLibraryPhoto() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePicker.allowsEditing = false
+        self.present(imagePicker, animated: true) {
+        }
+    }
+    
+    func selectCameraPhoto() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+        imagePicker.allowsEditing = false
+        self.present(imagePicker, animated: true) {
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            editShelfViewController.shelfImage = image
+        } else {
+            print("error picking image from imagepicker")
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+        // Goal METHODS
+    
+    @objc func addGoalButtonTapped() {
+        print("AddGoalButton Pressed")
+    }
+    
+        // SHOPPING METHODS
+    
+    @objc func addShoppingItemButtonTapped() {
+        let alert = UIAlertController(title: "Add shopping item", message: nil, preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.autocorrectionType = UITextAutocorrectionType.no
+            textField.returnKeyType = .done
+        }
+        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        let save = UIAlertAction(title: "Save", style: .default) { (success) in
+            guard let name = alert.textFields?.first?.text, !name.isEmpty,
+                let user = UserController.shared.user else {return}
+            ShoppingItemController.shared.createShoppingItem(ForUser: user, name: name)
+            self.shoppingView.update = true
+        }
+        alert.addAction(dismiss)
+        alert.addAction(save)
+        present(alert, animated: true, completion: nil)
+    }
+
+}
+
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension MainViewController {
     
     func setupNavBar() {
         view.addSubview(navBar)
@@ -80,7 +196,7 @@ class MainViewController: UIViewController {
         setup(Button: shoppingAddButton)
         setupButtonTargets()
     }
-
+    
     func setup(Button button: UIButton) {
         button.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -91,9 +207,7 @@ class MainViewController: UIViewController {
         goalsAddButton.addTarget(self, action: #selector(addGoalButtonTapped), for: .touchUpInside)
         shoppingAddButton.addTarget(self, action: #selector(addShoppingItemButtonTapped), for: .touchUpInside)
     }
-    
 
-    
     func setupShelvesView() {
         shelvesView.willMove(toParentViewController: self)
         addChildViewController(shelvesView)
@@ -103,59 +217,6 @@ class MainViewController: UIViewController {
         shelvesView.didMove(toParentViewController: self)
         globalCurrentView = 1
     }
-    
-    //MARK: - Button Actions
-    
-    @objc func settingsButtonTapped() {
-        settingsLauncher.showSettings()
-    }
-    
-    @objc func addShelfButtonTapped() {
-        print("addShelfButton Pressed")
-        let alert = UIAlertController(title: "New shelf name", message: nil, preferredStyle: .alert)
-        alert.addTextField { (textField) in
-        }
-        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-        let save = UIAlertAction(title: "Save", style: .default) { (success) in
-            guard let shelfName = alert.textFields?.first?.text, !shelfName.isEmpty,
-            let user = UserController.shared.user else {return}
-            ShelfController.shared.createShelfForUser(User: user, name: shelfName, photo: #imageLiteral(resourceName: "BearOnHill"))
-            self.shelvesView.update = true
-        }
-        alert.addAction(dismiss)
-        alert.addAction(save)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    @objc func addGoalButtonTapped() {
-        print("AddGoalButton Pressed")
-    }
-    
-    @objc func addShoppingItemButtonTapped() {
-        let alert = UIAlertController(title: "Add shopping item", message: nil, preferredStyle: .alert)
-        alert.addTextField { (textField) in
-            textField.autocorrectionType = UITextAutocorrectionType.no
-            textField.returnKeyType = .done
-        }
-        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-        let save = UIAlertAction(title: "Save", style: .default) { (success) in
-            guard let name = alert.textFields?.first?.text, !name.isEmpty,
-            let user = UserController.shared.user else {return}
-            ShoppingItemController.shared.createShoppingItem(ForUser: user, name: name)
-            self.shoppingView.update = true
-        }
-        alert.addAction(dismiss)
-        alert.addAction(save)
-        present(alert, animated: true, completion: nil)
-    }
-}
-
-
-////////////////////////////////////////////////////////
-//CONSTRAINTS
-////////////////////////////////////////////////////////
-
-extension MainViewController {
     
     func setupLabel() {
         navBarLabel.text = "Your shelves"
