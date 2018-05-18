@@ -36,7 +36,7 @@ class UserController {
     
     func add(Picture picture: UIImage) {
         if let user = user {
-            let data = UIImagePNGRepresentation(picture)
+            let data = UIImageJPEGRepresentation(picture, 1.0)
             user.picture = data
             saveToCoreData()
             print("Picture added to user")
