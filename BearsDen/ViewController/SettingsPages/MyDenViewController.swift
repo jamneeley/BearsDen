@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     let denImageView = UIImageView()
     let photoLibraryButton = UIButton(type: .custom)
@@ -25,14 +25,17 @@ class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UI
     let denKidsNumberLabel = UILabel()
     let denKidsStepper = UIStepper()
     let saveButton = UIButton(type: .custom)
+    let singleTap = UITapGestureRecognizer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupObjects()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillshow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
-    
+
     func setupObjects() {
         view.addSubview(denImageView)
         view.addSubview(photoLibraryButton)
@@ -56,6 +59,8 @@ class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UI
         setupDenKidsNumberLabel()
         setupDenKidsStepper()
         setupSaveButton()
+        singleTap.numberOfTapsRequired = 1
+        singleTap.addTarget(self, action: #selector(endEditing))
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -117,6 +122,26 @@ class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UI
         saveButton.setTitleColor(.black, for: .normal)
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return true
+    }
+    @objc func endEditing() {
+        view.endEditing(true)
+    }
+    
+    //FIXME: - possibly need to move view up because textview covers it
+    
+    @objc func keyBoardWillshow() {
+//        view.frame.origin.y = -50
+        view.addGestureRecognizer(singleTap)
+    }
+    
+    @objc func keyBoardWillHide() {
+//        view.frame.origin.y = view.frame.height * 0.08
+        view.removeGestureRecognizer(singleTap)
+    }
+    
     @objc func saveButtonPressed() {
         guard let name = denTextField.text,
             !name.isEmpty,
@@ -125,12 +150,13 @@ class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UI
             let adults = denAdultsNumberLabel.text,
             !adults.isEmpty,
             let picture = denImageView.image
-            else {return}
+            else {stopHighlightSave() ; presentSaveAlert(WithTitle: "Uh Oh", message: "All fields need a value") ; return}
         
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: kids)) && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: adults)) {
             UserController.shared.updateUser(HouseholdName: name, picture: picture, adults: adults, kids: kids)
+            saveAnimation()
         }
-        saveAnimation()
+        stopHighlightSave()
     }
     
     func saveAnimation() {
@@ -147,6 +173,18 @@ class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UI
             }, completion: { (success) in
             })
         }
+    }
+    
+    func presentSaveAlert(WithTitle title: String, message: String) {
+        var alert = UIAlertController()
+        if message == "" {
+            alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        } else {
+            alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        }
+        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        alert.addAction(dismiss)
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -197,7 +235,12 @@ extension MyDenViewController {
         denTextField.layer.borderWidth = 1
         denTextField.layer.borderColor = Colors.softBlue.cgColor
         denTextField.layer.cornerRadius = 12
+        denTextField.returnKeyType = .done
+        denTextField.autocorrectionType = UITextAutocorrectionType.no
+        denTextField.delegate = self
     }
+    
+
     
     func setupNameStack() {
         nameStack.addArrangedSubview(denNameLabel)
