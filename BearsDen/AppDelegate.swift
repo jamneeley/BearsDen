@@ -50,7 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //List Of Bugs
 
 //1. memory leak when switching to shelves view
-//2. major crash when touching blackview
 
 
 

@@ -60,8 +60,6 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
         setupSingleTap()
     }
     
-    
-    
     @objc func keyBoardWillShow() {
         view.addGestureRecognizer(singleTap)
     }
@@ -103,7 +101,7 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
                     if success {
                         //success updating cloud
                         DispatchQueue.main.async {
-                            self.presentSaveAlert(WithTitle: "Saved Successfully", message: "")
+                            self.saveAnimation()
                             self.view.isUserInteractionEnabled = true
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
@@ -111,7 +109,7 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
                         //saved to phone because update was unsuccessful
                     } else {
                         DispatchQueue.main.async {
-                            self.presentSaveAlert(WithTitle: "Saved Successfully", message: "")
+                            self.saveAnimation()
                             self.view.isUserInteractionEnabled = true
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
@@ -121,7 +119,7 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
             //cloudItem doesnt exist or barcode doesnt exist
             } else {
                 ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: "", shelf: shelf)
-                presentSaveAlert(WithTitle: "Saved Successfully", message: "")
+                saveAnimation()
             }
             navigationController?.popViewController(animated: true)
         //quantity doesnt exist or its not a number
@@ -146,8 +144,23 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
         return true
     }
+    
+    func saveAnimation() {
+        let brightView = UIView()
+        brightView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        view.addSubview(brightView)
+        brightView.backgroundColor = Colors.clear
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseIn], animations: {
+            brightView.backgroundColor = Colors.white
+        }) { (success) in
+            UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+                brightView.backgroundColor = Colors.clear
+                brightView.removeFromSuperview()
+            }, completion: { (success) in
+            })
+        }
+    }
 }
-
 
 
 ////////////////////////////////////////////////////////

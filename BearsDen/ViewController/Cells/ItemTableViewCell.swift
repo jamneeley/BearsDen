@@ -80,10 +80,7 @@ class ItemTableViewCell: UITableViewCell {
         quantityStepper.maximumValue = 1000.0
         quantityStepper.isContinuous = false
         quantityStepper.autorepeat = false
-        quantityStepper.addTarget(self, action: #selector(beginHighlightStepper), for: .touchDown)
         quantityStepper.addTarget(self, action: #selector(stepperTouched), for: .touchUpInside)
-        quantityStepper.addTarget(self, action: #selector(endHighlightStepper), for: .touchUpOutside)
-
     }
     
     func setupButton() {
@@ -95,11 +92,6 @@ class ItemTableViewCell: UITableViewCell {
         addToShoppingListButton.addTarget(self, action: #selector(addToListButtonPressed), for: .touchUpInside)
         addToShoppingListButton.addTarget(self, action: #selector(endHighlightButton), for: .touchUpOutside)
         
-    }
-    
-    @objc func beginHighlightStepper() {
-    }
-    @objc func endHighlightStepper() {
     }
     
     @objc func stepperTouched() {

@@ -11,8 +11,6 @@ import UIKit
 class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let tableView = UITableView()
-
-    
     var update: Bool = false {
         didSet {
             tableView.reloadData()

@@ -99,22 +99,21 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
             shelfEditView.frame = CGRect(x: (window.frame.width - width), y: -(window.frame.height), width: width, height: height)
             blackView.frame = window.frame
             blackView.alpha = 0
+            self.blackView.alpha = 1
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                self.blackView.alpha = 1
                 shelfEditView.frame = CGRect(x: (window.frame.width - width) / 2, y: (window.frame.height - height) / 2, width: shelfEditView.frame.width, height: shelfEditView.frame.height)
             }, completion: nil)
         }
     }
     @objc func handleDismiss() {
-        self.shelvesView.update = true
-        guard let shelfEditView = editShelfViewController.view else {return}
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+        if let window = UIApplication.shared.keyWindow {
+            self.shelvesView.update = true
+            guard let shelfEditView = editShelfViewController.view else {return}
             self.blackView.alpha = 0
-            if let window = UIApplication.shared.keyWindow {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 shelfEditView.frame = CGRect(x: -(window.frame.width), y: 0, width: shelfEditView.frame.width, height: shelfEditView.frame.height)
+            }) { (success) in
             }
-        }) { (success) in
-            print("animation complete")
         }
     }
     
@@ -212,7 +211,7 @@ extension MainViewController {
         shelvesView.willMove(toParentViewController: self)
         addChildViewController(shelvesView)
         self.view.addSubview(shelvesView.view)
-        shelvesView.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        shelvesView.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         shelvesView.view.frame = CGRect(x: 0, y: view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
         shelvesView.didMove(toParentViewController: self)
         globalCurrentView = 1
