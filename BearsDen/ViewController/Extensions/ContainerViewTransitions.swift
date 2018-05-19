@@ -208,13 +208,16 @@ extension MainViewController {
         oldVC.willMove(toParentViewController: nil)
         self.addChildViewController(newVC)
         newVC.view.frame = newStartFrame
+
         
         transition(from: oldVC, to: newVC, duration: 0.2, options: [.curveEaseOut], animations: {
             oldVC.view.frame = oldfinishFrame
             newVC.view.frame = newEndframe
         }, completion: { (success) in
+            oldVC.view.removeFromSuperview()
             oldVC.removeFromParentViewController()
             newVC.willMove(toParentViewController: self)
+            self.view.addSubview(newVC.view)
         })
     }
     

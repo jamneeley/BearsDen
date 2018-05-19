@@ -54,7 +54,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if let window = UIApplication.shared.keyWindow {
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
             blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismiss)))
-        
             self.addChildViewController(editShelfViewController)
             view.addSubview(shelfEditView)
             window.addSubview(blackView)
@@ -309,6 +308,5 @@ extension ItemsViewController {
         itemTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }
-
 
 

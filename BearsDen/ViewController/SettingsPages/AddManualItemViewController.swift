@@ -160,7 +160,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
                         self.inDataBase = nil
                         ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
-                            self.presentSaveAlert(WithTitle: "Saved to phone and database updated", message: "Thank you for helping to maintain our database!")
+                            self.saveAnimation()
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
                         }
@@ -173,7 +173,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
                         self.inDataBase = nil
                         ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
-                      self.presentSaveAlert(WithTitle: "Saved to phone and database", message: "thank you for contributing to our database")
+                            self.saveAnimation()
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
                         }
@@ -182,9 +182,10 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
             //there isnt a barcode number or it isnt a number
             } else {
                 ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: "", shelf: shelf)
-                presentSaveAlert(WithTitle: "Saved Successfully", message: "")
+                saveAnimation()
                 nameTextField.text = ""
                 barcodeTextField.text = ""
+                
             }
         //itemName and quantity doesnt exist or quantity isnt a number
         } else {
@@ -208,6 +209,22 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return true
+    }
+    
+    func saveAnimation() {
+        let brightView = UIView()
+        brightView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        view.addSubview(brightView)
+        brightView.backgroundColor = Colors.clear
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseIn], animations: {
+            brightView.backgroundColor = Colors.white
+        }) { (success) in
+            UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+                brightView.backgroundColor = Colors.clear
+                brightView.removeFromSuperview()
+            }, completion: { (success) in
+            })
+        }
     }
 }
 
