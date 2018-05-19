@@ -88,7 +88,6 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func keyboardWillHide() {
-        self.view.frame.origin.y = 0
         view.removeGestureRecognizer(singleTap)
     }
 
