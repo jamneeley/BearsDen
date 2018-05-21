@@ -110,8 +110,6 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     @objc func handleDismiss(setting: Setting) {
         //FIXME: Crash when touching blackview
         guard let parent = self.mainParentView else {return}
-        print("Setting Nuimber:  \(setting.number)")
-        print(setting.name)
         parent.showControllerFor(Setting: setting)
         
         UIView.animate(withDuration: 0.5, delay: 0.03, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {

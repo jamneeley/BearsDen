@@ -46,11 +46,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 
+//ideal features to implement
+
+/*
+premium user
+den across all family devices
+cloud updated
+user submitted tips
+want notifications for settings
+color scheme picker for settings
+featured retailers sponsered
+instruction page for app
+suggested shelve organization
+reminders for when to eat/buy
+ */
+
+
+
+
+
 
 //List Of Bugs
 
 //1. memory leak when switching to shelves view
 //2. clicking on shelf and it taking several seconds to load
+
+
+
+
 
 
 

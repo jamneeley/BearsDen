@@ -34,7 +34,7 @@ class ShelfController {
     }
     
     func ChangePictureforShelf(Shelf shelf: Shelf, photo: UIImage) {
-        let photoAsData = UIImagePNGRepresentation(photo)
+        let photoAsData = UIImageJPEGRepresentation(photo, 1.0)
         shelf.photo = photoAsData
         UserController.shared.saveToCoreData()
     }
