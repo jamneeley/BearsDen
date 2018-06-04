@@ -8,28 +8,62 @@
 
 import UIKit
 
-class ShoppingListViewController: UIViewController {
+class ShoppingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        view.backgroundColor = .yellow
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    let shoppingListTableView = UITableView()
+    
+    var update: Bool? {
+        didSet {
+            shoppingListTableView.reloadData()
+        }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        shoppingListTableView.delegate = self
+        shoppingListTableView.dataSource = self
+        shoppingListTableView.register(UITableViewCell.self, forCellReuseIdentifier: "shoppingCell")
+        setupTableView()
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
-    */
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let number = UserController.shared.user?.shoppingItems?.count ?? 0
+        return number
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = ShoppingListTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "shoppingCell")
+        tableView.dequeueReusableCell(withIdentifier: "shoppingCell", for: indexPath)
+        if let shoppingItem = UserController.shared.user?.shoppingItems?[indexPath.row] as? ShoppingItem {
+            cell.shoppingItem = shoppingItem
+            return cell
+        } else {
+            return UITableViewCell()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            guard let item = UserController.shared.user?.shoppingItems?[indexPath.row] as? ShoppingItem else {return}
+            ShoppingItemController.shared.delete(ShoppingItem: item)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+}
 
+
+////////////////////////////////////////////////////////
+//CONSTRAINTS
+////////////////////////////////////////////////////////
+
+extension ShoppingListViewController {
+    func setupTableView() {
+        view.addSubview(shoppingListTableView)
+        shoppingListTableView.translatesAutoresizingMaskIntoConstraints = false
+        shoppingListTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        shoppingListTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        shoppingListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        shoppingListTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+    }
 }

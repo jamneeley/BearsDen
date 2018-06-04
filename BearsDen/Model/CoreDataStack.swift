@@ -6,8 +6,7 @@
 //  Copyright © 2018 JamesNeeley. All rights reserved.
 //
 
-import Foundation
-import CoreData
+
 import CoreData
 
 class CoreDataStack {

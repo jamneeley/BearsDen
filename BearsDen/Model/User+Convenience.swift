@@ -6,7 +6,7 @@
 //  Copyright © 2018 JamesNeeley. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import CoreData
 
 extension User {

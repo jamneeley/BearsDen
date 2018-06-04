@@ -9,6 +9,8 @@
 import Foundation
 
 class GoalController {
+    
+    static let shared = GoalController()
 
     func createNewGoal(completionDate: Date, user: User) {
         let _ = Goal(completionDate: completionDate, user: user)
