@@ -14,11 +14,9 @@ class TipsController {
     static let shared = TipsController()
     let tips: [[[String: String]]] = [
         
-    [
     //getting started
         
-    
-    ["testing 1": "testing the body 1"]],
+    [["testing 1": "testing the body 1"]],
     
     //some other section
         
@@ -45,6 +43,7 @@ class TipsController {
      ["testing19": "testing the body 1"],
      ["testing20": "testing 2 body"],
      ["testing21": "testing body 2"]]
-    
+        
     ]
+    
 }

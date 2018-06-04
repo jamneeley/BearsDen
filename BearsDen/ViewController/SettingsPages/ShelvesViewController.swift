@@ -11,19 +11,27 @@ import UIKit
 class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let tableView = UITableView()
+    
     var update: Bool = false {
+        
         didSet {
+            
             tableView.reloadData()
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        tableView.removeFromSuperview()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObjects()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "shelfCell")
+        tableView.register(ShelfTableViewCell.self, forCellReuseIdentifier: "shelfCell")
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
         tableView.reloadData()
     }
     
@@ -32,6 +40,7 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func setupTableView() {
+        
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
@@ -43,14 +52,14 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = ShelfTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "shelfCell")
-        tableView.dequeueReusableCell(withIdentifier: "shelfCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "shelfCell", for: indexPath) as! ShelfTableViewCell
         if let shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf {
             cell.shelf = shelf
             return cell
         } else {
             return UITableViewCell()
         }
+//        return ShelfTableViewCell()
     }
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

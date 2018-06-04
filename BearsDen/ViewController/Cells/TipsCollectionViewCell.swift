@@ -22,7 +22,7 @@ class TipsCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(titleLabel)
-        addConstraintsWithFormat(format: "H: |-5-[v0]-5-|", views: titleLabel)
+        addConstraintsWithFormat(format: "H:|-5-[v0]-5-|", views: titleLabel)
         titleLabel.text = "blah"
 //        addConstraintsWithFormat(format: "V:|-5-[v0]-5-|", views: titleLabel)
     }

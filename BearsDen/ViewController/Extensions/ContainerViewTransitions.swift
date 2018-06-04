@@ -198,6 +198,7 @@ extension MainViewController {
     }
     
     func changeVCfrom(OldVC oldVC: UIViewController, newVC: UIViewController) {
+        oldVC.deallocate()
         
         let newStartFrame = CGRect(x: 0 + self.view.frame.width, y: 0, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
         
@@ -238,5 +239,11 @@ extension MainViewController {
         navBar.addSubview(button)
         button.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
         button.trailingAnchor.constraint(equalTo: navBar.trailingAnchor, constant: -8).isActive = true
+    }
+}
+
+extension UIViewController {
+    func deallocate() {
+        
     }
 }

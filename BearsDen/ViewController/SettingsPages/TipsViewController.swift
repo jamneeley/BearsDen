@@ -10,9 +10,8 @@ import UIKit
 
 class TipsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    
     let collectionView: UICollectionView = {
-        let layout = UICollectionViewLayout()
+        let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .yellow
         return cv
@@ -22,10 +21,10 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupObjects()
-        collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.register(TipsCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
+        setupObjects()
     }
     
     func setupObjects() {
@@ -47,25 +46,23 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 50)
-//        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height * 0.07)
+        return CGSize(width: collectionView.frame.width / 2 - 16, height: 100)
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 25
-    }
-    
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        return UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
+//    }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! TipsCollectionViewCell
-        print("cellforitemat: \(TipsController.shared.tips[indexPath.section][indexPath.row])")
+//        print("cellForItemAt: \(TipsController.shared.tips[indexPath.section][indexPath.row])")
         let tip = TipsController.shared.tips[indexPath.section][indexPath.row]
         print(tip)
         cell.tip = tip
+        cell.layer.cornerRadius = 20
         return cell
     }
-
 }
-
 
 ////////////////////////////////////////////////////////
 //CONSTRAINTS
