@@ -215,6 +215,7 @@ extension MainViewController {
             oldVC.view.frame = oldfinishFrame
             newVC.view.frame = newEndframe
         }, completion: { (success) in
+            oldVC.willMove(toParentViewController: nil)
             oldVC.view.removeFromSuperview()
             oldVC.removeFromParentViewController()
             newVC.willMove(toParentViewController: self)
@@ -244,6 +245,5 @@ extension MainViewController {
 
 extension UIViewController {
     func deallocate() {
-        
     }
 }
