@@ -11,6 +11,12 @@ import UIKit
 class SectionHeader: UICollectionReusableView {
     let sectionHeaderLabel = UILabel()
     
+    var sectionHeader: String? {
+        didSet{
+            updateHeader()
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(sectionHeaderLabel)
@@ -19,6 +25,11 @@ class SectionHeader: UICollectionReusableView {
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder: ) has not been implemented")
+    }
+    
+    func updateHeader() {
+        guard let sectionHeader = sectionHeader else {return}
+        sectionHeaderLabel.text = sectionHeader
     }
 }
 
@@ -50,15 +61,13 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: header, for: indexPath) as? SectionHeader {
             sectionHeader.backgroundColor = .white
-            sectionHeader.sectionHeaderLabel.text = "\(TipsController.shared.sectionHeaders[indexPath.section])"
+            sectionHeader.sectionHeader = TipsController.shared.sectionHeaders[indexPath.section]
             return sectionHeader
         }
         return UICollectionReusableView()
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 80)
@@ -80,7 +89,6 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let tipDetailVC = TipDetailViewController()
         tipDetailVC.tip = tip
         self.present(tipDetailVC, animated: true, completion: nil)
-        
     }
     
 

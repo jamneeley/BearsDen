@@ -9,7 +9,6 @@
 import UIKit
 
 class TipsCollectionViewCell: UICollectionViewCell {
-    
 
     var titleLabel = UILabel()
     
@@ -31,7 +30,6 @@ class TipsCollectionViewCell: UICollectionViewCell {
     
     func updateViews() {
         guard let tip = tip else {return}
-        
         backgroundColor = Colors.green
         titleLabel.text = tip.keys.first
     }
