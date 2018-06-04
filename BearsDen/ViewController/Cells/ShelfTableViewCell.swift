@@ -23,7 +23,7 @@ class ShelfTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        // // // // // // // // // // // possible memory leak?
+        
         
         setupViews()
         addSubview(shelfImageView)
@@ -48,7 +48,7 @@ class ShelfTableViewCell: UITableViewCell {
         shelfImageView.image = photo ?? #imageLiteral(resourceName: "imagePlaceHolder")
         ShelfNameLabel.text = shelf.name
         itemCountLabel.text = "\(shelf.items?.count ?? 0) Items"
-        shelfImageView.layer.cornerRadius = shelfImageView.bounds.size.width * 0.5 
+        shelfImageView.layer.cornerRadius = shelfImageView.bounds.size.width * 0.5
     }
     
     override var isHighlighted: Bool {

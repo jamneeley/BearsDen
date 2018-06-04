@@ -78,6 +78,8 @@
 		9DB6171B20ACD23900B87C6C /* ShelfEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6171A20ACD23900B87C6C /* ShelfEditViewController.swift */; };
 		9DB6172020AD150300B87C6C /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DB6171F20AD150300B87C6C /* camera.png */; };
 		9DB6172220AD155200B87C6C /* photoLibrary.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DB6172120AD155100B87C6C /* photoLibrary.png */; };
+		9DB6172A20B307E100B87C6C /* TipsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6172920B307E100B87C6C /* TipsController.swift */; };
+		9DB6172C20B3110F00B87C6C /* TipsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6172B20B3110F00B87C6C /* TipsCollectionViewCell.swift */; };
 		9DC23BC32097DCED00C2F111 /* BearsDenLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DC23BC22097DCED00C2F111 /* BearsDenLogo.png */; };
 		9DC23BE32099033400C2F111 /* User+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC23BE22099033400C2F111 /* User+Convenience.swift */; };
 		9DC23BE52099041C00C2F111 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC23BE42099041C00C2F111 /* UserController.swift */; };
@@ -190,6 +192,8 @@
 		9DB6171A20ACD23900B87C6C /* ShelfEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfEditViewController.swift; sourceTree = "<group>"; };
 		9DB6171F20AD150300B87C6C /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
 		9DB6172120AD155100B87C6C /* photoLibrary.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photoLibrary.png; sourceTree = "<group>"; };
+		9DB6172920B307E100B87C6C /* TipsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsController.swift; sourceTree = "<group>"; };
+		9DB6172B20B3110F00B87C6C /* TipsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipsCollectionViewCell.swift; sourceTree = "<group>"; };
 		9DC23BC22097DCED00C2F111 /* BearsDenLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BearsDenLogo.png; sourceTree = "<group>"; };
 		9DC23BE22099033400C2F111 /* User+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Convenience.swift"; sourceTree = "<group>"; };
 		9DC23BE42099041C00C2F111 /* UserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
@@ -243,6 +247,7 @@
 				9D8477A5209A8052005F219B /* ItemTableViewCell.swift */,
 				9D8477AF209D0486005F219B /* SettingsCollectionViewCell.swift */,
 				9DCF094820A60FE4009471F8 /* ShoppingListTableViewCell.swift */,
+				9DB6172B20B3110F00B87C6C /* TipsCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -407,6 +412,7 @@
 				9DCF094620A60BC6009471F8 /* ShoppingItemController.swift */,
 				9D7EA34620A4CF900005563C /* CloudKitManager.swift */,
 				9D7EA34820A4CF9C0005563C /* CloudItemController.swift */,
+				9DB6172920B307E100B87C6C /* TipsController.swift */,
 			);
 			path = ModelController;
 			sourceTree = "<group>";
@@ -563,6 +569,7 @@
 				9D84780020A35DDB005F219B /* NSLayoutConstraint+Extensions.swift in Sources */,
 				9D847781209925B9005F219B /* ewDenNameViewController.swift in Sources */,
 				9D8477F220A35DBD005F219B /* CameraViewController.swift in Sources */,
+				9DB6172C20B3110F00B87C6C /* TipsCollectionViewCell.swift in Sources */,
 				9DCF094720A60BC6009471F8 /* ShoppingItemController.swift in Sources */,
 				9DC82D07208A53550068DD8E /* Goal+Convenience.swift in Sources */,
 				9DC82D09208A535D0068DD8E /* ShelfController.swift in Sources */,
@@ -581,6 +588,7 @@
 				9DC23BEA209913A900C2F111 /* CoreDataStack.swift in Sources */,
 				9DC82D05208A53490068DD8E /* Item+Convenience.swift in Sources */,
 				9DAD6F8D20A4C32D001F777F /* CloudItem.swift in Sources */,
+				9DB6172A20B307E100B87C6C /* TipsController.swift in Sources */,
 				9D84780120A35DDB005F219B /* UIViewController+Extensions.swift in Sources */,
 				9D8477A2209A7C65005F219B /* ItemsViewController.swift in Sources */,
 				9DC82D0B208A53640068DD8E /* ItemController.swift in Sources */,
