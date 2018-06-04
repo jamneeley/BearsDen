@@ -21,8 +21,9 @@ class TipsCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(titleLabel)
-        addConstraintsWithFormat(format: "H:|-\(frame.size.width * 0.25)-[v0]-\(frame.size.width * 0.25)-|", views: titleLabel)
-        addConstraintsWithFormat(format: "V:|-\(frame.size.height * 0.25)-[v0]-\(frame.size.height * 0.25)-|", views: titleLabel)
+        addConstraintsWithFormat(format: "H:|-\(10)-[v0]-\(10)-|", views: titleLabel)
+        addConstraintsWithFormat(format: "V:|-\(10)-[v0]-\(10)-|", views: titleLabel)
+        titleLabel.numberOfLines = 0
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder: ) has not been implemented")

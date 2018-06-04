@@ -9,8 +9,8 @@
 import UIKit
 
 class SectionHeader: UICollectionReusableView {
-    let sectionHeaderLabel = UILabel()
     
+    let sectionHeaderLabel = UILabel()
     var sectionHeader: String? {
         didSet{
             updateHeader()
@@ -74,12 +74,10 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        print("section count: \(TipsController.shared.tips.count)")
         return TipsController.shared.tips.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("number of items in section: \(TipsController.shared.tips[section].count)")
         return TipsController.shared.tips[section].count
     }
     
@@ -88,7 +86,8 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         let tipDetailVC = TipDetailViewController()
         tipDetailVC.tip = tip
-        self.present(tipDetailVC, animated: true, completion: nil)
+        let navController = UINavigationController(rootViewController: tipDetailVC)
+        self.present(navController, animated: true, completion: nil)
     }
     
 
