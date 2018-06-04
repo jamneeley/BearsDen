@@ -221,6 +221,7 @@ extension MainViewController {
             newVC.willMove(toParentViewController: self)
             self.view.addSubview(newVC.view)
         })
+    
     }
     
     //MARK: - Change button based on settings page tapped

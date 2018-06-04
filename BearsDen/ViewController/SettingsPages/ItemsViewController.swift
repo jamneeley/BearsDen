@@ -24,7 +24,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        itemTableView.register(UITableViewCell.self, forCellReuseIdentifier: "itemCell")
+        itemTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "itemCell")
         itemTableView.delegate = self
         setupObjects()
         
@@ -164,9 +164,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = ItemTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "itemCell")
-        
-        itemTableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath)
+        let cell = itemTableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath) as! ItemTableViewCell
         if shelf != nil {
             if let item = shelf?.items?[indexPath.row] as? Item {
                 cell.delegate = self

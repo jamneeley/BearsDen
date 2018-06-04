@@ -22,9 +22,8 @@ class TipsCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(titleLabel)
-        addConstraintsWithFormat(format: "H:|-5-[v0]-5-|", views: titleLabel)
-        titleLabel.text = "blah"
-//        addConstraintsWithFormat(format: "V:|-5-[v0]-5-|", views: titleLabel)
+        addConstraintsWithFormat(format: "H:|-\(frame.size.width * 0.25)-[v0]-\(frame.size.width * 0.25)-|", views: titleLabel)
+        addConstraintsWithFormat(format: "V:|-\(frame.size.height * 0.25)-[v0]-\(frame.size.height * 0.25)-|", views: titleLabel)
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder: ) has not been implemented")
@@ -32,7 +31,8 @@ class TipsCollectionViewCell: UICollectionViewCell {
     
     func updateViews() {
         guard let tip = tip else {return}
-        backgroundColor = .blue
+        
+        backgroundColor = Colors.green
         titleLabel.text = tip.keys.first
     }
 }

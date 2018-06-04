@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D4670A720C5B5DB00D387FD /* TipDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4670A620C5B5DB00D387FD /* TipDetailViewController.swift */; };
 		9D7EA34720A4CF900005563C /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7EA34620A4CF900005563C /* CloudKitManager.swift */; };
 		9D7EA34920A4CF9C0005563C /* CloudItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7EA34820A4CF9C0005563C /* CloudItemController.swift */; };
 		9D7EA34B20A4E17C0005563C /* AddBarcodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */; };
@@ -116,6 +117,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9D4670A620C5B5DB00D387FD /* TipDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipDetailViewController.swift; sourceTree = "<group>"; };
 		9D7EA34620A4CF900005563C /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		9D7EA34820A4CF9C0005563C /* CloudItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudItemController.swift; sourceTree = "<group>"; };
 		9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBarcodeViewController.swift; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 				9D8477C920A10F9F005F219B /* MainViewController.swift */,
 				9D8477AD209CFA4E005F219B /* SettingsLauncher.swift */,
 				9DB6171A20ACD23900B87C6C /* ShelfEditViewController.swift */,
+				9D4670A620C5B5DB00D387FD /* TipDetailViewController.swift */,
 				9D8477B3209D2164005F219B /* Cells */,
 				9D8477B620A0A1BD005F219B /* SettingsPages */,
 				9D84779C209A766F005F219B /* Extensions */,
@@ -559,6 +562,7 @@
 				9DC23BE82099101400C2F111 /* User.xcdatamodeld in Sources */,
 				9D7EA34B20A4E17C0005563C /* AddBarcodeViewController.swift in Sources */,
 				9D84780520A35DDF005F219B /* Functions.swift in Sources */,
+				9D4670A720C5B5DB00D387FD /* TipDetailViewController.swift in Sources */,
 				9D8477AE209CFA4E005F219B /* SettingsLauncher.swift in Sources */,
 				9D8477F920A35DD5005F219B /* State.swift in Sources */,
 				9D8477CE20A218AF005F219B /* MyDenViewController.swift in Sources */,

@@ -11,19 +11,11 @@ import UIKit
 class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let tableView = UITableView()
-
     
     var update: Bool = false {
         didSet {
             tableView.reloadData()
         }
-    }
-
-    deinit {
-        print("shelves view dealocated")
-    }
-    override func viewDidDisappear(_ animated: Bool) {
-//        tableView.removeFromSuperview()
     }
     
     override func viewDidLoad() {
@@ -38,23 +30,18 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     func setupObjects() {
-        setupTableView()
-    }
-    
-    func setupTableView() {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         setupTableViewConstraints()
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return UserController.shared.user?.shelves?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = ShelfTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "shelfCell")
-        tableView.dequeueReusableCell(withIdentifier: "shelfCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "shelfCell", for: indexPath) as! ShelfTableViewCell
         if let shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf {
             cell.shelf = shelf
             return cell

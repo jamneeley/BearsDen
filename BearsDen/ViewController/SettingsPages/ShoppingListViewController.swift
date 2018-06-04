@@ -22,9 +22,8 @@ class ShoppingListViewController: UIViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         shoppingListTableView.delegate = self
         shoppingListTableView.dataSource = self
-        shoppingListTableView.register(UITableViewCell.self, forCellReuseIdentifier: "shoppingCell")
+        shoppingListTableView.register(ShoppingListTableViewCell.self, forCellReuseIdentifier: "shoppingCell")
         setupTableView()
-
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -33,8 +32,7 @@ class ShoppingListViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = ShoppingListTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "shoppingCell")
-        tableView.dequeueReusableCell(withIdentifier: "shoppingCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "shoppingCell", for: indexPath) as! ShoppingListTableViewCell
         if let shoppingItem = UserController.shared.user?.shoppingItems?[indexPath.row] as? ShoppingItem {
             cell.shoppingItem = shoppingItem
             return cell
