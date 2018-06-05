@@ -26,6 +26,9 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     lazy var shoppingView: ShoppingListViewController = {
         return ShoppingListViewController()
     }()
+    lazy var calculatorView: CalculatorViewController = {
+       return CalculatorViewController()
+    }()
     lazy var tipsView: TipsViewController = {
         return TipsViewController()
     }()

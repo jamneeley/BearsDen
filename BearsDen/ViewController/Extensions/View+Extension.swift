@@ -46,6 +46,18 @@ extension UITextField {
     }
 }
 
+extension String {
+    var isInt: Bool {
+        return Int(self) != nil
+    }
+} 
+
+extension Double {
+    func roundToPlaces(places: Int) ->Double {
+        let divisor = pow(10, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+}
 
 
 

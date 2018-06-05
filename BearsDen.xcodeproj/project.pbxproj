@@ -101,6 +101,8 @@
 		9DCF094920A60FE4009471F8 /* ShoppingListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCF094820A60FE4009471F8 /* ShoppingListTableViewCell.swift */; };
 		9DCF094B20A619FF009471F8 /* checkedBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DCF094A20A619FF009471F8 /* checkedBox.png */; };
 		9DCF094D20A61A07009471F8 /* checkMarkBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DCF094C20A61A07009471F8 /* checkMarkBox.png */; };
+		9DF445F320C5F603005EB7CC /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF445F220C5F603005EB7CC /* CalculatorViewController.swift */; };
+		9DF445F520C5F6AC005EB7CC /* calculatorButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF445F420C5F6AC005EB7CC /* calculatorButton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -218,6 +220,8 @@
 		9DCF094820A60FE4009471F8 /* ShoppingListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListTableViewCell.swift; sourceTree = "<group>"; };
 		9DCF094A20A619FF009471F8 /* checkedBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkedBox.png; sourceTree = "<group>"; };
 		9DCF094C20A61A07009471F8 /* checkMarkBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkMarkBox.png; sourceTree = "<group>"; };
+		9DF445F220C5F603005EB7CC /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
+		9DF445F420C5F6AC005EB7CC /* calculatorButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calculatorButton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -263,6 +267,7 @@
 				9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */,
 				9D8477B720A0A1DD005F219B /* GoalsViewController.swift */,
 				9D8477BB20A0A1F6005F219B /* ShoppingListViewController.swift */,
+				9DF445F220C5F603005EB7CC /* CalculatorViewController.swift */,
 				9D8477B920A0A1EB005F219B /* TipsViewController.swift */,
 				9D8477CD20A218AF005F219B /* MyDenViewController.swift */,
 				9D8477BD20A0A20E005F219B /* SettingsViewController.swift */,
@@ -343,6 +348,7 @@
 		9DC82CFE208A50970068DD8E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9DF445F420C5F6AC005EB7CC /* calculatorButton.png */,
 				9DB6172120AD155100B87C6C /* photoLibrary.png */,
 				9DB6171F20AD150300B87C6C /* camera.png */,
 				9DCF094C20A61A07009471F8 /* checkMarkBox.png */,
@@ -539,6 +545,7 @@
 				9D8FEB50208A6CFC00080EEE /* icon_29pt.png in Resources */,
 				9D847795209A72EE005F219B /* settingIconX2.png in Resources */,
 				9D8477C820A0F1CA005F219B /* tips2x.png in Resources */,
+				9DF445F520C5F6AC005EB7CC /* calculatorButton.png in Resources */,
 				9D847799209A7486005F219B /* addX2.png in Resources */,
 				9D8477B2209D0C98005F219B /* settingsGear2x.png in Resources */,
 			);
@@ -586,6 +593,7 @@
 				9DC82D03208A53420068DD8E /* Shelf+Convenience.swift in Sources */,
 				9D84779B209A7611005F219B /* ShelvesViewController.swift in Sources */,
 				9D8477B820A0A1DD005F219B /* GoalsViewController.swift in Sources */,
+				9DF445F320C5F603005EB7CC /* CalculatorViewController.swift in Sources */,
 				9D8477A6209A8052005F219B /* ItemTableViewCell.swift in Sources */,
 				9D8477F420A35DBD005F219B /* HeaderViewController.swift in Sources */,
 				9D8477DC20A29F2B005F219B /* AddManualItemViewController.swift in Sources */,

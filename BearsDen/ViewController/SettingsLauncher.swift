@@ -51,12 +51,11 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
         let shelves = Setting(name: "Shelves", imageName: "shelves2x", number: 1)
         let goals = Setting(name: "Goals", imageName: "checkMark2x", number: 2)
         let shoppingList = Setting(name: "Shopping List", imageName: "shoppingCartX2", number: 3)
-        let tips = Setting(name: "Tips", imageName: "tips2x", number: 4)
-        let myDen = Setting(name: "My Den", imageName: "bearsDenSideProfile", number: 5)
-        let settings = Setting(name: "Settings", imageName: "settingsGear2x", number: 6)
-        let terms = Setting(name: "terms", imageName: "settingsGear2x", number: 7)
-        let help = Setting(name: "help", imageName: "settingsGear2x", number: 8)
-        return [shelves, goals, shoppingList, tips, myDen, settings]
+        let calculator = Setting(name: "Calculator", imageName: "calculatorButton", number: 4)
+        let tips = Setting(name: "Tips", imageName: "tips2x", number: 5)
+        let myDen = Setting(name: "My Den", imageName: "bearsDenSideProfile", number: 6)
+        let settings = Setting(name: "Settings", imageName: "settingsGear2x", number: 7)
+        return [shelves, goals, shoppingList, calculator, tips, myDen, settings]
     }()
     
     //MARK - LifeCycle
