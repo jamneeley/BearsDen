@@ -11,9 +11,9 @@ extension MainViewController {
     
     //MARK: - Show Page Based on setting button tapped
     
-    func showControllerFor(Setting setting: Setting) {
+    func showControllerFor(MenuItem item: MenuItem) {
         if globalCurrentView == 1 {
-            switch setting.number {
+            switch item.number {
             case 1:
                 print("switch to same view")
             case 2:
@@ -50,7 +50,7 @@ extension MainViewController {
                 print("something bad happened with the settings transition")
             }
         } else if globalCurrentView == 2 {
-            switch setting.number {
+            switch item.number {
             case 1:
                 globalCurrentView = 1
                 changeVCfrom(OldVC: goalsView, newVC: shelvesView)
@@ -87,7 +87,7 @@ extension MainViewController {
                 print("something bad happened with the settings transition")
             }
         } else if globalCurrentView == 3 {
-            switch setting.number {
+            switch item.number {
             case 1:
                 globalCurrentView = 1
                 changeVCfrom(OldVC: shoppingView, newVC: shelvesView)
@@ -124,7 +124,7 @@ extension MainViewController {
                 print("something bad happened with the settings transition")
             }
         } else if globalCurrentView == 4 {
-            switch setting.number {
+            switch item.number {
             case 1:
                 globalCurrentView = 1
                 changeVCfrom(OldVC: calculatorView, newVC: shelvesView)
@@ -158,7 +158,7 @@ extension MainViewController {
                 print("something bad happened with the settings transition")
             }
         } else if globalCurrentView == 5 {
-            switch setting.number {
+            switch item.number {
             case 1:
                 globalCurrentView = 1
                 changeVCfrom(OldVC: tipsView, newVC: shelvesView)
@@ -192,7 +192,7 @@ extension MainViewController {
                 print("something bad happened with the settings transition")
             }
         } else if globalCurrentView == 6 {
-            switch setting.number {
+            switch item.number {
             case 1:
                 globalCurrentView = 1
                 changeVCfrom(OldVC: myDenView, newVC: shelvesView)
@@ -226,7 +226,7 @@ extension MainViewController {
                 print("something bad happened with the settings transition")
             }
         } else if globalCurrentView == 7 {
-            switch setting.number {
+            switch item.number {
             case 1:
                 globalCurrentView = 1
                 changeVCfrom(OldVC: settingsview, newVC: shelvesView)

@@ -72,6 +72,7 @@ extension SecondLaunchScreenViewController {
     
     func setupLogoImage() {
         view.addSubview(logoView)
+        logoView.layer.cornerRadius = CornerRadius.imageView
         logoView.image = UIImage(named: "BearsDenLogo")
         logoView.contentMode = UIViewContentMode.scaleAspectFill
         setupLogoImageConstraints()

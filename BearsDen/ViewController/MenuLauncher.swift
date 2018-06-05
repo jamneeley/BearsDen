@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Setting: NSObject {
+class MenuItem: NSObject {
     let name: String
     let imageName: String
     let number: Int
@@ -20,7 +20,7 @@ class Setting: NSObject {
     }
 }
 
-class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class MenuLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     //MARK - Properties
     
@@ -47,14 +47,14 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     //MARK - Settings
     
     let cellID = "cellID"
-    let settings: [Setting] = {
-        let shelves = Setting(name: "Shelves", imageName: "shelves2x", number: 1)
-        let goals = Setting(name: "Goals", imageName: "checkMark2x", number: 2)
-        let shoppingList = Setting(name: "Shopping List", imageName: "shoppingCartX2", number: 3)
-        let calculator = Setting(name: "Calculator", imageName: "calculatorButton", number: 4)
-        let tips = Setting(name: "Tips", imageName: "tips2x", number: 5)
-        let myDen = Setting(name: "My Den", imageName: "bearsDenSideProfile", number: 6)
-        let settings = Setting(name: "Settings", imageName: "settingsGear2x", number: 7)
+    let menuItem: [MenuItem] = {
+        let shelves = MenuItem(name: "Shelves", imageName: "shelves2x", number: 1)
+        let goals = MenuItem(name: "Goals", imageName: "checkMark2x", number: 2)
+        let shoppingList = MenuItem(name: "Shopping List", imageName: "shoppingCartX2", number: 3)
+        let calculator = MenuItem(name: "Calculator", imageName: "calculatorButton", number: 4)
+        let tips = MenuItem(name: "Tips", imageName: "tips2x", number: 5)
+        let myDen = MenuItem(name: "My Den", imageName: "bearsDenSideProfile", number: 6)
+        let settings = MenuItem(name: "Settings", imageName: "settingsGear2x", number: 7)
         return [shelves, goals, shoppingList, calculator, tips, myDen, settings]
     }()
     
@@ -84,7 +84,7 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
 
     //MARK - Methods
     
-    func showSettings() {
+    func showMenu() {
         checkDen()
         if let window = UIApplication.shared.keyWindow {
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
@@ -106,10 +106,10 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
         }
     }
     
-    @objc func handleDismiss(setting: Setting) {
+    @objc func handleDismiss(MenuItem: MenuItem) {
         //FIXME: Crash when touching blackview
         guard let parent = self.mainParentView else {return}
-        parent.showControllerFor(Setting: setting)
+        parent.showControllerFor(MenuItem: MenuItem)
         
         UIView.animate(withDuration: 0.5, delay: 0.03, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.blackView.alpha = 0
@@ -121,7 +121,7 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
         }
     }
     
-    @objc func handleTapDismiss(setting: Setting) {
+    @objc func handleTapDismiss(setting: MenuItem) {
         if let window = UIApplication.shared.keyWindow {
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.blackView.alpha = 0
@@ -135,13 +135,13 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     //MARK - CollectionView DataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return settings.count
+        return menuItem.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! SettingsCollectionViewCell
-        let setting = settings[indexPath.item]
-        cell.setting = setting
+        let item = self.menuItem[indexPath.item]
+        cell.setting = item
         return cell
     }
     
@@ -154,8 +154,8 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let setting = self.settings[indexPath.item]
-        handleDismiss(setting: setting)
+        let menuItem = self.menuItem[indexPath.item]
+        handleDismiss(MenuItem: menuItem)
     }
 }
 
@@ -163,13 +163,14 @@ class SettingsLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
 //CONSTRAINTS
 ////////////////////////////////////////////////////////
 
-extension SettingsLauncher {
+extension MenuLauncher {
     
     func setupDenImageView() {
         mainView.addSubview(denImage)
         denImage.clipsToBounds = true
         guard let data = UserController.shared.user?.picture else {return}
         let denImageFromData = UIImage(data: data)
+        denImage.layer.cornerRadius = CornerRadius.imageView
         denImage.image = denImageFromData
         setupDenImageViewConstraints()
     }

@@ -18,7 +18,7 @@ class SettingsCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    var setting: Setting? {
+    var setting: MenuItem? {
         didSet {
             nameLabel.text = setting?.name
             if let imageName = setting?.imageName {

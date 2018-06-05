@@ -26,6 +26,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         view.backgroundColor = .white
         itemTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "itemCell")
         itemTableView.delegate = self
+        itemTableView.allowsSelection = false
         setupObjects()
         
     }

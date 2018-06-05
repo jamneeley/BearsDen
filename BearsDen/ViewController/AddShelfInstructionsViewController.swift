@@ -59,6 +59,7 @@ extension AddShelfInstructionsViewController {
         denImageView.clipsToBounds = true
         denImageView.layer.masksToBounds = false
         denImageView.image = #imageLiteral(resourceName: "AddShelfInstructions")
+        denImageView.layer.cornerRadius = CornerRadius.imageView
         setupDenImageViewConstraints()
     }
     
