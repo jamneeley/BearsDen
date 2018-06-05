@@ -22,6 +22,7 @@ class ShoppingListViewController: UIViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         shoppingListTableView.delegate = self
         shoppingListTableView.dataSource = self
+        shoppingListTableView.allowsSelection = false
         shoppingListTableView.register(ShoppingListTableViewCell.self, forCellReuseIdentifier: "shoppingCell")
         setupTableView()
     }

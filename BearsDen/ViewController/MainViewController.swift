@@ -55,8 +55,8 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     var globalCurrentView: Int?
     
     // computed settings launcher....only fires code once
-    lazy var settingsLauncher: SettingsLauncher = {
-        let launcher = SettingsLauncher()
+    lazy var menuLauncher: MenuLauncher = {
+        let launcher = MenuLauncher()
         launcher.mainParentView = self
         return launcher
     }()
@@ -79,7 +79,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     //MARK: - Button Actions
     
     @objc func settingsButtonTapped() {
-        settingsLauncher.showSettings()
+        menuLauncher.showMenu()
     }
     
         // SHELF METHODS

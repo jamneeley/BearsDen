@@ -89,6 +89,7 @@ extension NewDenNameViewController {
     func setupBearHillView() {
         view.addSubview(bearHillView)
         bearHillView.image = #imageLiteral(resourceName: "BearOnHill")
+        bearHillView.layer.cornerRadius = CornerRadius.imageView
         setupBearHillViewConstraints()
     }
     

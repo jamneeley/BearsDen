@@ -131,11 +131,13 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
         print("update success")
         shelfTextField.text = shelf.name
         shelfImageView.image = image
+
     }
     
     func updatePicture() {
         guard let image = shelfImage else {return}
         shelfImageView.image = image
+
     }
 }
 
@@ -169,7 +171,7 @@ extension ShelfEditViewController {
         shelfNameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
     }
     
-    func  setupShelfTextField() {
+    func setupShelfTextField() {
         shelfTextField.setLeftPaddingPoints(10)
         shelfTextField.setRightPaddingPoints(10)
         shelfTextField.returnKeyType = .done
@@ -190,6 +192,8 @@ extension ShelfEditViewController {
     }
     
     func setupShelfImageView() {
+        shelfImageView.layer.masksToBounds = true
+        shelfImageView.layer.cornerRadius = CornerRadius.imageView
         shelfImageView.translatesAutoresizingMaskIntoConstraints = false
         shelfImageView.topAnchor.constraint(equalTo: shelfTextField.bottomAnchor, constant: 10).isActive = true
         shelfImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25).isActive = true

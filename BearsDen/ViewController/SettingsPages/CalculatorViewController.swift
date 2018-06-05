@@ -112,7 +112,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     
     func setupInstructionLabel() {
         view.addSubview(instructionLabel)
-        instructionLabel.text = "* to change household size go to \"My Den\"\n* Calculations are based off of national averages"
+        instructionLabel.text = "* to change household size go to \"Settings\"\n* Calculations are based off of national averages"
         instructionLabel.textColor = Colors.mediumGray
         instructionLabel.font = UIFont.boldSystemFont(ofSize: 10)
         instructionLabel.textAlignment = .center
@@ -189,8 +189,6 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         variablesStack.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
         variablesStack.bottomAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.2).isActive = true
     }
-    
-    
     
     //MARK: -Scroll View
     
@@ -316,13 +314,13 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         exampleStack.addArrangedSubview(fatsExampleLabel)
         exampleStack.axis = .vertical
         exampleStack.distribution = .fillEqually
-        grainsExampleLabel.text = "Grain (includes wheat, white rice, oats, corn, barley, pasta, etc.)"
-        legumesExampleLabel.text = "Legumes (dried beans, split peas, lentils, nuts, etc.)"
-        dairyExampleLabel.text = "Dairy Products (powdered milk, cheese powdercheese powder, canned cheese, etc.)"
-        sugarExampleLabel.text = "Sugars (white sugar, brown sugar, syrup, molasses, honey, etc.)"
-        leaveningAgentsExampleLabel.text = "Leavening Agents (Yeast, baking powder, powdered eggs, etc.)"
-        saltExampleLabel.text = "Salt (Table salt, sea salt, soy sauce, bouillon, etc.)"
-        fatsExampleLabel.text = "Fats (Vegetable oils, shortening, canned butter, etc.)"
+        grainsExampleLabel.text = "*  Grain (includes wheat, white rice, oats, corn, barley, pasta, etc.)"
+        legumesExampleLabel.text = "*  Legumes (dried beans, split peas, lentils, nuts, etc.)"
+        dairyExampleLabel.text = "*  Dairy Products (powdered milk, cheese powdercheese powder, canned cheese, etc.)"
+        sugarExampleLabel.text = "*  Sugars (white sugar, brown sugar, syrup, molasses, honey, etc.)"
+        leaveningAgentsExampleLabel.text = "*  Leavening Agents (Yeast, baking powder, powdered eggs, etc.)"
+        saltExampleLabel.text = "*  Salt (Table salt, sea salt, soy sauce, bouillon, etc.)"
+        fatsExampleLabel.text = "*  Fats (Vegetable oils, shortening, canned butter, etc.)"
         
         grainsExampleLabel.numberOfLines = 2
         legumesExampleLabel.numberOfLines = 2

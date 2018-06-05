@@ -20,13 +20,13 @@
 		9D847799209A7486005F219B /* addX2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D847798209A7486005F219B /* addX2.png */; };
 		9D84779B209A7611005F219B /* ShelvesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D84779A209A7611005F219B /* ShelvesViewController.swift */; };
 		9D84779E209A76AF005F219B /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D84779D209A76AF005F219B /* View+Extension.swift */; };
-		9D8477A0209A76B6005F219B /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D84779F209A76B6005F219B /* Colors.swift */; };
+		9D8477A0209A76B6005F219B /* GlobalProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D84779F209A76B6005F219B /* GlobalProperties.swift */; };
 		9D8477A2209A7C65005F219B /* ItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477A1209A7C65005F219B /* ItemsViewController.swift */; };
 		9D8477A4209A8045005F219B /* ShelfTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477A3209A8045005F219B /* ShelfTableViewCell.swift */; };
 		9D8477A6209A8052005F219B /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477A5209A8052005F219B /* ItemTableViewCell.swift */; };
 		9D8477A8209A86BB005F219B /* backX2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8477A7209A86BB005F219B /* backX2.png */; };
 		9D8477AA209B90D5005F219B /* BackLargeX1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8477A9209B90D5005F219B /* BackLargeX1.png */; };
-		9D8477AE209CFA4E005F219B /* SettingsLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477AD209CFA4E005F219B /* SettingsLauncher.swift */; };
+		9D8477AE209CFA4E005F219B /* MenuLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477AD209CFA4E005F219B /* MenuLauncher.swift */; };
 		9D8477B0209D0486005F219B /* SettingsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477AF209D0486005F219B /* SettingsCollectionViewCell.swift */; };
 		9D8477B2209D0C98005F219B /* settingsGear2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8477B1209D0C98005F219B /* settingsGear2x.png */; };
 		9D8477B820A0A1DD005F219B /* GoalsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477B720A0A1DD005F219B /* GoalsViewController.swift */; };
@@ -103,6 +103,7 @@
 		9DCF094D20A61A07009471F8 /* checkMarkBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DCF094C20A61A07009471F8 /* checkMarkBox.png */; };
 		9DF445F320C5F603005EB7CC /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF445F220C5F603005EB7CC /* CalculatorViewController.swift */; };
 		9DF445F520C5F6AC005EB7CC /* calculatorButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF445F420C5F6AC005EB7CC /* calculatorButton.png */; };
+		9DF445F720C6DDEC005EB7CC /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -132,13 +133,13 @@
 		9D847798209A7486005F219B /* addX2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addX2.png; sourceTree = "<group>"; };
 		9D84779A209A7611005F219B /* ShelvesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelvesViewController.swift; sourceTree = "<group>"; };
 		9D84779D209A76AF005F219B /* View+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
-		9D84779F209A76B6005F219B /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		9D84779F209A76B6005F219B /* GlobalProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalProperties.swift; sourceTree = "<group>"; };
 		9D8477A1209A7C65005F219B /* ItemsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewController.swift; sourceTree = "<group>"; };
 		9D8477A3209A8045005F219B /* ShelfTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfTableViewCell.swift; sourceTree = "<group>"; };
 		9D8477A5209A8052005F219B /* ItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
 		9D8477A7209A86BB005F219B /* backX2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backX2.png; sourceTree = "<group>"; };
 		9D8477A9209B90D5005F219B /* BackLargeX1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackLargeX1.png; sourceTree = "<group>"; };
-		9D8477AD209CFA4E005F219B /* SettingsLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLauncher.swift; sourceTree = "<group>"; };
+		9D8477AD209CFA4E005F219B /* MenuLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLauncher.swift; sourceTree = "<group>"; };
 		9D8477AF209D0486005F219B /* SettingsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCollectionViewCell.swift; sourceTree = "<group>"; };
 		9D8477B1209D0C98005F219B /* settingsGear2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settingsGear2x.png; sourceTree = "<group>"; };
 		9D8477B720A0A1DD005F219B /* GoalsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsViewController.swift; sourceTree = "<group>"; };
@@ -222,6 +223,7 @@
 		9DCF094C20A61A07009471F8 /* checkMarkBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkMarkBox.png; sourceTree = "<group>"; };
 		9DF445F220C5F603005EB7CC /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		9DF445F420C5F6AC005EB7CC /* calculatorButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calculatorButton.png; sourceTree = "<group>"; };
+		9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,7 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				9D8477D120A237DB005F219B /* ContainerViewTransitions.swift */,
-				9D84779F209A76B6005F219B /* Colors.swift */,
+				9D84779F209A76B6005F219B /* GlobalProperties.swift */,
 				9D84779D209A76AF005F219B /* View+Extension.swift */,
 			);
 			path = Extensions;
@@ -254,6 +256,7 @@
 				9D8477AF209D0486005F219B /* SettingsCollectionViewCell.swift */,
 				9DCF094820A60FE4009471F8 /* ShoppingListTableViewCell.swift */,
 				9DB6172B20B3110F00B87C6C /* TipsCollectionViewCell.swift */,
+				9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -286,7 +289,6 @@
 				9D8477F520A35DD5005F219B /* FocusViewType.swift */,
 				9D8477F620A35DD5005F219B /* State.swift */,
 				9D8477F720A35DD5005F219B /* TorchMode.swift */,
-				9DC82CF4208A50820068DD8E /* LaunchScreen.storyboard */,
 				9D8477FB20A35DDB005F219B /* AVMetadataObject+Extensions.swift */,
 				9D8477FC20A35DDB005F219B /* NSLayoutConstraint+Extensions.swift */,
 				9D8477FE20A35DDB005F219B /* UIView+Extensions.swift */,
@@ -338,6 +340,7 @@
 		9DC82CFD208A50890068DD8E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9DC82CF4208A50820068DD8E /* LaunchScreen.storyboard */,
 				9DC82CF2208A50820068DD8E /* Assets.xcassets */,
 				9DC82CF7208A50820068DD8E /* Info.plist */,
 				9DC82CFE208A50970068DD8E /* Images */,
@@ -401,7 +404,7 @@
 				9D847780209925B9005F219B /* ewDenNameViewController.swift */,
 				9D847784209A4B59005F219B /* AddShelfInstructionsViewController.swift */,
 				9D8477C920A10F9F005F219B /* MainViewController.swift */,
-				9D8477AD209CFA4E005F219B /* SettingsLauncher.swift */,
+				9D8477AD209CFA4E005F219B /* MenuLauncher.swift */,
 				9DB6171A20ACD23900B87C6C /* ShelfEditViewController.swift */,
 				9D4670A620C5B5DB00D387FD /* TipDetailViewController.swift */,
 				9D8477B3209D2164005F219B /* Cells */,
@@ -570,12 +573,12 @@
 				9D7EA34B20A4E17C0005563C /* AddBarcodeViewController.swift in Sources */,
 				9D84780520A35DDF005F219B /* Functions.swift in Sources */,
 				9D4670A720C5B5DB00D387FD /* TipDetailViewController.swift in Sources */,
-				9D8477AE209CFA4E005F219B /* SettingsLauncher.swift in Sources */,
+				9D8477AE209CFA4E005F219B /* MenuLauncher.swift in Sources */,
 				9D8477F920A35DD5005F219B /* State.swift in Sources */,
 				9D8477CE20A218AF005F219B /* MyDenViewController.swift in Sources */,
 				9D8477D220A237DB005F219B /* ContainerViewTransitions.swift in Sources */,
 				9D84779E209A76AF005F219B /* View+Extension.swift in Sources */,
-				9D8477A0209A76B6005F219B /* Colors.swift in Sources */,
+				9D8477A0209A76B6005F219B /* GlobalProperties.swift in Sources */,
 				9D8477A4209A8045005F219B /* ShelfTableViewCell.swift in Sources */,
 				9D84780020A35DDB005F219B /* NSLayoutConstraint+Extensions.swift in Sources */,
 				9D847781209925B9005F219B /* ewDenNameViewController.swift in Sources */,
@@ -588,6 +591,7 @@
 				9D8477F120A35DBD005F219B /* BarcodeScannerViewController.swift in Sources */,
 				9DCF094920A60FE4009471F8 /* ShoppingListTableViewCell.swift in Sources */,
 				9D7EA34920A4CF9C0005563C /* CloudItemController.swift in Sources */,
+				9DF445F720C6DDEC005EB7CC /* SettingTableViewCell.swift in Sources */,
 				9DC23BE52099041C00C2F111 /* UserController.swift in Sources */,
 				9D8477CA20A10F9F005F219B /* MainViewController.swift in Sources */,
 				9DC82D03208A53420068DD8E /* Shelf+Convenience.swift in Sources */,

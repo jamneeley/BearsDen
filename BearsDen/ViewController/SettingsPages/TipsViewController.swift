@@ -49,6 +49,7 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(TipsCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
@@ -64,6 +65,9 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: header, for: indexPath) as? SectionHeader {
             sectionHeader.backgroundColor = .white
             sectionHeader.sectionHeader = TipsController.shared.sectionHeaders[indexPath.section]
+            sectionHeader.sectionHeaderLabel.textAlignment = .left
+            sectionHeader.sectionHeaderLabel.numberOfLines = 0
+            sectionHeader.sectionHeaderLabel.font = UIFont.boldSystemFont(ofSize: 22)
             return sectionHeader
         }
         return UICollectionReusableView()
@@ -72,6 +76,11 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 80)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width / 2 - (view.frame.width * 0.025), height: view.frame.height * 0.35)
+    }
+
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return TipsController.shared.tips.count
@@ -83,7 +92,6 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let tip = TipsController.shared.tips[indexPath.section][indexPath.row]
-        
         let tipDetailVC = TipDetailViewController()
         tipDetailVC.tip = tip
         let navController = UINavigationController(rootViewController: tipDetailVC)
@@ -91,15 +99,11 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width - 32, height: 75)
-    }
-
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! TipsCollectionViewCell
         let tip = TipsController.shared.tips[indexPath.section][indexPath.row]
         cell.tip = tip
-        cell.layer.cornerRadius = cell.frame.height / 2
+        cell.layer.cornerRadius = 12
         return cell
     }
 }
@@ -111,10 +115,11 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
 extension TipsViewController {
     func setupCollectionView() {
         view.addSubview(collectionView)
+        collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }
