@@ -9,7 +9,6 @@
 import UIKit
 
 class TipsCollectionViewCell: UICollectionViewCell {
-    
 
     var titleLabel = UILabel()
     
@@ -22,9 +21,9 @@ class TipsCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(titleLabel)
-        addConstraintsWithFormat(format: "H:|-5-[v0]-5-|", views: titleLabel)
-        titleLabel.text = "blah"
-//        addConstraintsWithFormat(format: "V:|-5-[v0]-5-|", views: titleLabel)
+        addConstraintsWithFormat(format: "H:|-\(10)-[v0]-\(10)-|", views: titleLabel)
+        addConstraintsWithFormat(format: "V:|-\(10)-[v0]-\(10)-|", views: titleLabel)
+        titleLabel.numberOfLines = 0
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder: ) has not been implemented")
@@ -32,7 +31,7 @@ class TipsCollectionViewCell: UICollectionViewCell {
     
     func updateViews() {
         guard let tip = tip else {return}
-        backgroundColor = .blue
+        backgroundColor = Colors.green
         titleLabel.text = tip.keys.first
     }
 }

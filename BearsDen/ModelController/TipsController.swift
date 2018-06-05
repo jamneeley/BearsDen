@@ -10,40 +10,96 @@ import UIKit
 
 
 class TipsController {
-
+    
     static let shared = TipsController()
+    
+    let sectionHeaders: [String] = [
+        "Just Starting to Food Storage",
+        "How to Store Certain Items",
+        "Food Storage, More Than Just Food",
+        "Organization",
+        "For Small Families",
+        "For Big Families",
+        "How to Get the Best Deals"
+    ]
+    
     let tips: [[[String: String]]] = [
         
-    //getting started
+        //Just Starting to Food Storage
         
-    [["testing 1": "testing the body 1"]],
-    
-    //some other section
+        [["This is a very long title. lets see how well it does on the textfield": "testing the body 1, testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1, testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1, testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1, testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1, testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1, testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1testing the body 1"],
+         ["2": "testing 2 body"],
+         ["3": "testing body 2"],
+         ["4": "testing body 2"],
+         ["5": "testing the body 1"],
+         ["6": "testing 2 body"],
+         ["7": "testing body 2"]],
         
-    [["testing2": "testing the body 1"],
-     ["testing3": "testing 2 body"],
-     ["testing4": "testing body 2"],
-     ["testing5": "testing body 2"],
-     ["testing6": "testing the body 1"],
-     ["testing7": "testing 2 body"],
-     ["testing8": "testing body 2"]],
-    
-    //another section
+        //How to Store Certain Items
         
-    [["testing9": "testing the body 1"],
-     ["testing10": "testing body 2"],
-     ["testing11": "testing the body 1"],
-     ["testing12": "testing 2 body"],
-     ["testing13": "testing body 2"],
-     ["testing14": "testing body 2"],
-     ["testing15": "testing the body 1"],
-     ["testing16": "testing 2 body"],
-     ["testing17": "testing body 2"],
-     ["testing18": "testing body 2"],
-     ["testing19": "testing the body 1"],
-     ["testing20": "testing 2 body"],
-     ["testing21": "testing body 2"]]
+        [["8": "testing the body 1"],
+         ["9": "testing 2 body"],
+         ["10": "testing body 2"],
+         ["11": "testing body 2"],
+         ["12": "testing the body 1"],
+         ["13": "testing 2 body"],
+         ["14": "testing body 2"]],
         
+        //Emergency Preparedness, More Than Just Fod
+        
+        [["15": "testing the body 1"],
+         ["16": "testing body 2"],
+         ["17": "testing the body 1"],
+         ["18": "testing 2 body"],
+         ["19": "testing body 2"],
+         ["20": "testing body 2"],
+         ["21": "testing the body 1"],
+         ["22": "testing 2 body"],
+         ["23": "testing body 2"],
+         ["24": "testing body 2"],
+         ["25": "testing the body 1"],
+         ["26": "testing 2 body"],
+         ["27": "testing body 2"]],
+        
+        //Organization
+        
+        [["28": "testing the body 1"],
+         ["29": "testing 2 body"],
+         ["30": "testing body 2"],
+         ["31": "testing body 2"],
+         ["32": "testing the body 1"],
+         ["33": "testing 2 body"],
+         ["34": "testing body 2"]],
+        
+        //For Small Families
+        
+        [["35": "testing the body 1"],
+         ["36": "testing 2 body"],
+         ["37": "testing body 2"],
+         ["38": "testing body 2"],
+         ["39": "testing the body 1"],
+         ["40": "testing 2 body"],
+         ["41": "testing body 2"]],
+        
+        //For Big Families
+        
+        [["42": "testing the body 1"],
+         ["43": "testing 2 body"],
+         ["44": "testing body 2"],
+         ["45": "testing body 2"],
+         ["46": "testing the body 1"],
+         ["47": "testing 2 body"],
+         ["48": "testing body 2"]],
+        
+        //How to Get the Best Deals
+        
+        [["49": "testing the body 1"],
+         ["50": "testing 2 body"],
+         ["51": "testing body 2"],
+         ["52": "testing body 2"],
+         ["53": "testing the body 1"],
+         ["54": "testing 2 body"],
+         ["55": "testing body 2"]]
     ]
     
 }

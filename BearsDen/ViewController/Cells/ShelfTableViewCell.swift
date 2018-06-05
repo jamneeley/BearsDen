@@ -22,9 +22,6 @@ class ShelfTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        
-        
         setupViews()
         addSubview(shelfImageView)
         addSubview(ShelfNameLabel)
@@ -34,7 +31,6 @@ class ShelfTableViewCell: UITableViewCell {
         addConstraintsWithFormat(format: "H:[v0]-10-|", views: itemCountLabel)
         ShelfNameLabel.translatesAutoresizingMaskIntoConstraints = false
         ShelfNameLabel.centerYAnchor.constraint(equalTo: shelfImageView.centerYAnchor, constant: 0).isActive = true
-//        addConstraintsWithFormat(format: "V:|-50-[v0]-50-|", views: ShelfNameLabel)
         addConstraintsWithFormat(format: "V:|-50-[v0]-50-|", views: itemCountLabel)
         addConstraintsWithFormat(format: "V:[v0(100)]", views: shelfImageView)
         shelfImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
