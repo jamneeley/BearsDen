@@ -97,14 +97,15 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
                 
                 //FIXME: - need accurate info
                 let weight = "2"
-                let catagory = "other"
+                let catagory = "Other"
+                let unit = "lbs"
                 
                 
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                 
                 
                     barcodeTextField.text = ""
-                CloudItemController.shared.update(cloudItem: cloudItem, name: name) { (success) in
+                CloudItemController.shared.update(cloudItem: cloudItem, name: name, weight: weight, catagory: catagory, unit: unit) { (success) in
                     if success {
                         //success updating cloud
                         DispatchQueue.main.async {
@@ -129,9 +130,10 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
                 
                 let weight = "2"
                 let catagory = "other"
+                let unit = "lbs"
                 
                 
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, catagory: catagory, barcode: "", shelf: shelf)
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
                 saveAnimation()
             }
             navigationController?.popViewController(animated: true)
@@ -174,7 +176,6 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
         }
     }
 }
-
 
 ////////////////////////////////////////////////////////
 //CONSTRAINTS

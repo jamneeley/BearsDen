@@ -21,8 +21,8 @@ class CloudItemController {
     
     //MARK: - CRUD
     
-    func createCloudItem(withName name: String, barcode: String, completion: @escaping(Bool) -> Void) {
-        let newCloudItem = CloudItem(name: name, barcode: barcode)
+    func createCloudItem(withName name: String, weight: String, catagory:String, unit: String, barcode: String, completion: @escaping(Bool) -> Void) {
+        let newCloudItem = CloudItem(name: name, weight: weight, catagory: catagory, unit: unit, barcode: barcode)
         cloudItem = newCloudItem
         let record = [CKRecord(cloudItem: newCloudItem)]
         cloudKitManager.modifyRecords(records: record, perRecordCompletion: nil) { (_, error) in
@@ -35,8 +35,11 @@ class CloudItemController {
         }
     }
     
-    func update(cloudItem: CloudItem, name: String, completion: @escaping(Bool) ->Void) {
+    func update(cloudItem: CloudItem, name: String, weight: String, catagory: String, unit: String, completion: @escaping(Bool) ->Void) {
         cloudItem.name = name
+        cloudItem.weight = weight
+        cloudItem.catagory = catagory
+        cloudItem.unit = unit
         let record = [CKRecord(cloudItem: cloudItem)]
         cloudKitManager.modifyRecords(records: record, perRecordCompletion: nil) { (_, error) in
             if let error = error {

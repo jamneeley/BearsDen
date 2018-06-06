@@ -180,16 +180,28 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         navigationController?.pushViewController(scannerViewController, animated: true)
     }
     
+    
+    
     @objc func saveButtonPressed() {
     self.view.isUserInteractionEnabled = false
         stopHighlightSave()
         guard let name = nameTextField.text,
-            let quantityAsString = quantityTextField.text,
-            let shelf = self.shelf else {return}
+        let quantityAsString = quantityTextField.text,
+        let shelf = self.shelf,
+        let weight = weightTextField.text
+        else {return}
         let date = datePicker.date
+        let unitIndex = unitPicker.selectedRow(inComponent: 0)
+        let catagoryIndex = catagoryPicker.selectedRow(inComponent: 0)
+        let unit = PickerViewProperties.units[unitIndex]
+        let catagory = PickerViewProperties.catagories[catagoryIndex]
         
-        //is there a quantity and is it a number?
-        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) && quantityAsString != "" && name != ""{
+        print(unit)
+        print(catagory)
+        
+        //is there a quantity and weight and are they both numbers?
+        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) &&  CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: weight))  && quantityAsString != "" && name != "" && weight != "" {
+            
             let barcodeNumber = barcodeTextField.text
             let quantity = Double(quantityAsString)
             
@@ -197,16 +209,12 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
             if barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)){
                 //does this barcode already exist in the DB?
                 if cloudItem != nil && inDataBase == true {
-                    CloudItemController.shared.update(cloudItem: self.cloudItem!, name: name) { (success) in
+                    CloudItemController.shared.update(cloudItem: self.cloudItem!, name: name, weight: weight, catagory: catagory, unit: unit) { (success) in
                         //reset the clouditem
                         self.cloudItem = nil
                         self.inDataBase = nil
-                        
-                        let weight = "2"
-                        let catagory = "other"
-                        
-                        
-                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                        print("ITEM SAVED WITH BARCODE AND CLOUD ITEM UPDATED")
+                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
                             self.saveAnimation()
                             self.nameTextField.text = ""
@@ -215,16 +223,12 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
                     }
                 // barcode doesnt exists in the database
                 } else {
-                    CloudItemController.shared.createCloudItem(withName: name, barcode: barcodeNumber!) { (success) in
+                    CloudItemController.shared.createCloudItem(withName: name, weight: weight, catagory: catagory, unit: unit, barcode: barcodeNumber!) { (success) in
                         //reset the clouditem
                         self.cloudItem = nil
                         self.inDataBase = nil
-                        
-                        let weight = "2"
-                        let catagory = "other"
-                        
-                        
-                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                        print("ITEM SAVED WITH BARCODE AND CLOUD ITEM SAVED")
+                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
                             self.saveAnimation()
                             self.nameTextField.text = ""
@@ -234,14 +238,8 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
                 }
             //there isnt a barcode number or it isnt a number
             } else {
-                
-                
-                
-                let weight = "2"
-                let catagory = "other"
-                
-                
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, catagory: catagory, barcode: "", shelf: shelf)
+                print("ITEM SAVED WITHOUT BARCODE")
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
                 saveAnimation()
                 nameTextField.text = ""
                 barcodeTextField.text = ""
@@ -249,7 +247,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
             }
         //itemName and quantity doesnt exist or quantity isnt a number
         } else {
-            presentSaveAlert(WithTitle: "Uh Oh", message: "You need an item name and quantity")
+            presentSaveAlert(WithTitle: "Uh Oh", message: "You need an item name, quantity and weight")
         }
         self.view.isUserInteractionEnabled = true
     }
@@ -317,10 +315,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         let label = UILabel()
         label.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         label.textAlignment = .center
-    
-        
         if pickerView == unitPicker {
-            print("TITLES SHOULD BE APPEARING")
             label.text = PickerViewProperties.units[row]
         } else if pickerView == catagoryPicker{
             label.text = PickerViewProperties.catagories[row]

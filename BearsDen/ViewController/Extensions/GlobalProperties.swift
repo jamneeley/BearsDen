@@ -26,6 +26,6 @@ struct CornerRadius {
 }
 
 struct PickerViewProperties {
-    static let units: [String] = ["lb.", "oz.", "gal."]
-    static let catagories: [String] = ["Grain", "Legume", "Dairy", "Sugar", "Leavening", "Salt", "Fat", "Water", "Protein", "Fruit", "Vegetable", "Medical", "Other"]
+    static let units: [String] = ["lb.", "oz.", "gal.", "fl. oz."]
+    static let catagories: [String] = ["Other", "Grain", "Protein", "Fruit", "Vegetable", "Legume", "Dairy", "Sugar", "Leavening", "Salt", "Fat", "Water", "Medical"]
 }
