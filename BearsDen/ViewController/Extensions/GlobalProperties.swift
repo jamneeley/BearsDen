@@ -24,3 +24,8 @@ struct CornerRadius {
     static let imageView: CGFloat = 15
     static let textField: CGFloat = 12
 }
+
+struct PickerViewProperties {
+    static let units: [String] = ["lb.", "oz.", "gal."]
+    static let catagories: [String] = ["Grain", "Legume", "Dairy", "Sugar", "Leavening", "Salt", "Fat", "Water", "Protein", "Fruit", "Vegetable", "Medical", "Other"]
+}

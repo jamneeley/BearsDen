@@ -26,10 +26,10 @@ class ShelfTableViewCell: UITableViewCell {
         addSubview(ShelfNameLabel)
         addSubview(itemCountLabel)
         ShelfNameLabel.numberOfLines = 3
-        addConstraintsWithFormat(format: "H:|-8-[v0(80)]-10-[v1]-80-|", views: shelfImageView, ShelfNameLabel)
+        addConstraintsWithFormat(format: "H:|-8-[v0(80)]", views: shelfImageView)
+        addConstraintsWithFormat(format: "H:|-95-[v0]", views: ShelfNameLabel)
         addConstraintsWithFormat(format: "H:[v0]-10-|", views: itemCountLabel)
         ShelfNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        ShelfNameLabel.centerYAnchor.constraint(equalTo: shelfImageView.centerYAnchor, constant: 0).isActive = true
         addConstraintsWithFormat(format: "V:|-15-[v0]-65-|", views: itemCountLabel)
         addConstraintsWithFormat(format: "V:|-15-[v0]-65-|", views: ShelfNameLabel)
         addConstraintsWithFormat(format: "V:[v0(80)]", views: shelfImageView)

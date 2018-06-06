@@ -104,6 +104,7 @@
 		9DF445F320C5F603005EB7CC /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF445F220C5F603005EB7CC /* CalculatorViewController.swift */; };
 		9DF445F520C5F6AC005EB7CC /* calculatorButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF445F420C5F6AC005EB7CC /* calculatorButton.png */; };
 		9DF445F720C6DDEC005EB7CC /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */; };
+		9DF445F920C758A0005EB7CC /* ClearBarCodeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF445F820C7589F005EB7CC /* ClearBarCodeButton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -224,6 +225,7 @@
 		9DF445F220C5F603005EB7CC /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		9DF445F420C5F6AC005EB7CC /* calculatorButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calculatorButton.png; sourceTree = "<group>"; };
 		9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		9DF445F820C7589F005EB7CC /* ClearBarCodeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClearBarCodeButton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -351,6 +353,7 @@
 		9DC82CFE208A50970068DD8E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9DF445F820C7589F005EB7CC /* ClearBarCodeButton.png */,
 				9DF445F420C5F6AC005EB7CC /* calculatorButton.png */,
 				9DB6172120AD155100B87C6C /* photoLibrary.png */,
 				9DB6171F20AD150300B87C6C /* camera.png */,
@@ -522,6 +525,7 @@
 				9D847797209A72F6005F219B /* settingIconX3.png in Resources */,
 				9DCF094B20A619FF009471F8 /* checkedBox.png in Resources */,
 				9DCF094D20A61A07009471F8 /* checkMarkBox.png in Resources */,
+				9DF445F920C758A0005EB7CC /* ClearBarCodeButton.png in Resources */,
 				9D8FEB48208A6CFC00080EEE /* icon_29pt@2x.png in Resources */,
 				9D8477C420A0EFC3005F219B /* checkMark2x.png in Resources */,
 				9DC82CF6208A50820068DD8E /* LaunchScreen.storyboard in Resources */,
