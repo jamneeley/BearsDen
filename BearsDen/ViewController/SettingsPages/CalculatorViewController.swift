@@ -280,14 +280,14 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         fatsAmountLabel.textAlignment = .right
         waterAmountLabel.textAlignment = .right
         
-        grainsAmountLabel.text = "0 Lbs"
-        legumesAmountLabel.text = "0 Lbs"
-        dairyAmountLabel.text = "0 Lbs"
-        sugarAmountLabel.text = "0 Lbs"
-        leaveningAgentsAmountLabel.text = "0 Lbs"
-        saltAmountLabel.text = "0 Lbs"
-        fatsAmountLabel.text = "0 Lbs"
-        waterAmountLabel.text = "0 Gal"
+        grainsAmountLabel.text = "0 lb"
+        legumesAmountLabel.text = "0 lb"
+        dairyAmountLabel.text = "0 lb"
+        sugarAmountLabel.text = "0 lb"
+        leaveningAgentsAmountLabel.text = "0 lb"
+        saltAmountLabel.text = "0 lb"
+        fatsAmountLabel.text = "0 lb"
+        waterAmountLabel.text = "0 gal"
         
         totalQuantityStack.axis = .vertical
         totalQuantityStack.distribution = .fillEqually

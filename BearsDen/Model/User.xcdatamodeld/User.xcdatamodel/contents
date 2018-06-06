@@ -6,11 +6,13 @@
     </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
         <attribute name="barcode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="catagory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ckRecordID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="expirationDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="quantity" attributeType="Double" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="stocked" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="weight" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="shelf" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Shelf" inverseName="items" inverseEntity="Shelf" syncable="YES"/>
     </entity>
     <entity name="Shelf" representedClassName="Shelf" syncable="YES" codeGenerationType="class">
@@ -35,7 +37,7 @@
     </entity>
     <elements>
         <element name="Goal" positionX="-407" positionY="-117" width="128" height="75"/>
-        <element name="Item" positionX="322" positionY="231" width="128" height="148"/>
+        <element name="Item" positionX="322" positionY="231" width="128" height="180"/>
         <element name="Shelf" positionX="115" positionY="18" width="128" height="105"/>
         <element name="ShoppingItem" positionX="-297" positionY="243" width="128" height="90"/>
         <element name="User" positionX="-108" positionY="-135" width="128" height="150"/>

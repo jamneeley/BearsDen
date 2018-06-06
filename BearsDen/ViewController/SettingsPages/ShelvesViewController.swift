@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol shelvesViewControllerDelegate: class {
+    func didSelectCellAtRow(shelf: Shelf)
+}
+
 class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let tableView = UITableView()
+    weak var delegate: shelvesViewControllerDelegate?
     
     var update: Bool = false {
         didSet {
@@ -20,8 +25,10 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupObjects()
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.register(ShelfTableViewCell.self, forCellReuseIdentifier: "shelfCell")
+        setupObjects()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,8 +38,6 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func setupObjects() {
         view.addSubview(tableView)
-        tableView.delegate = self
-        tableView.dataSource = self
         setupTableViewConstraints()
     }
     
@@ -60,11 +65,8 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let itemView = ItemsViewController()
         guard let shelf: Shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf else {return}
-        itemView.shelf = shelf
-        let navItem = UINavigationController(rootViewController: itemView)
-        present(navItem, animated: true, completion: nil)
+        delegate?.didSelectCellAtRow(shelf: shelf)
     }
 }
 

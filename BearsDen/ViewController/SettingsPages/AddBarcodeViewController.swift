@@ -94,7 +94,15 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
             let quantity = Double(quantityAsString)
             //does cloudItem, barcode number exist?
             if let cloudItem = self.cloudItem, barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)) {
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: barcodeNumber!, shelf: shelf)
+                
+                //FIXME: - need accurate info
+                let weight = "2"
+                let catagory = "other"
+                
+                
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                
+                
                     barcodeTextField.text = ""
                 CloudItemController.shared.update(cloudItem: cloudItem, name: name) { (success) in
                     if success {
@@ -117,7 +125,13 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate {
                 }
             //cloudItem doesnt exist or barcode doesnt exist
             } else {
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, barcode: "", shelf: shelf)
+                
+                
+                let weight = "2"
+                let catagory = "other"
+                
+                
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, catagory: catagory, barcode: "", shelf: shelf)
                 saveAnimation()
             }
             navigationController?.popViewController(animated: true)

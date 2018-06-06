@@ -8,7 +8,10 @@
 
 import UIKit
 
-class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, shelvesViewControllerDelegate  {
+    
+
+    
 
 
     //non page dependent objects
@@ -18,7 +21,9 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     
     //viewcontrollers
     lazy var shelvesView: ShelvesViewController = {
-        return ShelvesViewController()
+        let sv = ShelvesViewController()
+        sv.delegate = self
+        return sv
     }()
     lazy var goalsView: GoalsViewController = {
         return GoalsViewController()
@@ -172,7 +177,14 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         alert.addAction(save)
         present(alert, animated: true, completion: nil)
     }
-
+    
+    
+    func didSelectCellAtRow(shelf: Shelf) {
+        let itemView = ItemsViewController()
+        itemView.shelf = shelf
+        let navItem = UINavigationController(rootViewController: itemView)
+        present(navItem, animated: true, completion: nil)
+    }
 }
 
 
@@ -212,6 +224,7 @@ extension MainViewController {
 
     func setupShelvesView() {
         shelvesView.willMove(toParentViewController: self)
+        
         addChildViewController(shelvesView)
         self.view.addSubview(shelvesView.view)
         shelvesView.view.frame = CGRect(x: 0, y: view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))

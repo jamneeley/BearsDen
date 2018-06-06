@@ -286,6 +286,7 @@ extension MainViewController {
             oldVC.view.removeFromSuperview()
             oldVC.removeFromParentViewController()
             newVC.willMove(toParentViewController: self)
+            
             self.view.addSubview(newVC.view)
         })
     
