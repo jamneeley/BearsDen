@@ -200,17 +200,19 @@ extension ItemsViewController: BarcodeScannerCodeDelegate {
             if let cloudItem = cloudItem {
                 DispatchQueue.main.async {
                     guard let shelf = self.shelf else {return}
-                    let barCodeController = AddBarcodeViewController()
-                    self.navigationController?.popViewController(animated: true)
-                    self.navigationController?.pushViewController(barCodeController, animated: true)
-                    barCodeController.cloudItem = cloudItem
-                    barCodeController.shelf = shelf
+                    let addBarCodeController = AddBarcodeViewController()
+//                    self.navigationController?.popViewController(animated: true)
+                    self.navigationController?.pushViewController(addBarCodeController, animated: true)
+                    addBarCodeController.viewControllerToPopTo = self
+                    addBarCodeController.cloudItem = cloudItem
+                    addBarCodeController.shelf = shelf
                 }
             } else {
                 DispatchQueue.main.async {
                     let addManualController = AddManualItemViewController()
-                    self.navigationController?.popViewController(animated: true)
+//                    self.navigationController?.popViewController(animated: true)
                     self.navigationController?.pushViewController(addManualController, animated: true)
+                    addManualController.viewControllerToPopTo = self
                     addManualController.shelf = self.shelf
                     addManualController.barcode = code
                     addManualController.itemExists = false
@@ -219,6 +221,7 @@ extension ItemsViewController: BarcodeScannerCodeDelegate {
         }
     }
 }
+
 
 extension ItemsViewController: BarcodeScannerErrorDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {

@@ -60,12 +60,14 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
     var inDataBase: Bool?
     var itemExists: Bool?
     var cloudItem : CloudItem?
+    
     var barcode: String? {
         didSet {
             barcodeTextField.text = barcode
         }
     }
     var rotationAngle: CGFloat = -90 * (.pi/180)
+    var viewControllerToPopTo: UIViewController?
     
     func doesItemExist() {
         guard let itemExist = itemExists else {return}
@@ -88,8 +90,6 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         view.backgroundColor = .white
         NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil);
-        
-        print(unitPickerView.frame)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -195,9 +195,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         let catagoryIndex = catagoryPicker.selectedRow(inComponent: 0)
         let unit = PickerViewProperties.units[unitIndex]
         let catagory = PickerViewProperties.catagories[catagoryIndex]
-        
-        print(unit)
-        print(catagory)
+
         
         //is there a quantity and weight and are they both numbers?
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) &&  CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: weight))  && quantityAsString != "" && name != "" && weight != "" {
@@ -219,6 +217,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
                             self.saveAnimation()
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
+                            self.weightTextField.text = ""
                         }
                     }
                 // barcode doesnt exists in the database
@@ -233,17 +232,18 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
                             self.saveAnimation()
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
+                            self.weightTextField.text = ""
                         }
                     }
                 }
             //there isnt a barcode number or it isnt a number
             } else {
-                print("ITEM SAVED WITHOUT BARCODE")
+                print("ITEM SAVED LOCALLY WITHOUT BARCODE")
                 ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
                 saveAnimation()
                 nameTextField.text = ""
                 barcodeTextField.text = ""
-                
+                weightTextField.text = ""
             }
         //itemName and quantity doesnt exist or quantity isnt a number
         } else {
@@ -251,6 +251,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         }
         self.view.isUserInteractionEnabled = true
     }
+    
     
     func presentSaveAlert(WithTitle title: String, message: String) {
         var alert = UIAlertController()
@@ -343,20 +344,51 @@ extension AddManualItemViewController: BarcodeScannerCodeDelegate {
                     self.inDataBase = true
                     self.cloudItem = localClouditem
                     self.nameTextField.text = localClouditem.name
+                    self.weightTextField.text = localClouditem.weight
+                    let unitIndex = self.findIndexOf(Unit: localClouditem.unit, catagory: "")
+                    let catagoryIndex = self.findIndexOf(Unit: "", catagory: localClouditem.catagory)
+                    self.unitPicker.selectRow(unitIndex, inComponent: 0, animated: false)
+                    self.catagoryPicker.selectRow(catagoryIndex, inComponent: 0, animated: false)
                     self.barcodeTextField.text = code
-                    self.navigationController?.popViewController(animated: true)
-                    print("exists")
+                    if let viewToPopTo = self.viewControllerToPopTo {
+                        self.navigationController?.popToViewController(viewToPopTo, animated: true)
+                    }else {
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             } else {
                 DispatchQueue.main.async {
                     self.inDataBase = false
                     self.cloudItem = nil
                     self.barcodeTextField.text = code
-                    self.navigationController?.popViewController(animated: true)
-                    print("doesnt exist")
+                    if let viewToPopTo = self.viewControllerToPopTo {
+                        self.navigationController?.popToViewController(viewToPopTo, animated: true)
+                    }else {
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
         }
+    }
+    
+    func findIndexOf(Unit: String, catagory: String) -> Int {
+        if Unit != "" {
+            for item in PickerViewProperties.units {
+                if Unit == item {
+                    guard let index = PickerViewProperties.units.index(of: item) else {print("index doesnt exist for catagory"); return 0}
+                    return index
+                }
+            }
+        } else {
+            for item in PickerViewProperties.catagories {
+                if catagory == item {
+                    guard let index = PickerViewProperties.catagories.index(of: item) else {print("index doesnt exist for catagory"); return 0}
+                    return index
+                }
+            }
+        }
+        print("Not unit or catagory")
+         return 0
     }
 }
 
@@ -424,7 +456,6 @@ extension AddManualItemViewController {
         nameTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
         nameTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
         nameTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
-        nameTextField.heightAnchor.constraint(equalToConstant: view.frame.height * 0.05).isActive = true
         nameStack.distribution = .fill
         nameStack.axis = .horizontal
         nameStack.spacing = 5
@@ -437,7 +468,6 @@ extension AddManualItemViewController {
         quantityTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
         quantityTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
         quantityTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
-        quantityTextField.heightAnchor.constraint(equalToConstant: view.frame.height * 0.05).isActive = true
         quantityStack.distribution = .fill
         quantityStack.axis = .horizontal
         quantityStack.spacing = 5
@@ -450,7 +480,6 @@ extension AddManualItemViewController {
         weightTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
         weightTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
         weightTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
-        weightTextField.heightAnchor.constraint(equalToConstant: view.frame.height * 0.05).isActive = true
         weightStack.distribution = .fill
         weightStack.axis = .horizontal
         weightStack.spacing = 5
