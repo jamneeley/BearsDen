@@ -10,10 +10,6 @@ import UIKit
 
 class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, shelvesViewControllerDelegate  {
     
-
-    
-
-
     //non page dependent objects
     let navBar = UIView()
     let settingsButton = UIButton(type: UIButtonType.system)
@@ -155,7 +151,9 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         // Goal METHODS
     
     @objc func addGoalButtonTapped() {
-        print("AddGoalButton Pressed")
+        let goalDetailVC = GoalDetailViewController()
+        let navController = UINavigationController(rootViewController: goalDetailVC)
+        self.present(navController, animated: true, completion: nil)
     }
     
         // SHOPPING METHODS
@@ -182,8 +180,8 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     func didSelectCellAtRow(shelf: Shelf) {
         let itemView = ItemsViewController()
         itemView.shelf = shelf
-        let navItem = UINavigationController(rootViewController: itemView)
-        present(navItem, animated: true, completion: nil)
+        let navController = UINavigationController(rootViewController: itemView)
+        present(navController, animated: true, completion: nil)
     }
 }
 

@@ -451,10 +451,6 @@ extension AddManualItemViewController {
         //NAME STACK
         nameStack.addArrangedSubview(nameLabel)
         nameStack.addArrangedSubview(nameTextField)
-        nameLabel.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 260)!)
-        nameLabel.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        nameTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        nameTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
         nameTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
         nameStack.distribution = .fill
         nameStack.axis = .horizontal
@@ -463,10 +459,6 @@ extension AddManualItemViewController {
         //QUANTITY STACK
         quantityStack.addArrangedSubview(quantityLabel)
         quantityStack.addArrangedSubview(quantityTextField)
-        quantityLabel.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 260)!)
-        quantityLabel.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        quantityTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        quantityTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
         quantityTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
         quantityStack.distribution = .fill
         quantityStack.axis = .horizontal
@@ -475,10 +467,6 @@ extension AddManualItemViewController {
         //WEIGHT STACK
         weightStack.addArrangedSubview(weightLabel)
         weightStack.addArrangedSubview(weightTextField)
-        weightLabel.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 260)!)
-        weightLabel.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        weightTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        weightTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
         weightTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
         weightStack.distribution = .fill
         weightStack.axis = .horizontal

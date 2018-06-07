@@ -53,6 +53,11 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     
     let seperator = UIView()
     
+    let noteLabel = UILabel()
+    let rotateTip = UILabel()
+    let storageTip = UILabel()
+    let weightTip = UILabel()
+    let waterTip = UILabel()
     let grainsExampleLabel = UILabel()
     let legumesExampleLabel = UILabel()
     let dairyExampleLabel = UILabel()
@@ -76,8 +81,10 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     }
     
     func updateLabels() {
-        adultNumberLabel.text = UserController.shared.user?.adults
-        kidNumberLabel.text = UserController.shared.user?.kids
+        let adults = UserController.shared.user?.adults ?? "0"
+        let kids = UserController.shared.user?.kids ?? "0"
+        adultNumberLabel.text = adults
+        kidNumberLabel.text = kids
     }
     
     //MARK: - Setup
@@ -112,8 +119,8 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     
     func setupInstructionLabel() {
         view.addSubview(instructionLabel)
-        instructionLabel.text = "* to change household size go to \"Settings\"\n* Calculations are based off of national averages"
-        instructionLabel.textColor = Colors.mediumGray
+        instructionLabel.text = "* Change household size in \"Settings\"\n* Calculations are based off national averages"
+        instructionLabel.textColor = Colors.darkGray
         instructionLabel.font = UIFont.boldSystemFont(ofSize: 10)
         instructionLabel.textAlignment = .center
         setupInstructionLabelConstraints()
@@ -150,8 +157,10 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     }
 
     func setupWeeksTextField() {
-        adultNumberLabel.text = UserController.shared.user?.adults
-        kidNumberLabel.text = UserController.shared.user?.kids
+        let adults = UserController.shared.user?.adults ?? "0"
+        let kids = UserController.shared.user?.kids ?? "0"
+        adultNumberLabel.text = adults
+        kidNumberLabel.text = kids
         weeksTextField.placeholder = "0"
         weeksTextField.layer.borderWidth = 2
         weeksTextField.layer.borderColor = Colors.softBlue.cgColor
@@ -223,7 +232,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
         contentView.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 1.5).isActive = true
+        contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 2.5).isActive = true
     }
     
     func setupMainCalculatorStack() {
@@ -236,7 +245,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         mainCalculatorStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
         mainCalculatorStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
         mainCalculatorStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
-        mainCalculatorStack.bottomAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -view.frame.height * 0.15).isActive = true
+        mainCalculatorStack.bottomAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -view.frame.height * 0.8).isActive = true
     }
     
     func setupItemCatagoryStack() {
@@ -297,14 +306,20 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         contentView.addSubview(seperator)
         seperator.backgroundColor = Colors.yellow
         seperator.translatesAutoresizingMaskIntoConstraints = false
-        seperator.topAnchor.constraint(equalTo: mainCalculatorStack.bottomAnchor, constant: 30).isActive = true
+        seperator.topAnchor.constraint(equalTo: mainCalculatorStack.bottomAnchor, constant: 20).isActive = true
         seperator.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.2).isActive = true
         seperator.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * -0.2).isActive = true
-        seperator.bottomAnchor.constraint(equalTo: mainCalculatorStack.bottomAnchor, constant: 32).isActive = true
+        seperator.bottomAnchor.constraint(equalTo: mainCalculatorStack.bottomAnchor, constant: 22).isActive = true
     }
+
     
     func setupExampleStack() {
         contentView.addSubview(exampleStack)
+        exampleStack.addArrangedSubview(noteLabel)
+        exampleStack.addArrangedSubview(rotateTip)
+        exampleStack.addArrangedSubview(storageTip)
+        exampleStack.addArrangedSubview(weightTip)
+        exampleStack.addArrangedSubview(waterTip)
         exampleStack.addArrangedSubview(grainsExampleLabel)
         exampleStack.addArrangedSubview(legumesExampleLabel)
         exampleStack.addArrangedSubview(dairyExampleLabel)
@@ -314,6 +329,14 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         exampleStack.addArrangedSubview(fatsExampleLabel)
         exampleStack.axis = .vertical
         exampleStack.distribution = .fillEqually
+        noteLabel.textAlignment = .center
+        noteLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        noteLabel.text = "* NOTE: "
+        rotateTip.text = "* Always rotate your stored food into your normal diet, using up the oldest products first. This will save money and prevent waste."
+        storageTip.text = "* We recommend you store the items you like to eat and know how to use."
+        weightTip.text = "* Weights (except fats) are for dry or dehydrated foods—freeze-dried foods will weigh less."
+        waterTip.text = "* Water recommendation is based off 14 gal per individual every two weeks. It's rarely practical to store more. We suggest supplementing your water supply with a water filter or purification kit"
+        
         grainsExampleLabel.text = "*  Grain (includes wheat, white rice, oats, corn, barley, pasta, etc.)"
         legumesExampleLabel.text = "*  Legumes (dried beans, split peas, lentils, nuts, etc.)"
         dairyExampleLabel.text = "*  Dairy Products (powdered milk, cheese powdercheese powder, canned cheese, etc.)"
@@ -322,18 +345,22 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         saltExampleLabel.text = "*  Salt (Table salt, sea salt, soy sauce, bouillon, etc.)"
         fatsExampleLabel.text = "*  Fats (Vegetable oils, shortening, canned butter, etc.)"
         
-        grainsExampleLabel.numberOfLines = 2
-        legumesExampleLabel.numberOfLines = 2
-        dairyExampleLabel.numberOfLines = 2
-        sugarExampleLabel.numberOfLines = 2
-        leaveningAgentsExampleLabel.numberOfLines = 2
-        saltExampleLabel.numberOfLines = 2
-        fatsExampleLabel.numberOfLines = 2
+        rotateTip.numberOfLines = 0
+        storageTip.numberOfLines = 0
+        weightTip.numberOfLines = 0
+        waterTip.numberOfLines = 0
+        grainsExampleLabel.numberOfLines = 0
+        legumesExampleLabel.numberOfLines = 0
+        dairyExampleLabel.numberOfLines = 0
+        sugarExampleLabel.numberOfLines = 0
+        leaveningAgentsExampleLabel.numberOfLines = 0
+        saltExampleLabel.numberOfLines = 0
+        fatsExampleLabel.numberOfLines = 0
         
         exampleStack.translatesAutoresizingMaskIntoConstraints = false
-        exampleStack.topAnchor.constraint(equalTo: seperator.bottomAnchor, constant: 30).isActive = true
+        exampleStack.topAnchor.constraint(equalTo: seperator.bottomAnchor, constant: 20).isActive = true
         exampleStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
-        exampleStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * 0.05).isActive = true
+        exampleStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
         exampleStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: view.frame.height * -0.04).isActive = true
     }
     

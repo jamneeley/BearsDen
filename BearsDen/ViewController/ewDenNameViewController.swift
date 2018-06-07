@@ -61,7 +61,7 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
     @objc func letsStartButtonPressed() {
         guard let denName = houseTextField.text, !denName.isEmpty else {return}
         UserController.shared.createUser(housHouldName: denName)
-        UserController.shared.add(Picture: #imageLiteral(resourceName: "BearOnHill"))
+        UserController.shared.change(Picture: #imageLiteral(resourceName: "BearOnHill"))
         let addShelfInstructions = AddShelfInstructionsViewController()
         self.present(addShelfInstructions, animated: true, completion: nil)
         UserDefaults.standard.set(true, forKey: "isCurrentUser")

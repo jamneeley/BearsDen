@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SectionHeader: UICollectionReusableView {
+class TipsSectionHeader: UICollectionReusableView {
     
     let sectionHeaderLabel = UILabel()
     var sectionHeader: String? {
@@ -53,7 +53,7 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(TipsCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
-        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: header)
+        collectionView.register(TipsSectionHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: header)
         setupObjects()
     }
     
@@ -62,7 +62,7 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: header, for: indexPath) as? SectionHeader {
+        if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: header, for: indexPath) as? TipsSectionHeader {
             sectionHeader.backgroundColor = .white
             sectionHeader.sectionHeader = TipsController.shared.sectionHeaders[indexPath.section]
             sectionHeader.sectionHeaderLabel.textAlignment = .left

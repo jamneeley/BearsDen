@@ -105,6 +105,10 @@
 		9DF445F520C5F6AC005EB7CC /* calculatorButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF445F420C5F6AC005EB7CC /* calculatorButton.png */; };
 		9DF445F720C6DDEC005EB7CC /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */; };
 		9DF445F920C758A0005EB7CC /* ClearBarCodeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF445F820C7589F005EB7CC /* ClearBarCodeButton.png */; };
+		9DF445FB20C89EFA005EB7CC /* GoalsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF445FA20C89EFA005EB7CC /* GoalsCollectionViewCell.swift */; };
+		9DF445FD20C8A7CA005EB7CC /* GoalItem+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF445FC20C8A7CA005EB7CC /* GoalItem+Convenience.swift */; };
+		9DF445FF20C8AA5E005EB7CC /* GoalItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF445FE20C8AA5E005EB7CC /* GoalItemController.swift */; };
+		9DF4460120C8ACC5005EB7CC /* GoalDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF4460020C8ACC5005EB7CC /* GoalDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -226,6 +230,10 @@
 		9DF445F420C5F6AC005EB7CC /* calculatorButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calculatorButton.png; sourceTree = "<group>"; };
 		9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		9DF445F820C7589F005EB7CC /* ClearBarCodeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClearBarCodeButton.png; sourceTree = "<group>"; };
+		9DF445FA20C89EFA005EB7CC /* GoalsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsCollectionViewCell.swift; sourceTree = "<group>"; };
+		9DF445FC20C8A7CA005EB7CC /* GoalItem+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoalItem+Convenience.swift"; sourceTree = "<group>"; };
+		9DF445FE20C8AA5E005EB7CC /* GoalItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalItemController.swift; sourceTree = "<group>"; };
+		9DF4460020C8ACC5005EB7CC /* GoalDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,6 +266,7 @@
 				9D8477AF209D0486005F219B /* SettingsCollectionViewCell.swift */,
 				9DCF094820A60FE4009471F8 /* ShoppingListTableViewCell.swift */,
 				9DB6172B20B3110F00B87C6C /* TipsCollectionViewCell.swift */,
+				9DF445FA20C89EFA005EB7CC /* GoalsCollectionViewCell.swift */,
 				9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */,
 			);
 			path = Cells;
@@ -271,9 +280,11 @@
 				9D8477DB20A29F2B005F219B /* AddManualItemViewController.swift */,
 				9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */,
 				9D8477B720A0A1DD005F219B /* GoalsViewController.swift */,
+				9DF4460020C8ACC5005EB7CC /* GoalDetailViewController.swift */,
 				9D8477BB20A0A1F6005F219B /* ShoppingListViewController.swift */,
 				9DF445F220C5F603005EB7CC /* CalculatorViewController.swift */,
 				9D8477B920A0A1EB005F219B /* TipsViewController.swift */,
+				9D4670A620C5B5DB00D387FD /* TipDetailViewController.swift */,
 				9D8477CD20A218AF005F219B /* MyDenViewController.swift */,
 				9D8477BD20A0A20E005F219B /* SettingsViewController.swift */,
 				9D8477EC20A35DA5005F219B /* BarCodeSources */,
@@ -409,7 +420,6 @@
 				9D8477C920A10F9F005F219B /* MainViewController.swift */,
 				9D8477AD209CFA4E005F219B /* MenuLauncher.swift */,
 				9DB6171A20ACD23900B87C6C /* ShelfEditViewController.swift */,
-				9D4670A620C5B5DB00D387FD /* TipDetailViewController.swift */,
 				9D8477B3209D2164005F219B /* Cells */,
 				9D8477B620A0A1BD005F219B /* SettingsPages */,
 				9D84779C209A766F005F219B /* Extensions */,
@@ -424,6 +434,7 @@
 				9DC82D08208A535D0068DD8E /* ShelfController.swift */,
 				9DC82D0A208A53640068DD8E /* ItemController.swift */,
 				9DC82D0C208A536C0068DD8E /* GoalController.swift */,
+				9DF445FE20C8AA5E005EB7CC /* GoalItemController.swift */,
 				9DCF094620A60BC6009471F8 /* ShoppingItemController.swift */,
 				9D7EA34620A4CF900005563C /* CloudKitManager.swift */,
 				9D7EA34820A4CF9C0005563C /* CloudItemController.swift */,
@@ -441,6 +452,7 @@
 				9DC23BE22099033400C2F111 /* User+Convenience.swift */,
 				9DC82D02208A53420068DD8E /* Shelf+Convenience.swift */,
 				9DC82D06208A53550068DD8E /* Goal+Convenience.swift */,
+				9DF445FC20C8A7CA005EB7CC /* GoalItem+Convenience.swift */,
 				9DCF094420A60B54009471F8 /* ShoppingItem + Convenience.swift */,
 				9DAD6F8C20A4C32D001F777F /* CloudItem.swift */,
 			);
@@ -580,6 +592,7 @@
 				9D8477AE209CFA4E005F219B /* MenuLauncher.swift in Sources */,
 				9D8477F920A35DD5005F219B /* State.swift in Sources */,
 				9D8477CE20A218AF005F219B /* MyDenViewController.swift in Sources */,
+				9DF445FD20C8A7CA005EB7CC /* GoalItem+Convenience.swift in Sources */,
 				9D8477D220A237DB005F219B /* ContainerViewTransitions.swift in Sources */,
 				9D84779E209A76AF005F219B /* View+Extension.swift in Sources */,
 				9D8477A0209A76B6005F219B /* GlobalProperties.swift in Sources */,
@@ -587,6 +600,7 @@
 				9D84780020A35DDB005F219B /* NSLayoutConstraint+Extensions.swift in Sources */,
 				9D847781209925B9005F219B /* ewDenNameViewController.swift in Sources */,
 				9D8477F220A35DBD005F219B /* CameraViewController.swift in Sources */,
+				9DF445FB20C89EFA005EB7CC /* GoalsCollectionViewCell.swift in Sources */,
 				9DB6172C20B3110F00B87C6C /* TipsCollectionViewCell.swift in Sources */,
 				9DCF094720A60BC6009471F8 /* ShoppingItemController.swift in Sources */,
 				9DC82D07208A53550068DD8E /* Goal+Convenience.swift in Sources */,
@@ -619,7 +633,9 @@
 				9D8477F320A35DBD005F219B /* MessageViewController.swift in Sources */,
 				9DC23BE32099033400C2F111 /* User+Convenience.swift in Sources */,
 				9D8477B0209D0486005F219B /* SettingsCollectionViewCell.swift in Sources */,
+				9DF445FF20C8AA5E005EB7CC /* GoalItemController.swift in Sources */,
 				9DC82D33208A552A0068DD8E /* SecondLaunchScreenViewController.swift in Sources */,
+				9DF4460120C8ACC5005EB7CC /* GoalDetailViewController.swift in Sources */,
 				9D7EA34720A4CF900005563C /* CloudKitManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

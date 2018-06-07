@@ -11,13 +11,16 @@ import Foundation
 class GoalController {
     
     static let shared = GoalController()
+    
+    let fakeGoal = Goal(name: "Fake Goal", creationDate: Date(), completionDate: Date(), user: UserController.shared.user!)
 
-    func createNewGoal(completionDate: Date, user: User) {
-        let _ = Goal(completionDate: completionDate, user: user)
+    func createNewGoal(name: String, creationDate: Date, completionDate: Date, user: User) {
+        let _ = Goal(name: name, creationDate: creationDate, completionDate: completionDate, user: user)
         UserController.shared.saveToCoreData()
     }
     
-    func update(Goal goal: Goal, completionDate: Date) {
+    func update(Goal goal: Goal, name: String, completionDate: Date) {
+        goal.name = name
         goal.completionDate = completionDate
         UserController.shared.saveToCoreData()
     }

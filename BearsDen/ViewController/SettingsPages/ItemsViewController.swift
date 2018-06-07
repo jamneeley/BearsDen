@@ -46,7 +46,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     @objc func backButtonPressed() {
-        navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
     }
     
