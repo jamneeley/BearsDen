@@ -203,8 +203,8 @@ extension ItemsViewController: BarcodeScannerCodeDelegate {
 //                    self.navigationController?.popViewController(animated: true)
                     self.navigationController?.pushViewController(addBarCodeController, animated: true)
                     addBarCodeController.viewControllerToPopTo = self
-                    addBarCodeController.cloudItem = cloudItem
                     addBarCodeController.shelf = shelf
+                    addBarCodeController.cloudItem = cloudItem
                 }
             } else {
                 DispatchQueue.main.async {

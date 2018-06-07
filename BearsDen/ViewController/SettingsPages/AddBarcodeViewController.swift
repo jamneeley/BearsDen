@@ -37,6 +37,8 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
     let catagoryPickerView = UIView()
     let catagoryStack = UIStackView()
     
+    let entryStack = UIStackView()
+    
     //BOTTOM STACK
     let barcodeLabel = UILabel()
     let barcodeTextField = UITextField()
@@ -44,13 +46,12 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
     
     let dateLabel = UILabel()
     let datePicker = UIDatePicker()
-    
-    let entryStack = UIStackView()
-    let saveButton = UIButton(type: .custom)
+
     let tapView = UIView()
     let singleTap = UITapGestureRecognizer()
     
     var shelf: Shelf?
+    let arbitraryButton = UIButton(type: .custom)
     
     var cloudItem: CloudItem? {
         didSet {
@@ -61,29 +62,60 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
     var rotationAngle: CGFloat = -90 * (.pi/180)
     var viewControllerToPopTo: UIViewController?
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        unitPicker.frame = CGRect(x: 0, y: 0, width: unitPickerView.frame.width, height: unitPickerView.frame.height)
+        catagoryPicker.frame = CGRect(x: 0, y: 0, width: catagoryPickerView.frame.width, height: catagoryPickerView.frame.height)
+
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupObjects()
+        let _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(callViewDidLayoutSubviews), userInfo: nil, repeats: false)
+        view.backgroundColor = .white
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonPressed))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .done, target: self, action: #selector(backButtonPressed))
+        NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil);
+    }
+    
+    
+    //JERRY RIGGED!
+    
+    @objc func callViewDidLayoutSubviews() {
+        viewDidLayoutSubviews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+    }
+
     func updateViews() {
         guard let cloudItem = cloudItem else {return}
         nameTextField.text =  cloudItem.name
         barcodeTextField.text = cloudItem.barcode
         weightTextField.text = cloudItem.weight
+        let _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updatePickerPosition), userInfo: nil, repeats: false)
+        
     }
     
-    override func viewDidLayoutSubviews() {
-        unitPicker.frame = CGRect(x: 0, y: 0, width: unitPickerView.frame.width, height: unitPickerView.frame.height)
-        catagoryPicker.frame = CGRect(x: 0, y: 0, width: catagoryPickerView.frame.width, height: catagoryPickerView.frame.height)
+    @objc func updatePickerPosition() {
         guard let cloudItem = cloudItem else {return}
-        let catagoryIndex = findIndexOf(Unit: "", catagory: cloudItem.catagory)
         let unitIndex = findIndexOf(Unit: cloudItem.unit, catagory: "")
+        let catagoryIndex = findIndexOf(Unit: "", catagory: cloudItem.catagory)
         catagoryPicker.selectRow(catagoryIndex, inComponent: 0, animated: false)
         unitPicker.selectRow(unitIndex, inComponent: 0, animated: false)
     }
+
     
     func findIndexOf(Unit: String, catagory: String) -> Int {
         if Unit != "" {
             for item in PickerViewProperties.units {
                 if Unit == item {
                     guard let index = PickerViewProperties.units.index(of: item) else {print("index doesnt exist for catagory"); return 0}
-                    print("\(index)")
+                    print(index)
                     return index
                 }
             }
@@ -91,7 +123,7 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
             for item in PickerViewProperties.catagories {
                 if catagory == item {
                     guard let index = PickerViewProperties.catagories.index(of: item) else {print("index doesnt exist for catagory"); return 0}
-                    print("\(index)")
+                    print(index)
                     return index
                 }
             }
@@ -99,29 +131,15 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
         print("Not unit or catagory")
         return 0
     }
-
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        setupObjects()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        setupObjects()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil);
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil);
-    }
     
     func setupObjects() {
-        setupSingleTap()
-        setupSaveButton()
         setupDatePicker()
         setupDateLabel()
         setupBarcodeStack()
         setupBarcodeLabel()
         setupBarCodeTextField()
+        setupSingleTap()
+        
         
         setupAllUpperStackViews()
         setupNameObjects()
@@ -129,6 +147,25 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
         setupWeightObjects()
         setupUnitObjects()
         setupCatagoryObjects()
+        setupButton()
+    }
+    
+    func setupButton() {
+        view.addSubview(arbitraryButton)
+        arbitraryButton.frame = CGRect(x: -view.frame.width, y: -view.frame.height, width: 40, height: 40)
+        arbitraryButton.setImage(#imageLiteral(resourceName: "BackLargeX1"), for: .normal)
+        arbitraryButton.setTitleColor(.white, for: .normal)
+        arbitraryButton.backgroundColor = Colors.green
+        arbitraryButton.layer.cornerRadius = 0.5 * arbitraryButton.bounds.size.width
+        arbitraryButton.clipsToBounds = true
+    }
+    
+    @objc func backButtonPressed() {
+        if let viewToPopTo = viewControllerToPopTo {
+            navigationController?.popToViewController(viewToPopTo, animated: true)
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     @objc func keyBoardWillShow() {
@@ -143,18 +180,7 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
         view.removeGestureRecognizer(singleTap)
     }
     
-    @objc func startHighlightSave() {
-        saveButton.layer.backgroundColor = Colors.softBlue.cgColor
-        saveButton.imageView?.tintColor = .white
-    }
-    
-    @objc func stopHighlightSave() {
-        saveButton.layer.backgroundColor = Colors.green.cgColor
-        saveButton.imageView?.tintColor = nil
-    }
-    
     @objc func saveButtonPressed() {
-        stopHighlightSave()
         guard let name = nameTextField.text,
         let quantityAsString = quantityTextField.text,
         let shelf = self.shelf,
@@ -309,8 +335,10 @@ extension AddBarcodeViewController {
         upperStack.addArrangedSubview(nameStack)
         upperStack.addArrangedSubview(quantityStack)
         upperStack.addArrangedSubview(weightStack)
-        lowerStack.addArrangedSubview(catagoryStack)
+        
         lowerStack.addArrangedSubview(unitStack)
+        lowerStack.addArrangedSubview(catagoryStack)
+        
         //views within those stacks ^
         nameStack.addArrangedSubview(nameLabel)
         nameStack.addArrangedSubview(nameTextField)
@@ -318,13 +346,15 @@ extension AddBarcodeViewController {
         quantityStack.addArrangedSubview(quantityTextField)
         weightStack.addArrangedSubview(weightLabel)
         weightStack.addArrangedSubview(weightTextField)
-        catagoryStack.addArrangedSubview(catagoryLabel)
-        catagoryStack.addArrangedSubview(catagoryPickerView)
+        
         unitStack.addArrangedSubview(unitLabel)
         unitStack.addArrangedSubview(unitPickerView)
-        //picker within the arbitrary pickerView
-        catagoryPickerView.addSubview(catagoryPicker)
         unitPickerView.addSubview(unitPicker)
+        
+        catagoryStack.addArrangedSubview(catagoryLabel)
+        catagoryStack.addArrangedSubview(catagoryPickerView)
+        catagoryPickerView.addSubview(catagoryPicker)
+        
         
         
         //Properties for all stacks
@@ -332,38 +362,28 @@ extension AddBarcodeViewController {
         entryStack.axis = .vertical
         entryStack.spacing = 10
         entryStack.distribution = .fillEqually
+        
         upperStack.axis = .vertical
         upperStack.spacing = 10
         upperStack.distribution = .fillEqually
+        
         lowerStack.axis = .vertical
         lowerStack.spacing = 5
         lowerStack.distribution = .fillEqually
         
         //Name Stack properties
-        nameLabel.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 260)!)
-        nameLabel.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        nameTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        nameTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
         nameTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
         nameStack.distribution = .fill
         nameStack.axis = .horizontal
         nameStack.spacing = 5
         
         //Quantity Stack properties
-        quantityLabel.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 260)!)
-        quantityLabel.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        quantityTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        quantityTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
         quantityTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
         quantityStack.distribution = .fill
         quantityStack.axis = .horizontal
         quantityStack.spacing = 5
         
         //Weight Stack properties
-        weightLabel.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 260)!)
-        weightLabel.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        weightTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        weightTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
         weightTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
         weightStack.distribution = .fill
         weightStack.axis = .horizontal
@@ -373,8 +393,8 @@ extension AddBarcodeViewController {
         unitPickerView.layer.borderWidth = 1
         unitPickerView.layer.borderColor = Colors.softBlue.cgColor
         unitPickerView.layer.cornerRadius = CornerRadius.textField
-        unitPickerView.addSubview(unitPicker)
-        unitPicker.transform = CGAffineTransform(rotationAngle: rotationAngle)
+        
+        
         unitStack.distribution = .fill
         unitStack.spacing = 5
         unitStack.axis = .vertical
@@ -383,9 +403,8 @@ extension AddBarcodeViewController {
         catagoryPickerView.layer.borderWidth = 1
         catagoryPickerView.layer.borderColor = Colors.softBlue.cgColor
         catagoryPickerView.layer.cornerRadius = CornerRadius.textField
-        catagoryPickerView.addSubview(catagoryPicker)
-        catagoryPicker.transform = CGAffineTransform(rotationAngle: rotationAngle)
-        catagoryStack.backgroundColor = .yellow
+        
+        
         catagoryStack.distribution = .fill
         catagoryStack.spacing = 5
         catagoryStack.axis = .vertical
@@ -452,19 +471,21 @@ extension AddBarcodeViewController {
     func setupUnitObjects() {
         unitLabel.text = "Unit"
         unitLabel.textAlignment = .left
+        unitPicker.transform = CGAffineTransform(rotationAngle: rotationAngle)
         unitPicker.delegate = self
         unitPicker.dataSource = self
     }
     func setupCatagoryObjects() {
         catagoryLabel.text = "Catagory"
         catagoryLabel.textAlignment = .left
+        catagoryPicker.transform = CGAffineTransform(rotationAngle: rotationAngle)
         catagoryPicker.delegate = self
         catagoryPicker.dataSource = self
     }
     
     func setupStackViewConstraints() {
         entryStack.translatesAutoresizingMaskIntoConstraints = false
-        entryStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+        entryStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.frame.height * 0.02).isActive = true
         entryStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
         entryStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
         entryStack.bottomAnchor.constraint(equalTo: barCodeStack.topAnchor, constant: -10).isActive = true
@@ -520,39 +541,26 @@ extension AddBarcodeViewController {
         setupDatePickerConstraints()
     }
     
-    func setupSaveButton() {
-        view.addSubview(saveButton)
-        saveButton.frame = CGRect(x: view.frame.width * 0.5 - 25, y: view.frame.height * 0.9, width: 50, height: 50)
-        saveButton.setTitle("Save", for: .normal)
-        saveButton.setTitleColor(.black, for: .normal)
-        saveButton.backgroundColor = Colors.green
-        saveButton.layer.cornerRadius = 0.5 * saveButton.bounds.size.width
-        saveButton.clipsToBounds = true
-        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
-        saveButton.addTarget(self, action: #selector(startHighlightSave), for: .touchDown)
-        saveButton.addTarget(self, action: #selector(stopHighlightSave), for: .touchUpOutside)
-    }
-    
     func setupBarcodeStackConstraints() {
         barCodeStack.translatesAutoresizingMaskIntoConstraints = false
-        barCodeStack.topAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.04).isActive = true
-        barCodeStack.bottomAnchor.constraint(equalTo: dateLabel.topAnchor, constant: -10).isActive = true
+        barCodeStack.topAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.1).isActive = true
+        barCodeStack.bottomAnchor.constraint(equalTo: dateLabel.topAnchor, constant: view.frame.height * -0.02).isActive = true
         barCodeStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
         barCodeStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
     }
     
     func setupDateLabelConstraints() {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.topAnchor.constraint(equalTo: datePicker.topAnchor, constant: -24).isActive = true
+        dateLabel.topAnchor.constraint(equalTo: datePicker.topAnchor, constant: -32).isActive = true
         dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
         dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
-        dateLabel.bottomAnchor.constraint(equalTo: datePicker.topAnchor, constant: -6).isActive = true
+        dateLabel.bottomAnchor.constraint(equalTo: datePicker.topAnchor, constant: -12).isActive = true
     }
     
     func setupDatePickerConstraints() {
         datePicker.translatesAutoresizingMaskIntoConstraints =  false
-        datePicker.topAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.2).isActive = true
-        datePicker.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -10).isActive = true
+        datePicker.topAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.3).isActive = true
+        datePicker.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.frame.height * -0.05).isActive = true
         datePicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
         datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
     }

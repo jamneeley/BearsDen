@@ -69,13 +69,25 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
     }
     
     
+    func setupSingleTap() {
+        singleTap.numberOfTapsRequired = 1
+        singleTap.addTarget(self, action: #selector(disableKeyBoard))
+    }
     
+    @objc func disableKeyBoard() {
+        view.endEditing(true)
+    }
+    
+
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .plain, target: self, action: #selector(backButtonPressed))
         navigationController?.navigationBar.tintColor = .white
+        
         let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.barTintColor = Colors.softBlue
+        let navTitle = goal?.name ?? "New Goal"
+        navigationItem.title = navTitle
     }
     
     func setupScrollView() {
@@ -86,16 +98,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
-    
-    func setupSingleTap() {
-        singleTap.numberOfTapsRequired = 1
-        singleTap.addTarget(self, action: #selector(disableKeyBoard))
-    }
-    
-    @objc func disableKeyBoard() {
-        view.endEditing(true)
-    }
-    
+
     func setupContentView() {
         scrollView.addSubview(contentView)
         contentView.backgroundColor = .white
@@ -114,10 +117,12 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
         nameStack.addArrangedSubview(nameTextField)
         nameStack.distribution = .fill
         nameStack.axis = .horizontal
-        nameStack.spacing = 5
-        
-        nameTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
+        nameStack.spacing = 0
+        nameTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.7).isActive = true
         nameTextField.layer.borderWidth = 2
+        nameTextField.layer.cornerRadius = CornerRadius.textField
+        nameTextField.setLeftPaddingPoints(5)
+        nameTextField.setRightPaddingPoints(5)
         nameTextField.delegate = self
         nameTextField.returnKeyType = .done
         nameTextField.autocorrectionType = UITextAutocorrectionType.no
@@ -148,15 +153,15 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
     
     func setupNameStackConstraints() {
         nameStack.translatesAutoresizingMaskIntoConstraints = false
-        nameStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: view.frame.height * 0.05).isActive = true
+        nameStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: view.frame.height * 0.02).isActive = true
         nameStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
         nameStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
-        nameStack.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: view.frame.height * 0.15)
+        nameStack.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: view.frame.height * 0.07).isActive = true
     }
     
     func setupDateOfCompletionLabelConstraints() {
         dateOfCompletionLabel.translatesAutoresizingMaskIntoConstraints =  false
-        dateOfCompletionLabel.topAnchor.constraint(equalTo: nameStack.bottomAnchor, constant: 15).isActive = true
+        dateOfCompletionLabel.topAnchor.constraint(equalTo: nameStack.bottomAnchor, constant: 10).isActive = true
         dateOfCompletionLabel.bottomAnchor.constraint(equalTo: nameStack.bottomAnchor, constant: 35).isActive = true
         dateOfCompletionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
         dateOfCompletionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
@@ -164,7 +169,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
     
     func setupDatePickerConstraints() {
         datePicker.translatesAutoresizingMaskIntoConstraints =  false
-        datePicker.topAnchor.constraint(equalTo: dateOfCompletionLabel.bottomAnchor, constant: 15).isActive = true
+        datePicker.topAnchor.constraint(equalTo: dateOfCompletionLabel.bottomAnchor, constant: 5).isActive = true
         datePicker.bottomAnchor.constraint(equalTo: dateOfCompletionLabel.bottomAnchor, constant: view.frame.height * 0.2).isActive = true
         datePicker.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
         datePicker.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
