@@ -9,9 +9,9 @@
 import UIKit
 
 class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GoalDetailCollectionViewCellDelegate {
-
     
-
+    
+    
     
     //Top Portion of Screen
     let scrollView = UIScrollView()
@@ -41,7 +41,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     }()
     
     let cellID = "itemCell"
-
+    
     
     var goal: Goal? {
         didSet {
@@ -57,6 +57,13 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        //possibly let cell know to change picker view
+    }
+    
     
     func setupObjects() {
         setupNavigationBar()
@@ -79,13 +86,62 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         }
     }
     
+    
+    ////////////////////
+    //SAVE BUTTON PRESSED
+    ///////////////////
+    
+    
+    
     @objc func saveButtonPressed() {
-        if let _ = goal {
-            print("updated Goal")
+        guard let nameText = nameTextField.text, !nameText.isEmpty,
+        let user = UserController.shared.user else {presentNameAlert(); return}
+        let completionDate = datePicker.date
+        var cells = [GoalDetailCollectionViewCell]()
+        
+        
+        
+        //Go through all collectionView cells and append them to cells
+        
+        for number in 0..<13 {
+            let index = IndexPath(item: number, section: 0)
+            guard let cell = collectionView.cellForItem(at: index) as? GoalDetailCollectionViewCell else {return}
+            cells.append(cell)
+        }
+        if let goal = goal {
+            
+            ///THIS IS WHERE YOU WOULD UPDATE THE GOAL
+            
+            
         } else {
-            print("saved new Goal")
+            //CREATE GOAL. after its completed add all the goal items to it
+            GoalController.shared.createNewGoal(name: nameText, creationDate: Date(), completionDate: completionDate, user: user) { (Goal) in
+                print("Goal: \(nameText) created with these GoalItems:")
+                //Go through all Cells and get the properties from them
+                for cell in cells {
+                    if cell.isSwitchSelected {
+                        if cell.isCustom {
+                            let cellTextViewText = cell.customDescription
+                            print("CustomCellText\(cellTextViewText)")
+                        } else {
+                            let amountText = cell.amountText
+                            let unitText = cell.unit
+                            let categoryText = cell.catagory
+                            print("NormalCellAmount: \(amountText), unit: \(unitText), category: \(categoryText)")
+                        }
+                    }
+                }
+            }
         }
     }
+    
+    func presentNameAlert() {
+        let alert = UIAlertController(title: "Uh Oh", message: "Your goal needs a name :)", preferredStyle: .alert)
+        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        alert.addAction(dismiss)
+        present(alert, animated: true, completion: nil)
+    }
+    
     
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
@@ -119,9 +175,10 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         //EXPAND
         if isSelected {
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
-                cell.frame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.width, height: self.view.frame.height * 0.35)
+                cell.frame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.width, height: self.view.frame.height * 0.3)
+                cell.layer.borderWidth = 2
+                cell.layer.borderColor = Colors.green.cgColor
             }) { (success) in
-                
             }
             for i in collectionView.visibleCells {
                 guard let index = collectionView.indexPath(for: i) else {return}
@@ -147,12 +204,13 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
             }
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
                 cell.frame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.width, height: self.view.frame.height * 0.1)
+                cell.layer.borderWidth = 0
             }) { (success) in
             }
         }
     }
     
-
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width , height: view.frame.height * 0.1)
@@ -176,7 +234,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         return cell
     }
     
-
+    
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .plain, target: self, action: #selector(backButtonPressed))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonPressed))
@@ -197,7 +255,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
-
+    
     func setupContentView() {
         scrollView.addSubview(contentView)
         contentView.backgroundColor = .white
@@ -216,9 +274,8 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         nameStack.addArrangedSubview(nameLabel)
         nameStack.addArrangedSubview(nameTextField)
         nameStack.distribution = .fill
-        nameStack.axis = .horizontal
-        nameStack.spacing = 0
-        nameTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.7).isActive = true
+        nameStack.axis = .vertical
+        nameStack.spacing = 2
         nameTextField.layer.borderWidth = 2
         nameTextField.layer.cornerRadius = CornerRadius.textField
         nameTextField.setLeftPaddingPoints(5)
@@ -227,15 +284,17 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         nameTextField.returnKeyType = .done
         nameTextField.autocorrectionType = UITextAutocorrectionType.no
         nameTextField.layer.borderColor = Colors.softBlue.cgColor
-        nameLabel.text = "Name: "
+        nameLabel.text = "Name"
+        nameLabel.textAlignment = .center
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
         nameTextField.placeholder = "3 Month Storage"
         setupNameStackConstraints()
     }
     
     func setupDateOfCompletionLabel() {
         contentView.addSubview(dateOfCompletionLabel)
-        dateOfCompletionLabel.text = "Goal Completion Date: "
-        dateOfCompletionLabel.textAlignment = .left
+        dateOfCompletionLabel.text = "Goal timeline?"
+        dateOfCompletionLabel.textAlignment = .center
         setupDateOfCompletionLabelConstraints()
         
     }
@@ -292,10 +351,11 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     
     func setupNameStackConstraints() {
         nameStack.translatesAutoresizingMaskIntoConstraints = false
+        nameTextField.heightAnchor.constraint(equalToConstant: view.frame.height * 0.06).isActive = true
         nameStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: view.frame.height * 0.02).isActive = true
         nameStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
         nameStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
-        nameStack.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: view.frame.height * 0.07).isActive = true
+        nameStack.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: view.frame.height * 0.12).isActive = true
     }
     
     func setupDateOfCompletionLabelConstraints() {

@@ -59,10 +59,24 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
         setupCollectionView()
     }
     
+
+    
+
+    
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return UserController.shared.user?.goals?.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: header, for: indexPath) as? GoalsSectionHeader {
             sectionHeader.backgroundColor = .white
-            sectionHeader.sectionHeader = TipsController.shared.sectionHeaders[indexPath.section]
+            let goal = UserController.shared.user?.goals?[indexPath.row] as? Goal
+            sectionHeader.sectionHeader = goal?.name ?? ""
             sectionHeader.sectionHeaderLabel.textAlignment = .left
             sectionHeader.sectionHeaderLabel.numberOfLines = 0
             sectionHeader.sectionHeaderLabel.font = UIFont.boldSystemFont(ofSize: 22)
@@ -79,17 +93,8 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
         return CGSize(width: collectionView.frame.width , height: view.frame.height * 0.7)
     }
     
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return TipsController.shared.tips.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return TipsController.shared.tips[section].count
-    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let goal = GoalController.shared.fakeGoal
+        let goal = UserController.shared.user?.goals?[indexPath.row] as? Goal
         let goalDetailVC = GoalDetailViewController()
         goalDetailVC.goal = goal
         let navController = UINavigationController(rootViewController: goalDetailVC)
@@ -98,11 +103,17 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! GoalsCollectionViewCell
-        let tip = TipsController.shared.tips[indexPath.section][indexPath.row]
-        cell.tip = tip
-        cell.layer.cornerRadius = 12
-        return cell
+        if let goal = UserController.shared.user?.goals?[indexPath.row] as? Goal {
+            cell.goal = goal
+            cell.layer.cornerRadius = 12
+            return cell
+        } else {
+            return UICollectionViewCell()
+        }
     }
+    
+    
+
 }
 
 ////////////////////////////////////////////////////////

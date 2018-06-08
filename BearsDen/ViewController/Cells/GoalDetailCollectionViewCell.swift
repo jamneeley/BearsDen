@@ -13,7 +13,7 @@ protocol GoalDetailCollectionViewCellDelegate: class {
 }
 
 class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, UITextViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
-    
+
     var titleLabel = UILabel()
     let switchControl = UISwitch()
 
@@ -24,27 +24,27 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
     let amountStack = UIStackView()
     
     let unitLabel = UILabel()
-    let unitTextField = UITextField()
+    let unitPicker = UIPickerView()
+    let unitPickerView = UIView()
     let unitStack = UIStackView()
-    
-    let catagoryLabel = UILabel()
-    let catagoryTextField = UITextField()
-    let catagoryStack = UIStackView()
-    
+
     let mainStack = UIStackView()
     //CUSTOM CELL
     
     let customTextLabel = UILabel()
     let customTextView = UITextView()
     let customStack = UIStackView()
-    
-    
-    
+
     weak var delegate: GoalDetailCollectionViewCellDelegate?
     
     var isSwitchSelected = false
     var isCustom = false
     
+    var customDescription = ""
+    var amountText = ""
+    var unit = ""
+    var catagory = ""
+
     var item: GoalDetailItem? {
         didSet {
             updateViews()
@@ -52,6 +52,7 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
     }
     
     var indexPath: IndexPath?
+    var rotationAngle: CGFloat = -90 * (.pi/180)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,9 +60,6 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
         addSubview(titleLabel)
         addSubview(switchControl)
         
-        
-        
-
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
@@ -77,22 +75,88 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.boldSystemFont(ofSize: 14)
-        
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder: ) has not been implemented")
     }
     
     
+    //PICKER VIEW DATA SOURCE
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView == unitPicker {
+            return PickerViewProperties.units.count
+        } else {
+            return 0
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 80
+    }
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        return 10
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let view = UIView()
+        view.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        let label = UILabel()
+        label.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        label.textAlignment = .center
+        if pickerView == unitPicker {
+            label.text = PickerViewProperties.units[row]
+        } else {
+            print("picker view out of range")
+        }
+        view.addSubview(label)
+        view.transform = CGAffineTransform(rotationAngle: -rotationAngle)
+        return view
+    }
+
+    //DID FINISH PICKING PROPERTIES ON EXPANDABLE CELL
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView == unitPicker {
+            let pickerViewIndex = pickerView.selectedRow(inComponent: 0)
+            let value = PickerViewProperties.units[pickerViewIndex]
+            unit = value
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if let text = textView.text {
+            customDescription = textView.text
+        }
+    }
+    
+    @objc func textFieldChanged() {
+        if let text = amountTextField.text {
+            amountText = text
+        }
+    }
+    
+    //KEYBOARD METHODS
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         endEditing(true)
+        return true
+    }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            endEditing(true)
+        }
         return true
     }
     
     func updateViews() {
         guard let item = item else {return}
         titleLabel.text = item.name
+        catagory = item.name
         if item.isSelected {
             isSwitchSelected = true
             switchControl.isOn = true
@@ -100,6 +164,7 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
             isSwitchSelected = false
             switchControl.isOn = false
         }
+        unit = "lb."
     }
     
     func setupStackViews() {
@@ -108,35 +173,31 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
             addSubview(mainStack)
             mainStack.addArrangedSubview(amountStack)
             mainStack.addArrangedSubview(unitStack)
-            mainStack.addArrangedSubview(catagoryStack)
+            
             
             amountStack.addArrangedSubview(amountLabel)
             amountStack.addArrangedSubview(amountTextField)
+            amountTextField.heightAnchor.constraint(equalToConstant: frame.height * 0.2).isActive = true
+            amountStack.heightAnchor.constraint(equalToConstant: frame.height * 0.3).isActive = true
             
             unitStack.addArrangedSubview(unitLabel)
-            unitStack.addArrangedSubview(unitTextField)
-            
-            catagoryStack.addArrangedSubview(catagoryLabel)
-            catagoryStack.addArrangedSubview(catagoryTextField)
-            
+            unitStack.addArrangedSubview(unitPickerView)
+            unitPickerView.addSubview(unitPicker)
+    
             mainStack.axis = .vertical
-            mainStack.distribution = .fillEqually
+            mainStack.distribution = .fill
             mainStack.spacing = 2
             
-            amountStack.axis = .horizontal
+            amountStack.axis = .vertical
             amountStack.distribution = .fill
             amountStack.spacing = 2
             
-            unitStack.axis = .horizontal
+            unitStack.axis = .vertical
             unitStack.distribution = .fill
             unitStack.spacing = 2
             
-            catagoryStack.axis = .horizontal
-            catagoryStack.distribution = .fill
-            catagoryStack.spacing = 2
-            
             mainStack.translatesAutoresizingMaskIntoConstraints = false
-            mainStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant:  frame.height * 0.15).isActive = true
+            mainStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant:  frame.height * 0.1).isActive = true
             mainStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: self.frame.width * 0.05).isActive = true
             mainStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
             mainStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
@@ -148,32 +209,31 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
             amountTextField.layer.borderWidth = 1
             amountTextField.layer.borderColor = Colors.softBlue.cgColor
             amountTextField.layer.cornerRadius = CornerRadius.textField
+            amountTextField.keyboardType = .numberPad
+            amountTextField.returnKeyType = .done
+            amountTextField.autocorrectionType = UITextAutocorrectionType.no
+            amountTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
             amountTextField.backgroundColor = .white
             amountTextField.setLeftPaddingPoints(5)
             amountTextField.setRightPaddingPoints(5)
-            amountTextField.widthAnchor.constraint(equalToConstant: self.frame.width * 0.6).isActive = true
             amountTextField.delegate = self
             amountTextField.returnKeyType = .done
             
-            unitLabel.text = "Unit"
-            unitTextField.placeholder = "0.0"
-            unitTextField.layer.borderWidth = 1
-            unitTextField.layer.borderColor = Colors.softBlue.cgColor
-            unitTextField.layer.cornerRadius = CornerRadius.textField
-            unitTextField.backgroundColor = .white
-            unitTextField.setLeftPaddingPoints(5)
-            unitTextField.setRightPaddingPoints(5)
-            unitTextField.widthAnchor.constraint(equalToConstant: self.frame.width * 0.6).isActive = true
+            unitLabel.text = "Units"
+            unitLabel.textAlignment = .left
+            unitPickerView.backgroundColor = .white
+            unitPickerView.layer.borderWidth = 1
+            unitPickerView.layer.borderColor = Colors.softBlue.cgColor
+            unitPickerView.layer.cornerRadius = CornerRadius.textField
+            unitPicker.transform = CGAffineTransform(rotationAngle: rotationAngle)
+            unitPicker.delegate = self
+            unitPicker.dataSource = self
             
-            catagoryLabel.text = "Catagory"
-            catagoryTextField.placeholder = "0.0"
-            catagoryTextField.layer.borderWidth = 1
-            catagoryTextField.layer.borderColor = Colors.softBlue.cgColor
-            catagoryTextField.layer.cornerRadius = CornerRadius.textField
-            catagoryTextField.backgroundColor = .white
-            catagoryTextField.setLeftPaddingPoints(5)
-            catagoryTextField.setRightPaddingPoints(5)
-            catagoryTextField.widthAnchor.constraint(equalToConstant: self.frame.width * 0.6).isActive = true
+            //picker timers
+            
+            let _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(changeFrameOfPickers), userInfo: nil, repeats: false)
+
+
         } else {
             
             addSubview(customStack)
@@ -189,6 +249,7 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
             customTextView.layer.cornerRadius = CornerRadius.textField
             customTextView.delegate = self
             customTextView.returnKeyType = .done
+            customTextView.autocorrectionType = UITextAutocorrectionType.no
             customTextView.layer.borderColor = Colors.softBlue.cgColor
             customTextView.heightAnchor.constraint(equalToConstant: frame.height * 0.5).isActive = true
             customTextView.backgroundColor = .white
@@ -199,6 +260,13 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
             customStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
             customStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
         }
+    }
+    
+    @objc func changeFrameOfPickers() {
+        unitPicker.frame = CGRect(x: 0, y: 0, width: unitPickerView.frame.width, height: unitPickerView.frame.height)
+        guard let item = item else {return}
+        print("should update picker position for \(item)")
+
     }
     
     @objc func switchTouched() {
