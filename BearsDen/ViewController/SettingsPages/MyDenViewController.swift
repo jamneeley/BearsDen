@@ -154,25 +154,9 @@ class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UI
         
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: kids)) && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: adults)) {
             UserController.shared.updateUser(HouseholdName: name, picture: picture, adults: adults, kids: kids)
-            saveAnimation()
+            presentSaveAnimation()
         }
         stopHighlightSave()
-    }
-    
-    func saveAnimation() {
-        let brightView = UIView()
-        brightView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        view.addSubview(brightView)
-        brightView.backgroundColor = Colors.clear
-        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseIn], animations: {
-            brightView.backgroundColor = Colors.white
-        }) { (success) in
-            UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
-                brightView.backgroundColor = Colors.clear
-                brightView.removeFromSuperview()
-            }, completion: { (success) in
-            })
-        }
     }
     
     func presentSaveAlert(WithTitle title: String, message: String) {

@@ -10,11 +10,12 @@ import Foundation
 import CoreData
 
 extension GoalItem {
-    convenience init(category: String, unit: String, amount: String, goal: Goal, isCustom: Bool, isComplete: Bool, context: NSManagedObjectContext = CoreDataStack.context) {
+    convenience init(goal: Goal, amount: String, category: String, unit: String, customText: String, isCustom: Bool, isComplete: Bool, context: NSManagedObjectContext = CoreDataStack.context) {
         self.init(context: context)
         self.category = category
         self.unit = unit
         self.amount = amount
+        self.customText = customText
         self.isCustom = isCustom
         self.isComplete = isComplete
         self.goal = goal

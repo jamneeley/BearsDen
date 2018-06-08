@@ -206,7 +206,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
                         print("ITEM SAVED WITH BARCODE AND CLOUD ITEM UPDATED")
                         ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
-                            self.saveAnimation()
+                            self.presentSaveAnimation()
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
                             self.weightTextField.text = ""
@@ -221,7 +221,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
                         print("ITEM SAVED WITH BARCODE AND CLOUD ITEM SAVED")
                         ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
-                            self.saveAnimation()
+                            self.presentSaveAnimation()
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
                             self.weightTextField.text = ""
@@ -232,7 +232,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
             } else {
                 print("ITEM SAVED LOCALLY WITHOUT BARCODE")
                 ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
-                saveAnimation()
+                presentSaveAnimation()
                 nameTextField.text = ""
                 barcodeTextField.text = ""
                 weightTextField.text = ""
@@ -261,23 +261,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         self.view.endEditing(true)
         return true
     }
-    
-    func saveAnimation() {
-        let brightView = UIView()
-        brightView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        view.addSubview(brightView)
-        brightView.backgroundColor = Colors.clear
-        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseIn], animations: {
-            brightView.backgroundColor = Colors.white
-        }) { (success) in
-            UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
-                brightView.backgroundColor = Colors.clear
-                brightView.removeFromSuperview()
-            }, completion: { (success) in
-            })
-        }
-    }
-    
+        
     //MARK: - UIPICKER DATA SOURCE
     
     

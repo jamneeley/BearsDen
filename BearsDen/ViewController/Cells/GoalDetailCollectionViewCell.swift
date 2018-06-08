@@ -45,12 +45,17 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
     var unit = ""
     var catagory = ""
 
-    var item: GoalDetailItem? {
+    var item: String? {
         didSet {
             updateViews()
         }
     }
-    
+    var goalItem: GoalItem? {
+        didSet {
+            updateViewWithGoalItem()
+        }
+    }
+
     var indexPath: IndexPath?
     var rotationAngle: CGFloat = -90 * (.pi/180)
     
@@ -76,8 +81,25 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.boldSystemFont(ofSize: 14)
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder: ) has not been implemented")
+    }
+    
+    
+    func updateViews() {
+        guard let item = item else {return}
+        titleLabel.text = item
+        catagory = item
+        unit = "lb."
+    }
+    
+    func updateViewWithGoalItem() {
+        guard let goalItem = goalItem else {return}
+        if goalItem.isCustom {
+            isCustom = true
+        }
+        switchTouched()
     }
     
     
@@ -130,7 +152,7 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
     
     func textViewDidChange(_ textView: UITextView) {
         if let text = textView.text {
-            customDescription = textView.text
+            customDescription = text
         }
     }
     
@@ -151,20 +173,6 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
             endEditing(true)
         }
         return true
-    }
-    
-    func updateViews() {
-        guard let item = item else {return}
-        titleLabel.text = item.name
-        catagory = item.name
-        if item.isSelected {
-            isSwitchSelected = true
-            switchControl.isOn = true
-        } else {
-            isSwitchSelected = false
-            switchControl.isOn = false
-        }
-        unit = "lb."
     }
     
     func setupStackViews() {
@@ -279,12 +287,8 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
         } else {
             delegate?.switchTapped(cell: self, indexPath: localIndexPath, isSelected: true)
             isSwitchSelected = true
-            showItems()
+            setupStackViews()
         }
-    }
-    
-    func showItems() {
-        setupStackViews()
     }
     
     func hideItems() {

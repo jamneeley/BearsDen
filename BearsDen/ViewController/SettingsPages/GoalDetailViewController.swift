@@ -10,9 +10,6 @@ import UIKit
 
 class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GoalDetailCollectionViewCellDelegate {
     
-    
-    
-    
     //Top Portion of Screen
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -26,8 +23,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     let goalItemLabel = UILabel()
     
     var contentViewHeight: CGFloat = 0
-    
-    
+
     var selectedCellsIndex: [Int] = []
     
     //Bottom Portion of screen
@@ -42,10 +38,25 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     
     let cellID = "itemCell"
     
-    
     var goal: Goal? {
         didSet {
             updateViews()
+        }
+    }
+    var goalItems = [GoalItem]()
+    
+    func updateViews() {
+        guard let goal = goal,
+        let goalSet = goal.goalItems
+        else {return}
+        
+        nameTextField.text = goal.name
+        
+        //appends all goal items to global array
+        if let localGoalItems = goalSet.allObjects as? [GoalItem] {
+            for item in localGoalItems {
+                goalItems.append(item)
+            }
         }
     }
     
@@ -58,12 +69,10 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         //possibly let cell know to change picker view
     }
-    
     
     func setupObjects() {
         setupNavigationBar()
@@ -77,29 +86,16 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         setupGoalItemLabel()
         setupCollectionView()
     }
-    
-    func updateViews() {
-        guard let goalItems = goal?.goallItems else { return }
-        var goalItemsArray = [GoalItem]()
-        for item in goalItems {
-            goalItemsArray.append(item as! GoalItem)
-        }
-    }
-    
-    
+
     ////////////////////
     //SAVE BUTTON PRESSED
     ///////////////////
-    
-    
     
     @objc func saveButtonPressed() {
         guard let nameText = nameTextField.text, !nameText.isEmpty,
         let user = UserController.shared.user else {presentNameAlert(); return}
         let completionDate = datePicker.date
         var cells = [GoalDetailCollectionViewCell]()
-        
-        
         
         //Go through all collectionView cells and append them to cells
         
@@ -112,27 +108,28 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
             
             ///THIS IS WHERE YOU WOULD UPDATE THE GOAL
             
-            
         } else {
             //CREATE GOAL. after its completed add all the goal items to it
             GoalController.shared.createNewGoal(name: nameText, creationDate: Date(), completionDate: completionDate, user: user) { (Goal) in
-                print("Goal: \(nameText) created with these GoalItems:")
                 //Go through all Cells and get the properties from them
                 for cell in cells {
                     if cell.isSwitchSelected {
                         if cell.isCustom {
+                            let categoryText = cell.catagory
                             let cellTextViewText = cell.customDescription
-                            print("CustomCellText\(cellTextViewText)")
+                            GoalItemController.shared.create(GoalItemfor: Goal, category: categoryText, unit: "", amount: "", customText: cellTextViewText, isCustom: true, isComplete: false)
                         } else {
                             let amountText = cell.amountText
                             let unitText = cell.unit
                             let categoryText = cell.catagory
-                            print("NormalCellAmount: \(amountText), unit: \(unitText), category: \(categoryText)")
+                            GoalItemController.shared.create(GoalItemfor: Goal, category: categoryText, unit: unitText, amount: amountText, customText: "", isCustom: false, isComplete: false)
                         }
                     }
                 }
             }
         }
+        presentSaveAnimation()
+        dismiss(animated: true, completion: nil)
     }
     
     func presentNameAlert() {
@@ -212,28 +209,56 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     
     
     
+    //COLLECTIONVIEW DATA SOURCE
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width , height: view.frame.height * 0.1)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return GoalItemList.possibleItemsForCells.count
+        return PickerViewProperties.catagories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! GoalDetailCollectionViewCell
-        let item = GoalItemList.possibleItemsForCells[indexPath.row]
+        //setupCel
+        let item = PickerViewProperties.catagories[indexPath.row]
+        cell.layer.cornerRadius = 12
         cell.delegate = self
         cell.item = item
         cell.indexPath = indexPath
         if indexPath.row == 0 {
             cell.isCustom = true
         }
-        cell.layer.cornerRadius = 12
+        //If Cell should be selected
+        if !goalItems.isEmpty {
+            for item in goalItems {
+                if let category = item.category {
+                    let localIndex = findIndexOfGoalItem(GoalCategory: category, indexOfCell: indexPath.row)
+                    if indexPath.row == localIndex {
+                        print("Index of pickerViewProperty \(localIndex), index of row: \(indexPath.row)")
+                        cell.goalItem = item
+                    }
+                }
+            }
+        }
         return cell
     }
     
+    func findIndexOfGoalItem(GoalCategory category: String, indexOfCell: Int) -> Int {
+        var index = 0
+        for item in PickerViewProperties.catagories {
+            if category == item {
+                guard let position = PickerViewProperties.catagories.index(of: item) else {print("FAIL"); return 0}
+                index = Int(position)
+                print("success! selected cell is at \(index)")
+            }
+        }
+        return index
+    }
+    
+    /////////////////////////////////////
+    //SETUP
+    ////////////////////////////////////
     
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .plain, target: self, action: #selector(backButtonPressed))

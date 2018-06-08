@@ -206,7 +206,7 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
                     if success {
                         //success updating cloud
                         DispatchQueue.main.async {
-                            self.saveAnimation()
+                            self.presentSaveAnimation()
                             self.view.isUserInteractionEnabled = true
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
@@ -216,7 +216,7 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
                         //saved to phone because update was unsuccessful
                     } else {
                         DispatchQueue.main.async {
-                            self.saveAnimation()
+                            self.presentSaveAnimation()
                             self.view.isUserInteractionEnabled = true
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
@@ -229,7 +229,7 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
             } else {
                 print("NO BARCODE AND WAS SAVED LOCALLY BUT NOT ON THE CLOUD")
                 ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
-                saveAnimation()
+                presentSaveAnimation()
             }
             if let viewToPopTo = viewControllerToPopTo {
                 self.navigationController?.popToViewController(viewToPopTo, animated: true)
@@ -257,22 +257,6 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return true
-    }
-    
-    func saveAnimation() {
-        let brightView = UIView()
-        brightView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        view.addSubview(brightView)
-        brightView.backgroundColor = Colors.clear
-        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseIn], animations: {
-            brightView.backgroundColor = Colors.white
-        }) { (success) in
-            UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
-                brightView.backgroundColor = Colors.clear
-                brightView.removeFromSuperview()
-            }, completion: { (success) in
-            })
-        }
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

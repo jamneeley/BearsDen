@@ -4,16 +4,17 @@
         <attribute name="completionDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="goallItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GoalItem" inverseName="goal" inverseEntity="GoalItem" syncable="YES"/>
+        <relationship name="goalItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GoalItem" inverseName="goal" inverseEntity="GoalItem" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="goals" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="GoalItem" representedClassName="GoalItem" syncable="YES" codeGenerationType="class">
         <attribute name="amount" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="customText" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isComplete" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isCustom" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="unit" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="goal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Goal" inverseName="goallItems" inverseEntity="Goal" syncable="YES"/>
+        <relationship name="goal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Goal" inverseName="goalItems" inverseEntity="Goal" syncable="YES"/>
     </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
         <attribute name="barcode" optional="YES" attributeType="String" syncable="YES"/>
@@ -48,8 +49,8 @@
         <relationship name="shoppingItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ShoppingItem" inverseName="user" inverseEntity="ShoppingItem" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Goal" positionX="-299" positionY="-91" width="128" height="118"/>
-        <element name="GoalItem" positionX="-504" positionY="111" width="128" height="133"/>
+        <element name="Goal" positionX="-299" positionY="-91" width="128" height="120"/>
+        <element name="GoalItem" positionX="-504" positionY="111" width="128" height="150"/>
         <element name="Item" positionX="430" positionY="-9" width="128" height="195"/>
         <element name="Shelf" positionX="259" positionY="-225" width="128" height="105"/>
         <element name="ShoppingItem" positionX="124" positionY="81" width="128" height="90"/>
