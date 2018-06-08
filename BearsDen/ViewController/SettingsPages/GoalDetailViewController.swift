@@ -8,18 +8,40 @@
 
 import UIKit
 
-class GoalDetailViewController: UIViewController, UITextFieldDelegate {
+class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GoalDetailCollectionViewCellDelegate {
+
     
+
+    
+    //Top Portion of Screen
     let scrollView = UIScrollView()
     let contentView = UIView()
     let singleTap = UITapGestureRecognizer()
-    
     let nameLabel = UILabel()
     let nameTextField = UITextField()
     let nameStack = UIStackView()
-    
     let dateOfCompletionLabel = UILabel()
     let datePicker = UIDatePicker()
+    let seperator = UIView()
+    let goalItemLabel = UILabel()
+    
+    var contentViewHeight: CGFloat = 0
+    
+    
+    var selectedCellsIndex: [Int] = []
+    
+    //Bottom Portion of screen
+    let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 20
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .white
+        cv.allowsSelection = false
+        return cv
+    }()
+    
+    let cellID = "itemCell"
+
     
     var goal: Goal? {
         didSet {
@@ -30,6 +52,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Colors.green
+        collectionView.register(GoalDetailCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
         setupObjects()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -43,12 +66,25 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
         setupNameStack()
         setupDateOfCompletionLabel()
         setupDatePicker()
+        setupSeperator()
+        setupGoalItemLabel()
+        setupCollectionView()
     }
     
     func updateViews() {
-        guard let goal = goal else {return}
-        
-        
+        guard let goalItems = goal?.goallItems else { return }
+        var goalItemsArray = [GoalItem]()
+        for item in goalItems {
+            goalItemsArray.append(item as! GoalItem)
+        }
+    }
+    
+    @objc func saveButtonPressed() {
+        if let _ = goal {
+            print("updated Goal")
+        } else {
+            print("saved new Goal")
+        }
     }
     
     @objc func backButtonPressed() {
@@ -78,9 +114,72 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
     
+    
+    func switchTapped(cell: UICollectionViewCell, indexPath: Int, isSelected: Bool) {
+        //EXPAND
+        if isSelected {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+                cell.frame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.width, height: self.view.frame.height * 0.35)
+            }) { (success) in
+                
+            }
+            for i in collectionView.visibleCells {
+                guard let index = collectionView.indexPath(for: i) else {return}
+                
+                if index.row > indexPath {
+                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+                        i.frame = CGRect(x: 0, y: (i.frame.origin.y) + (cell.frame.height / 2 + 40), width: self.collectionView.frame.width, height: i.frame.height)
+                    }) { (success) in
+                    }
+                }
+            }
+            //SHRINK
+        } else {
+            
+            for i in collectionView.visibleCells {
+                guard let index = collectionView.indexPath(for: i) else {return}
+                if index.row > indexPath {
+                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+                        i.frame = CGRect(x: 0, y: (i.frame.origin.y) - (cell.frame.height / 2 + 40), width: self.collectionView.frame.width, height: i.frame.height)
+                    }) { (success) in
+                    }
+                }
+            }
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+                cell.frame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.width, height: self.view.frame.height * 0.1)
+            }) { (success) in
+            }
+        }
+    }
+    
+
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width , height: view.frame.height * 0.1)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return GoalItemList.possibleItemsForCells.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! GoalDetailCollectionViewCell
+        let item = GoalItemList.possibleItemsForCells[indexPath.row]
+        cell.delegate = self
+        cell.item = item
+        cell.indexPath = indexPath
+        if indexPath.row == 0 {
+            cell.isCustom = true
+        }
+        cell.layer.cornerRadius = 12
+        return cell
+    }
+    
 
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .plain, target: self, action: #selector(backButtonPressed))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonPressed))
         navigationController?.navigationBar.tintColor = .white
         
         let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
@@ -108,7 +207,8 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
         contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
         contentView.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 2).isActive = true
+        contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 2.7).isActive = true
+        contentViewHeight = view.frame.height * 0.3
     }
     
     func setupNameStack() {
@@ -149,6 +249,45 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
         setupDatePickerConstraints()
         let newDate = Calendar.current.date(byAdding: .month, value: monthsToAdd, to: Date())
         datePicker.date = newDate ?? Date()
+    }
+    
+    
+    func setupSeperator() {
+        contentView.addSubview(seperator)
+        seperator.backgroundColor = Colors.green
+        seperator.translatesAutoresizingMaskIntoConstraints = false
+        seperator.layer.cornerRadius = CornerRadius.textField
+        seperator.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 30).isActive = true
+        seperator.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.2).isActive = true
+        seperator.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * -0.2).isActive = true
+        seperator.bottomAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 32).isActive = true
+    }
+    
+    func setupGoalItemLabel() {
+        contentView.addSubview(goalItemLabel)
+        if let localGoal = goal {
+            goalItemLabel.text = "Items to stock for \(localGoal.name ?? "your goal")"
+        } else {
+            goalItemLabel.text = "Which items are you trying to stock?"
+        }
+        goalItemLabel.numberOfLines = 0
+        goalItemLabel.textAlignment = .center
+        goalItemLabel.translatesAutoresizingMaskIntoConstraints = false
+        goalItemLabel.topAnchor.constraint(equalTo: seperator.bottomAnchor, constant: 20).isActive = true
+        goalItemLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
+        goalItemLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
+        goalItemLabel.bottomAnchor.constraint(equalTo: seperator.bottomAnchor, constant: 45).isActive = true
+    }
+    
+    func setupCollectionView() {
+        contentView.addSubview(collectionView)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.topAnchor.constraint(equalTo: goalItemLabel.bottomAnchor, constant: 40).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -view.frame.height * 0.05).isActive = true
     }
     
     func setupNameStackConstraints() {

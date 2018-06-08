@@ -12,8 +12,13 @@ class GoalItemController {
     
     static let shared = GoalItemController()
     
-    func create(GoalItemfor goal: Goal, catagory: String, unit: String, amount: String ) {
-        let _ = GoalItem(category: catagory, unit: unit, amount: amount, goal: goal)
+    func create(GoalItemfor goal: Goal, catagory: String, unit: String, amount: String, isCustom: Bool, isComplete: Bool ) {
+        let _ = GoalItem(category: catagory, unit: unit, amount: amount, goal: goal, isCustom: isComplete, isComplete: isComplete)
+        UserController.shared.saveToCoreData()
+    }
+    
+    func changeIsCompleteFor(GoalItem item: GoalItem, to: Bool) {
+        item.isComplete = to
         UserController.shared.saveToCoreData()
     }
     

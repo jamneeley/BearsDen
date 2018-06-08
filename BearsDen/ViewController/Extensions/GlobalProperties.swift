@@ -29,3 +29,40 @@ struct PickerViewProperties {
     static let units: [String] = ["lb.", "oz.", "gal.", "fl. oz."]
     static let catagories: [String] = ["Other", "Grain", "Protein", "Fruit", "Vegetable", "Legume", "Dairy", "Sugar", "Leavening", "Salt", "Fat", "Water", "Medical"]
 }
+
+struct GoalDetailItem {
+    
+    let name: String
+    var isSelected: Bool
+
+}
+
+struct GoalItemList {
+    static let possibleItemsForCells: [GoalDetailItem] = {
+        var custom = GoalDetailItem(name: "Custom", isSelected: false)
+        var grain = GoalDetailItem(name: "Grain", isSelected: false)
+        var protien = GoalDetailItem(name: "Protein", isSelected: false)
+        var fruit = GoalDetailItem(name: "Fruit", isSelected: false)
+        var vegetable = GoalDetailItem(name: "Vegetable", isSelected: false)
+        var legume = GoalDetailItem(name: "Legume", isSelected: false)
+        var dairy = GoalDetailItem(name: "Dairy", isSelected: false)
+        var sugar = GoalDetailItem(name: "Sugar", isSelected: false)
+        var leavening = GoalDetailItem(name: "Leavening", isSelected: false)
+        var salt = GoalDetailItem(name: "Salt", isSelected: false)
+        var fat = GoalDetailItem(name: "Fat", isSelected: false)
+        var water = GoalDetailItem(name: "Water", isSelected: false)
+        var medical = GoalDetailItem(name: "Medical", isSelected: false)
+        
+        return [custom, grain, protien, fruit, vegetable, legume, dairy, sugar, leavening, salt, fat, water, medical]
+    }()
+}
+
+
+
+
+
+
+
+
+
+

@@ -101,6 +101,7 @@
 		9DCF094920A60FE4009471F8 /* ShoppingListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCF094820A60FE4009471F8 /* ShoppingListTableViewCell.swift */; };
 		9DCF094B20A619FF009471F8 /* checkedBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DCF094A20A619FF009471F8 /* checkedBox.png */; };
 		9DCF094D20A61A07009471F8 /* checkMarkBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DCF094C20A61A07009471F8 /* checkMarkBox.png */; };
+		9DD54C7620C9ABCF00AB3C52 /* GoalDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD54C7520C9ABCF00AB3C52 /* GoalDetailCollectionViewCell.swift */; };
 		9DF445F320C5F603005EB7CC /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF445F220C5F603005EB7CC /* CalculatorViewController.swift */; };
 		9DF445F520C5F6AC005EB7CC /* calculatorButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF445F420C5F6AC005EB7CC /* calculatorButton.png */; };
 		9DF445F720C6DDEC005EB7CC /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */; };
@@ -226,6 +227,7 @@
 		9DCF094820A60FE4009471F8 /* ShoppingListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListTableViewCell.swift; sourceTree = "<group>"; };
 		9DCF094A20A619FF009471F8 /* checkedBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkedBox.png; sourceTree = "<group>"; };
 		9DCF094C20A61A07009471F8 /* checkMarkBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkMarkBox.png; sourceTree = "<group>"; };
+		9DD54C7520C9ABCF00AB3C52 /* GoalDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		9DF445F220C5F603005EB7CC /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		9DF445F420C5F6AC005EB7CC /* calculatorButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calculatorButton.png; sourceTree = "<group>"; };
 		9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				9DCF094820A60FE4009471F8 /* ShoppingListTableViewCell.swift */,
 				9DB6172B20B3110F00B87C6C /* TipsCollectionViewCell.swift */,
 				9DF445FA20C89EFA005EB7CC /* GoalsCollectionViewCell.swift */,
+				9DD54C7520C9ABCF00AB3C52 /* GoalDetailCollectionViewCell.swift */,
 				9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */,
 			);
 			path = Cells;
@@ -622,6 +625,7 @@
 				9DC23BEA209913A900C2F111 /* CoreDataStack.swift in Sources */,
 				9DC82D05208A53490068DD8E /* Item+Convenience.swift in Sources */,
 				9DAD6F8D20A4C32D001F777F /* CloudItem.swift in Sources */,
+				9DD54C7620C9ABCF00AB3C52 /* GoalDetailCollectionViewCell.swift in Sources */,
 				9DB6172A20B307E100B87C6C /* TipsController.swift in Sources */,
 				9D84780120A35DDB005F219B /* UIViewController+Extensions.swift in Sources */,
 				9D8477A2209A7C65005F219B /* ItemsViewController.swift in Sources */,
