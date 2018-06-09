@@ -16,7 +16,7 @@ class GoalItemController {
         let _ = GoalItem(goal: goal, amount: amount, category: category, unit: unit, customText: customText, isCustom: isCustom, isComplete: isComplete)
         UserController.shared.saveToCoreData()
     }
-    
+
     func changeIsCompleteFor(GoalItem item: GoalItem, to: Bool) {
         item.isComplete = to
         UserController.shared.saveToCoreData()

@@ -28,6 +28,10 @@ class GoalsSectionHeader: UICollectionReusableView {
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        
+        
+        
         addSubview(sectionHeaderLabel)
         addConstraintsWithFormat(format: "H:|-15-[v0]", views: sectionHeaderLabel)
         addConstraintsWithFormat(format: "V:|-\(frame.size.height * 0.25)-[v0]", views: sectionHeaderLabel)
@@ -51,7 +55,7 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 40
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
+        cv.backgroundColor = Colors.veryLightGray
         return cv
     }()
     
@@ -60,7 +64,7 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.veryLightGray
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(GoalsCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
@@ -100,13 +104,13 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: view.frame.height * 0.7)
+        return CGSize(width: collectionView.frame.width, height: view.frame.height * 0.85)
     }
     
     
     //DID SELECT
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let goal = UserController.shared.user?.goals?[indexPath.row] as? Goal else {return}
+        guard let goal = UserController.shared.user?.goals?[indexPath.section] as? Goal else {return}
         let goalDetailVC = GoalDetailViewController()
         goalDetailVC.goal = goal
         let navController = UINavigationController(rootViewController: goalDetailVC)
@@ -116,6 +120,7 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! GoalsCollectionViewCell
         if let goal = UserController.shared.user?.goals?[indexPath.section] as? Goal {
+            print("\(indexPath.section)")
             cell.goal = goal
             cell.layer.cornerRadius = 12
             return cell
@@ -132,7 +137,6 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
 extension GoalsViewController {
     func setupCollectionView() {
         view.addSubview(collectionView)
-        collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05).isActive = true

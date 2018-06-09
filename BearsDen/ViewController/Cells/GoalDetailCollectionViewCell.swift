@@ -52,7 +52,7 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
     }
     var goalItem: GoalItem? {
         didSet {
-            updateViewWithGoalItem()
+            let _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector:#selector(updateViewWithGoalItem), userInfo: nil, repeats: false)
         }
     }
 
@@ -61,7 +61,7 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = Colors.veryLightGray
+        self.backgroundColor = .white
         addSubview(titleLabel)
         addSubview(switchControl)
         
@@ -75,12 +75,13 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
         switchControl.topAnchor.constraint(equalTo: topAnchor, constant: frame.height * 0.2).isActive = true
         switchControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         
-
-        switchControl.addTarget(self, action: #selector(switchTouched), for: .touchUpInside)
+        switchControl.addTarget(self, action: #selector(switchTouched), for: .valueChanged)
+        
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.boldSystemFont(ofSize: 14)
     }
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder: ) has not been implemented")
@@ -94,10 +95,20 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
         unit = "lb."
     }
     
-    func updateViewWithGoalItem() {
+    @objc func updateViewWithGoalItem() {
         guard let goalItem = goalItem else {return}
         if goalItem.isCustom {
             isCustom = true
+            if let customText = goalItem.customText {
+                self.customDescription = customText
+            }
+        } else {
+            if let text = goalItem.amount {
+                self.amountText = text
+                if let unitText = goalItem.unit {
+                    unit = unitText
+                }
+            }
         }
         switchTouched()
     }
@@ -240,10 +251,14 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
             //picker timers
             
             let _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(changeFrameOfPickers), userInfo: nil, repeats: false)
-
-
-        } else {
+            guard let goalItem = goalItem,
+            let goalUnit = goalItem.unit
+            else {return}
+            let index = findIndexOf(Unit: goalUnit)
             
+            unitPicker.selectRow(index, inComponent: 0, animated: false)
+            amountTextField.text = goalItem.amount ?? ""
+        } else {
             addSubview(customStack)
             customStack.addArrangedSubview(customTextLabel)
             customStack.addArrangedSubview(customTextView)
@@ -267,8 +282,23 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
             customStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: self.frame.width * 0.05).isActive = true
             customStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
             customStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
+            guard let goalItem = goalItem else {return}
+            customTextView.text = goalItem.customText
         }
     }
+    
+    func findIndexOf(Unit: String) -> Int {
+        for item in PickerViewProperties.units {
+            if Unit == item {
+                guard let index = PickerViewProperties.units.index(of: item) else {print("index doesnt exist for catagory"); return 0}
+                print(index)
+                return index
+            }
+        }
+        print("Not unit or catagory")
+        return 0
+    }
+    
     
     @objc func changeFrameOfPickers() {
         unitPicker.frame = CGRect(x: 0, y: 0, width: unitPickerView.frame.width, height: unitPickerView.frame.height)

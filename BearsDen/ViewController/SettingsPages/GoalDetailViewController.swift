@@ -23,6 +23,8 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     let goalItemLabel = UILabel()
     
     var contentViewHeight: CGFloat = 0
+    
+    var contentHeightAnchor: NSLayoutConstraint?
 
     var selectedCellsIndex: [Int] = []
     
@@ -31,7 +33,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 20
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
+        cv.backgroundColor = Colors.veryLightGray
         cv.allowsSelection = false
         return cv
     }()
@@ -62,7 +64,8 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Colors.green
+        contentViewHeight = view.frame.height * 2.4
+        view.backgroundColor = Colors.veryLightGray
         collectionView.register(GoalDetailCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
         setupObjects()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -98,16 +101,29 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         var cells = [GoalDetailCollectionViewCell]()
         
         //Go through all collectionView cells and append them to cells
-        
         for number in 0..<13 {
             let index = IndexPath(item: number, section: 0)
             guard let cell = collectionView.cellForItem(at: index) as? GoalDetailCollectionViewCell else {return}
             cells.append(cell)
         }
         if let goal = goal {
-            
-            ///THIS IS WHERE YOU WOULD UPDATE THE GOAL
-            
+            //remove all goalitems from the goal
+            GoalController.shared.removeAllGoalItems(forGoal: goal)
+            //then add all the new goal items to it
+            for cell in cells {
+                if cell.isSwitchSelected {
+                    if cell.isCustom {
+                        let categoryText = cell.catagory
+                        let cellTextViewText = cell.customDescription
+                        GoalItemController.shared.create(GoalItemfor: goal, category: categoryText, unit: "", amount: "", customText: cellTextViewText, isCustom: true, isComplete: false)
+                    } else {
+                        let amountText = cell.amountText
+                        let unitText = cell.unit
+                        let categoryText = cell.catagory
+                        GoalItemController.shared.create(GoalItemfor: goal, category: categoryText, unit: unitText, amount: amountText, customText: "", isCustom: false, isComplete: false)
+                    }
+                }
+            }
         } else {
             //CREATE GOAL. after its completed add all the goal items to it
             GoalController.shared.createNewGoal(name: nameText, creationDate: Date(), completionDate: completionDate, user: user) { (Goal) in
@@ -175,6 +191,11 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                 cell.frame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.width, height: self.view.frame.height * 0.3)
                 cell.layer.borderWidth = 2
                 cell.layer.borderColor = Colors.green.cgColor
+                let height = self.contentViewHeight + self.view.frame.height * 0.2
+                self.contentHeightAnchor?.isActive = false
+                self.contentHeightAnchor = self.contentView.heightAnchor.constraint(equalToConstant: height)
+                self.contentHeightAnchor?.isActive = true
+                self.contentViewHeight = height
             }) { (success) in
             }
             for i in collectionView.visibleCells {
@@ -202,11 +223,16 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
                 cell.frame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: cell.frame.width, height: self.view.frame.height * 0.1)
                 cell.layer.borderWidth = 0
+                
+                let height = self.contentViewHeight - self.view.frame.height * 0.2
+                self.contentHeightAnchor?.isActive = false
+                self.contentHeightAnchor = self.contentView.heightAnchor.constraint(equalToConstant: height)
+                self.contentHeightAnchor?.isActive = true
+                self.contentViewHeight = height
             }) { (success) in
             }
         }
     }
-    
     
     
     //COLLECTIONVIEW DATA SOURCE
@@ -220,7 +246,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! GoalDetailCollectionViewCell
-        //setupCel
+        //setupCell
         let item = PickerViewProperties.catagories[indexPath.row]
         cell.layer.cornerRadius = 12
         cell.delegate = self
@@ -235,7 +261,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                 if let category = item.category {
                     let localIndex = findIndexOfGoalItem(GoalCategory: category, indexOfCell: indexPath.row)
                     if indexPath.row == localIndex {
-                        print("Index of pickerViewProperty \(localIndex), index of row: \(indexPath.row)")
                         cell.goalItem = item
                     }
                 }
@@ -250,7 +275,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
             if category == item {
                 guard let position = PickerViewProperties.catagories.index(of: item) else {print("FAIL"); return 0}
                 index = Int(position)
-                print("success! selected cell is at \(index)")
             }
         }
         return index
@@ -283,15 +307,15 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     
     func setupContentView() {
         scrollView.addSubview(contentView)
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = Colors.veryLightGray
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
         contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
         contentView.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 2.7).isActive = true
-        contentViewHeight = view.frame.height * 0.3
+        contentHeightAnchor = contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 2.4)
+        contentHeightAnchor?.isActive = true
     }
     
     func setupNameStack() {
@@ -301,8 +325,9 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         nameStack.distribution = .fill
         nameStack.axis = .vertical
         nameStack.spacing = 2
-        nameTextField.layer.borderWidth = 2
+        nameTextField.layer.borderWidth = 1
         nameTextField.layer.cornerRadius = CornerRadius.textField
+        nameTextField.backgroundColor = .white
         nameTextField.setLeftPaddingPoints(5)
         nameTextField.setRightPaddingPoints(5)
         nameTextField.delegate = self
@@ -325,6 +350,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     }
     func setupDatePicker() {
         contentView.addSubview(datePicker)
+        datePicker.backgroundColor = .white
         datePicker.datePickerMode = .date
         let monthsToAdd = 6
         datePicker.layer.cornerRadius = 12

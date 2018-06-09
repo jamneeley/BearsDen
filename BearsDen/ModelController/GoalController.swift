@@ -18,6 +18,15 @@ class GoalController {
         UserController.shared.saveToCoreData()
     }
     
+    func removeAllGoalItems(forGoal goal: Goal) {
+        guard let goalItemSet = goal.goalItems else {return}
+        if let goals = goalItemSet.allObjects as? [GoalItem] {
+            for i in goals {
+                GoalItemController.shared.delete(GoalItem: i)
+            }
+        }
+    }
+    
     func update(Goal goal: Goal, name: String, completionDate: Date) {
         goal.name = name
         goal.completionDate = completionDate
@@ -28,4 +37,32 @@ class GoalController {
         goal.managedObjectContext?.delete(goal)
         UserController.shared.saveToCoreData()
     }
+    
+//    func calculateCompletionOf(Goal goal: Goal) -> Float {
+//        guard let goalItemSet = goal.goalItems else {return}
+//        if let goalItems = goalItemSet.allObjects as? [GoalItem] {
+//            
+//        } else {
+//            
+//        }
+//        
+//        
+//        return Float()
+//    }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
