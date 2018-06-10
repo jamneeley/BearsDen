@@ -74,6 +74,7 @@
 		9D8FEB52208A6CFC00080EEE /* icon_40pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8FEB43208A6CFC00080EEE /* icon_40pt.png */; };
 		9D8FEB53208A6CFC00080EEE /* icon_60pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8FEB44208A6CFC00080EEE /* icon_60pt@2x.png */; };
 		9D8FEB54208A6CFC00080EEE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8FEB45208A6CFC00080EEE /* Icon.png */; };
+		9D99AEDA20CC9F590079966C /* TrashIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D99AED920CC9F590079966C /* TrashIcon.png */; };
 		9DAD6F8B20A4B9BC001F777F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DAD6F8A20A4B9BC001F777F /* CloudKit.framework */; };
 		9DAD6F8D20A4C32D001F777F /* CloudItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAD6F8C20A4C32D001F777F /* CloudItem.swift */; };
 		9DB6171B20ACD23900B87C6C /* ShelfEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6171A20ACD23900B87C6C /* ShelfEditViewController.swift */; };
@@ -197,6 +198,7 @@
 		9D8FEB43208A6CFC00080EEE /* icon_40pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_40pt.png; sourceTree = "<group>"; };
 		9D8FEB44208A6CFC00080EEE /* icon_60pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_60pt@2x.png"; sourceTree = "<group>"; };
 		9D8FEB45208A6CFC00080EEE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		9D99AED920CC9F590079966C /* TrashIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrashIcon.png; sourceTree = "<group>"; };
 		9DAD6F8820A4B9B9001F777F /* BearsDen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BearsDen.entitlements; sourceTree = "<group>"; };
 		9DAD6F8A20A4B9BC001F777F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		9DAD6F8C20A4C32D001F777F /* CloudItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudItem.swift; sourceTree = "<group>"; };
@@ -367,6 +369,7 @@
 		9DC82CFE208A50970068DD8E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9D99AED920CC9F590079966C /* TrashIcon.png */,
 				9DF445F820C7589F005EB7CC /* ClearBarCodeButton.png */,
 				9DF445F420C5F6AC005EB7CC /* calculatorButton.png */,
 				9DB6172120AD155100B87C6C /* photoLibrary.png */,
@@ -558,6 +561,7 @@
 				9D8477E220A34179005F219B /* AddShelfInstructions.png in Resources */,
 				9D8FEB4C208A6CFC00080EEE /* icon_40pt@2x.png in Resources */,
 				9DB6172220AD155200B87C6C /* photoLibrary.png in Resources */,
+				9D99AEDA20CC9F590079966C /* TrashIcon.png in Resources */,
 				9D8477AA209B90D5005F219B /* BackLargeX1.png in Resources */,
 				9D8477A8209A86BB005F219B /* backX2.png in Resources */,
 				9D84778B209A5D06005F219B /* imagePlaceHolder.png in Resources */,

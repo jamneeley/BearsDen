@@ -96,7 +96,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     
     @objc func saveButtonPressed() {
         guard let nameText = nameTextField.text, !nameText.isEmpty,
-        let user = UserController.shared.user else {presentNameAlert(); return}
+            let user = UserController.shared.user else {presentAlert(Title: "Uh Oh", message: "Your goal needs a name :)"); return}
         let completionDate = datePicker.date
         var cells = [GoalDetailCollectionViewCell]()
         
@@ -105,7 +105,24 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
             let index = IndexPath(item: number, section: 0)
             guard let cell = collectionView.cellForItem(at: index) as? GoalDetailCollectionViewCell else {return}
             cells.append(cell)
+            
+            if cell.isSwitchSelected {
+                if cell.isCustom {
+                    let categoryText = cell.customDescription
+                    if categoryText == "" {
+                        presentAlert(Title: "Uh Oh", message: "Your custom goal item needs a description")
+                        return
+                    }
+                } else {
+                    let amountText = cell.amountText
+                    if amountText == "" {
+                        presentAlert(Title: "Uh Oh", message: "A goal items need an amount :)")
+                        return
+                    }
+                }
+            }
         }
+        
         if let goal = goal {
             //remove all goalitems from the goal
             GoalController.shared.removeAllGoalItems(forGoal: goal)
@@ -114,12 +131,14 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                 if cell.isSwitchSelected {
                     if cell.isCustom {
                         let categoryText = cell.catagory
-                        let cellTextViewText = cell.customDescription
-                        GoalItemController.shared.create(GoalItemfor: goal, category: categoryText, unit: "", amount: "", customText: cellTextViewText, isCustom: true, isComplete: false)
+                        print("UPDATE CUSTOM ITEM ADDED")
+                        GoalItemController.shared.create(GoalItemfor: goal, category: categoryText, unit: "", amount: "", customText: cell.customDescription, isCustom: true, isComplete: false)
+                        
                     } else {
                         let amountText = cell.amountText
                         let unitText = cell.unit
                         let categoryText = cell.catagory
+                        print("UPDATE NORMAL ITEM ADDED")
                         GoalItemController.shared.create(GoalItemfor: goal, category: categoryText, unit: unitText, amount: amountText, customText: "", isCustom: false, isComplete: false)
                     }
                 }
@@ -133,11 +152,14 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                         if cell.isCustom {
                             let categoryText = cell.catagory
                             let cellTextViewText = cell.customDescription
+                            print("CREATE CUSTOM ITEM ADDED")
                             GoalItemController.shared.create(GoalItemfor: Goal, category: categoryText, unit: "", amount: "", customText: cellTextViewText, isCustom: true, isComplete: false)
+                            
                         } else {
                             let amountText = cell.amountText
                             let unitText = cell.unit
                             let categoryText = cell.catagory
+                            print("CREATE NORMAL ITEM ADDED")
                             GoalItemController.shared.create(GoalItemfor: Goal, category: categoryText, unit: unitText, amount: amountText, customText: "", isCustom: false, isComplete: false)
                         }
                     }
@@ -147,14 +169,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         presentSaveAnimation()
         dismiss(animated: true, completion: nil)
     }
-    
-    func presentNameAlert() {
-        let alert = UIAlertController(title: "Uh Oh", message: "Your goal needs a name :)", preferredStyle: .alert)
-        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-        alert.addAction(dismiss)
-        present(alert, animated: true, completion: nil)
-    }
-    
     
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)

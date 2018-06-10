@@ -7,45 +7,55 @@
 //
 
 import UIKit
+protocol GoalsCollectionViewCellDelegate: class {
+    func presentDeleteAlert(goal: Goal)
+}
 
 class GoalsCollectionViewCell: UICollectionViewCell {
-
-    let seperator = UIView()
-    var titleLabel = UILabel()
+    
+    let deleteButton = UIButton()
+    //ProgressBar
     let progressLayer = CAShapeLayer()
     let trackLayer = CAShapeLayer()
     let percentageLabel = UILabel()
     var pulsatingLayer: CAShapeLayer!
     let completedLabel = UILabel()
     let circleTextStack = UIStackView()
+    // belowProgressBar
+    let seperator = UIView()
     
     var goal: Goal? {
         didSet {
             updateViews()
         }
     }
+    var percentComplete: Float? {
+        didSet {
+            guard let fraction = percentComplete else {return}
+            let percent = Int(fraction * 100)
+            percentageLabel.text = "\(percent)%"
+        }
+    }
     
     func updateViews() {
         guard let localGoal = goal else {return}
-        titleLabel.text = localGoal.name
         animatePulsatingLayer()
     }
+    
+    
+    weak var delegate: GoalsCollectionViewCellDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         let _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(animateProgress), userInfo: nil, repeats: false)
         self.backgroundColor = .white
+        setupDeleteButton()
         setupProgressCircle()
         addSubview(seperator)
-        addSubview(titleLabel)  
         addConstraintsWithFormat(format: "H:|-25-[v0]-25-|", views: seperator)
-        addConstraintsWithFormat(format: "H:|-5-[v0]-5-|", views: titleLabel)
-        addConstraintsWithFormat(format: "V:|-\(frame.height * 0.53)-[v1(80)]-5-[v0(2)]", views: seperator, titleLabel)
+        addConstraintsWithFormat(format: "V:|-\(frame.height * 0.62)-[v0(2)]", views: seperator)
         seperator.backgroundColor = Colors.mediumGray
         seperator.layer.cornerRadius = 4
-        titleLabel.numberOfLines = 0
-        titleLabel.textAlignment = .center
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 14)
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder: ) has not been implemented")
@@ -57,9 +67,27 @@ class GoalsCollectionViewCell: UICollectionViewCell {
         animatePulsatingLayer()
     }
     
+    
+    func setupDeleteButton() {
+    deleteButton.setImage(#imageLiteral(resourceName: "TrashIcon"), for: .normal)
+        addSubview(deleteButton)
+        deleteButton.addTarget(self, action: #selector(deleteGoalButtonPressed), for: .touchUpInside)
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        deleteButton.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+        deleteButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        deleteButton.trailingAnchor.constraint(equalTo: leadingAnchor, constant: 40).isActive = true
+        deleteButton.bottomAnchor.constraint(equalTo: topAnchor, constant: 40).isActive = true
+    }
+    
+    @objc func deleteGoalButtonPressed() {
+        guard let goal = goal else {return}
+        delegate?.presentDeleteAlert(goal: goal)
+    }
+
+    
     func setupProgressCircle() {
         let x = frame.width * 0.5
-        let y = frame.height * 0.25
+        let y = frame.height * 0.32
         let radius = frame.width * 0.75 / 2
         
         let circlePosition = CGPoint(x: x, y: y)
@@ -136,12 +164,17 @@ class GoalsCollectionViewCell: UICollectionViewCell {
     @objc private func animateProgress() {
         print("animation should happen")
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        basicAnimation.toValue = 0.75
         basicAnimation.duration = 1
         basicAnimation.fillMode = kCAFillModeForwards
         basicAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         basicAnimation.isRemovedOnCompletion = false
+        if let percent = percentComplete {
+            basicAnimation.toValue = percent
+        } else {
+            basicAnimation.toValue = 0.0
+        }
         progressLayer.add(basicAnimation, forKey: "urSoBasic")
+        
     }
 
 }

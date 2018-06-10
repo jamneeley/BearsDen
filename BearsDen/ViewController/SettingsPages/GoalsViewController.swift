@@ -49,8 +49,9 @@ class GoalsSectionHeader: UICollectionReusableView {
 
 
 
-class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
-    
+class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, GoalsCollectionViewCellDelegate  {
+
+
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 40
@@ -73,6 +74,20 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
     }
     override func viewDidAppear(_ animated: Bool) {
         collectionView.reloadData()
+    }
+    
+    func presentDeleteAlert(goal: Goal) {
+        let alert = UIAlertController(title: "Are you sure you want to delete your goal?", message: nil, preferredStyle: .alert)
+        let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        let yes = UIAlertAction(title: "Yes", style: .default) { (success) in
+            GoalController.shared.delete(Goal: goal)
+            self.collectionView.reloadData()
+        }
+        alert.addAction(no)
+        alert.addAction(yes)
+        present(alert, animated: true) {
+            
+        }
     }
     
     func setupObjects() {
@@ -120,7 +135,9 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! GoalsCollectionViewCell
         if let goal = UserController.shared.user?.goals?[indexPath.section] as? Goal {
-            print("\(indexPath.section)")
+            let percent = GoalController.shared.calculateCompletionOf(Goal: goal)
+            cell.delegate = self
+            cell.percentComplete = percent
             cell.goal = goal
             cell.layer.cornerRadius = 12
             return cell
