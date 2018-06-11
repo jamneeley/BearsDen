@@ -23,6 +23,7 @@ class GoalsCollectionViewCell: UICollectionViewCell {
     let circleTextStack = UIStackView()
     // belowProgressBar
     let seperator = UIView()
+    var animations = 0
     
     var goal: Goal? {
         didSet {
@@ -34,6 +35,10 @@ class GoalsCollectionViewCell: UICollectionViewCell {
             guard let fraction = percentComplete else {return}
             let percent = Int(fraction * 100)
             percentageLabel.text = "\(percent)%"
+            if animations < 1 {
+                let _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(animateProgress), userInfo: nil, repeats: false)
+                animations += 1
+            }
         }
     }
     
@@ -47,7 +52,6 @@ class GoalsCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(animateProgress), userInfo: nil, repeats: false)
         self.backgroundColor = .white
         setupDeleteButton()
         setupProgressCircle()
@@ -174,14 +178,8 @@ class GoalsCollectionViewCell: UICollectionViewCell {
             basicAnimation.toValue = 0.0
         }
         progressLayer.add(basicAnimation, forKey: "urSoBasic")
-        
     }
-
 }
-
-
-
-
 
 
 

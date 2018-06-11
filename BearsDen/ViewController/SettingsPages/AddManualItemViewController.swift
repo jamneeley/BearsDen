@@ -187,7 +187,11 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         let catagoryIndex = catagoryPicker.selectedRow(inComponent: 0)
         let unit = PickerViewProperties.units[unitIndex]
         let catagory = PickerViewProperties.catagories[catagoryIndex]
-
+        var isLiquid = false
+        
+        if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
+            isLiquid = true
+        }
         
         //is there a quantity and weight and are they both numbers?
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) &&  CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: weight))  && quantityAsString != "" && name != "" && weight != "" {
@@ -204,7 +208,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
                         self.cloudItem = nil
                         self.inDataBase = nil
                         print("ITEM SAVED WITH BARCODE AND CLOUD ITEM UPDATED")
-                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
                             self.presentSaveAnimation()
                             self.nameTextField.text = ""
@@ -219,7 +223,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
                         self.cloudItem = nil
                         self.inDataBase = nil
                         print("ITEM SAVED WITH BARCODE AND CLOUD ITEM SAVED")
-                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
                             self.presentSaveAnimation()
                             self.nameTextField.text = ""
@@ -231,7 +235,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
             //there isnt a barcode number or it isnt a number
             } else {
                 print("ITEM SAVED LOCALLY WITHOUT BARCODE")
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
                 presentSaveAnimation()
                 nameTextField.text = ""
                 barcodeTextField.text = ""

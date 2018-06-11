@@ -14,8 +14,10 @@ class CustomLayer: CALayer {
         set {}
     }
 }
+
+
 class GoalsSectionHeader: UICollectionReusableView {
-    
+
     override class var layerClass: AnyClass {
         get { return CustomLayer.self }
     }
@@ -28,10 +30,6 @@ class GoalsSectionHeader: UICollectionReusableView {
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        
-        
-        
         addSubview(sectionHeaderLabel)
         addConstraintsWithFormat(format: "H:|-15-[v0]", views: sectionHeaderLabel)
         addConstraintsWithFormat(format: "V:|-\(frame.size.height * 0.25)-[v0]", views: sectionHeaderLabel)
@@ -46,11 +44,7 @@ class GoalsSectionHeader: UICollectionReusableView {
         sectionHeaderLabel.text = sectionHeader
     }
 }
-
-
-
-class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, GoalsCollectionViewCellDelegate  {
-
+class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, GoalsCollectionViewCellDelegate, GoalDetailViewControllerDelegate  {
 
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -94,6 +88,15 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
         setupCollectionView()
     }
     
+    func updateCells() {
+        if let visibileCells = collectionView.visibleCells as? [GoalsCollectionViewCell] {
+            for cell in visibileCells {
+                cell.animations = 0
+            }
+        }
+    }
+    
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return UserController.shared.user?.goals?.count ?? 0
     }
@@ -128,6 +131,7 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
         guard let goal = UserController.shared.user?.goals?[indexPath.section] as? Goal else {return}
         let goalDetailVC = GoalDetailViewController()
         goalDetailVC.goal = goal
+        goalDetailVC.delegate = self
         let navController = UINavigationController(rootViewController: goalDetailVC)
         self.present(navController, animated: true, completion: nil)
     }

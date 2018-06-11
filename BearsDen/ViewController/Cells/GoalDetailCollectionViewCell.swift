@@ -101,12 +101,14 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
             isCustom = true
             if let customText = goalItem.customText {
                 self.customDescription = customText
+                switchControl.isOn = true
             }
         } else {
             if let text = goalItem.amount {
                 self.amountText = text
                 if let unitText = goalItem.unit {
                     unit = unitText
+                    switchControl.isOn = true
                 }
             }
         }

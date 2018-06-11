@@ -191,6 +191,11 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
         let catagoryIndex = catagoryPicker.selectedRow(inComponent: 0)
         let unit = PickerViewProperties.units[unitIndex]
         let catagory = PickerViewProperties.catagories[catagoryIndex]
+        var isLiquid = false
+        
+        if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
+            isLiquid = true
+        }
         
         //is there a quantity and weight and are they both numbers?
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) &&  CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: weight)) && quantityAsString != "" && name != "" && weight != ""{
@@ -199,7 +204,7 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
             //does cloudItem, barcode number exist?
             if let cloudItem = self.cloudItem, barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)) {
                 
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                 
                     barcodeTextField.text = ""
                 CloudItemController.shared.update(cloudItem: cloudItem, name: name, weight: weight, catagory: catagory, unit: unit) { (success) in
@@ -228,7 +233,7 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
             //NO BARCODE AND WAS SAVED LOCALLY BUT NOT ON THE CLOUD
             } else {
                 print("NO BARCODE AND WAS SAVED LOCALLY BUT NOT ON THE CLOUD")
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
                 presentSaveAnimation()
             }
             if let viewToPopTo = viewControllerToPopTo {
