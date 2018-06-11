@@ -76,6 +76,10 @@ class GoalController {
                                 }
                             }
                         }
+                    } else {
+                        if item.isComplete {
+                            totalGoalPercentAmounts += 1
+                        }
                     }
                 }
             }

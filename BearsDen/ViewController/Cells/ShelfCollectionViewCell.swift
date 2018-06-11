@@ -68,12 +68,12 @@ class ShelfCollectionViewCell: UICollectionViewCell {
         addSubview(ShelfNameLabel)
         addSubview(itemCountLabel)
         ShelfNameLabel.numberOfLines = 3
-        ShelfNameLabel.backgroundColor = .red
-        itemCountLabel.textColor = .gray
+        itemCountLabel.textColor = .lightGray
+        itemCountLabel.font = UIFont.boldSystemFont(ofSize: 12)
         addConstraintsWithFormat(format: "H:|-\(frame.height * 0.96)-[v0(\(frame.width * 0.63))]", views: ShelfNameLabel)
-        addConstraintsWithFormat(format: "H:|-\(frame.height * 0.96)-[v0]", views: itemCountLabel)
-        addConstraintsWithFormat(format: "V:|-40-[v0]-30-|", views: itemCountLabel)
+        addConstraintsWithFormat(format: "H:[v0]-10-|", views: itemCountLabel)
         addConstraintsWithFormat(format: "V:|-15-[v0]-65-|", views: ShelfNameLabel)
+        itemCountLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
     }
     
     @objc func deleteButtonTapped() {
