@@ -62,9 +62,9 @@ class GoalController {
                                 
     
                                 if item.isLiquid {
-                                    totalStored = findAmountStoredFor(Category: category, inGoalUnits: unit, isGoalLiquid: true) ?? 0
+                                    totalStored = findAmountStoredFor(Category: category, inGoalUnits: unit, isGoalLiquid: true)
                                 } else {
-                                    totalStored = findAmountStoredFor(Category: category, inGoalUnits: unit, isGoalLiquid: false) ?? 0
+                                    totalStored = findAmountStoredFor(Category: category, inGoalUnits: unit, isGoalLiquid: false)
                                 }
                                 
                                 let itemCompletionFraction = totalStored / goalTotal
@@ -91,15 +91,15 @@ class GoalController {
     }
     
     
-    func findAmountStoredFor(Category category: String, inGoalUnits: String, isGoalLiquid: Bool)  -> Float? {
+    func findAmountStoredFor(Category category: String, inGoalUnits: String, isGoalLiquid: Bool)  -> Float {
         var totalStoredForCategory: Float = 0.0
         let shelvesOrderedSet = UserController.shared.user?.shelves
         //make sure NSOrderedSet can be converted
-        guard let shelves = shelvesOrderedSet?.array as? [Shelf] else {return nil}
+        guard let shelves = shelvesOrderedSet?.array as? [Shelf] else {return 0}
         for shelf in shelves {
             let itemsOrderedSet = shelf.items
             //make sure NSOrderedSet can be converted
-            guard let items = itemsOrderedSet?.array as? [Item] else {return nil}
+            guard let items = itemsOrderedSet?.array as? [Item] else {return 0}
             for item in items {
                 //make sure the category is the same and unwrapp unit
                 if item.catagory == category, let itemUnit = item.unit {
@@ -119,7 +119,6 @@ class GoalController {
                 }
             }
         }
-        print(" Total stored for a \(category): \(totalStoredForCategory)")
         return totalStoredForCategory
     }
     

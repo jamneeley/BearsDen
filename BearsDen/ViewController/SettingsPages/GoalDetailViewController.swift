@@ -8,9 +8,6 @@
 
 import UIKit
 
-protocol GoalDetailViewControllerDelegate: class {
-    func updateCells()
-}
 
 class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GoalDetailCollectionViewCellDelegate {
     
@@ -32,7 +29,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
 
     var selectedCellsIndex: [Int] = []
     
-    weak var delegate: GoalDetailViewControllerDelegate?
+
     
     
     
@@ -158,7 +155,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                         }
                         print("UPDATE NORMAL ITEM ADDED")
                         GoalItemController.shared.create(GoalItemfor: goal, category: categoryText, unit: unitText, amount: amountText, isLiquid: isLiquid, customText: "", isCustom: false, isComplete: false)
-                        delegate?.updateCells()
+
                     }
                 }
             }

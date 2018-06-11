@@ -58,6 +58,9 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             view.addSubview(shelfEditView)
             window.addSubview(blackView)
             window.addSubview(shelfEditView)
+            shelfEditView.layer.cornerRadius = CornerRadius.imageView
+            shelfEditView.layer.borderColor = Colors.softBlue.cgColor
+            shelfEditView.layer.borderWidth = 2
             editShelfViewController.delegate = self
             let image = UIImage(data: shelfImageData)
             editShelfViewController.shelfImage = image

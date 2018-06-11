@@ -24,10 +24,17 @@ class GoalsCollectionViewCell: UICollectionViewCell {
     // belowProgressBar
     let seperator = UIView()
     var animations = 0
+    var isProgressBarReset = false {
+        didSet {
+            resetProgressBar()
+        }
+    }
     
     var goal: Goal? {
         didSet {
-            updateViews()
+            animatePulsatingLayer()
+            //for when i get other objects below progress circle
+           //updateViews()?
         }
     }
     var percentComplete: Float? {
@@ -36,17 +43,19 @@ class GoalsCollectionViewCell: UICollectionViewCell {
             let percent = Int(fraction * 100)
             percentageLabel.text = "\(percent)%"
             if animations < 1 {
-                let _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(animateProgress), userInfo: nil, repeats: false)
+                let _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(animateProgress), userInfo: nil, repeats: false)
                 animations += 1
             }
         }
     }
     
-    func updateViews() {
-        guard let localGoal = goal else {return}
-        animatePulsatingLayer()
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        progressLayer.removeAnimation(forKey: "progressAnimation")
+        animations = 0
+        
+        //BUG.....It prepares for reuse on the first cell which resets the animation...
     }
-    
     
     weak var delegate: GoalsCollectionViewCellDelegate?
     
@@ -61,16 +70,18 @@ class GoalsCollectionViewCell: UICollectionViewCell {
         seperator.backgroundColor = Colors.mediumGray
         seperator.layer.cornerRadius = 4
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder: ) has not been implemented")
     }
+    
     private func setupNotificationObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
     }
+    
     @objc private func handleEnterForeground() {
         animatePulsatingLayer()
     }
-    
     
     func setupDeleteButton() {
     deleteButton.setImage(#imageLiteral(resourceName: "TrashIcon"), for: .normal)
@@ -153,7 +164,6 @@ class GoalsCollectionViewCell: UICollectionViewCell {
     }
     
     private func animatePulsatingLayer() {
-        print("pulsating")
         let animation = CABasicAnimation(keyPath: "transform.scale")
         animation.toValue = 1.18
         animation.autoreverses = true
@@ -168,7 +178,7 @@ class GoalsCollectionViewCell: UICollectionViewCell {
     @objc private func animateProgress() {
         print("animation should happen")
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        basicAnimation.duration = 1
+        basicAnimation.duration = 0.6
         basicAnimation.fillMode = kCAFillModeForwards
         basicAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         basicAnimation.isRemovedOnCompletion = false
@@ -177,7 +187,11 @@ class GoalsCollectionViewCell: UICollectionViewCell {
         } else {
             basicAnimation.toValue = 0.0
         }
-        progressLayer.add(basicAnimation, forKey: "urSoBasic")
+        progressLayer.add(basicAnimation, forKey: "progressAnimation")
+    }
+    
+    func resetProgressBar() {
+    progressLayer.removeAnimation(forKey: "progressAnimation")
     }
 }
 

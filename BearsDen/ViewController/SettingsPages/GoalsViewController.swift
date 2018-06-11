@@ -44,7 +44,7 @@ class GoalsSectionHeader: UICollectionReusableView {
         sectionHeaderLabel.text = sectionHeader
     }
 }
-class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, GoalsCollectionViewCellDelegate, GoalDetailViewControllerDelegate  {
+class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, GoalsCollectionViewCellDelegate {
 
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -88,14 +88,15 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
         setupCollectionView()
     }
     
-    func updateCells() {
-        if let visibileCells = collectionView.visibleCells as? [GoalsCollectionViewCell] {
-            for cell in visibileCells {
-                cell.animations = 0
-            }
+    override func viewDidDisappear(_ animated: Bool) {
+        let count = UserController.shared.user?.goals?.count ?? 0
+        for i in 0..<count {
+            let index = IndexPath(item: 0, section: i)
+            guard let cell = collectionView.cellForItem(at: index) as? GoalsCollectionViewCell else {return}
+            cell.animations = 0
+            cell.isProgressBarReset = true
         }
     }
-    
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return UserController.shared.user?.goals?.count ?? 0
@@ -131,7 +132,6 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
         guard let goal = UserController.shared.user?.goals?[indexPath.section] as? Goal else {return}
         let goalDetailVC = GoalDetailViewController()
         goalDetailVC.goal = goal
-        goalDetailVC.delegate = self
         let navController = UINavigationController(rootViewController: goalDetailVC)
         self.present(navController, animated: true, completion: nil)
     }

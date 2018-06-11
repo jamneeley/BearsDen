@@ -8,353 +8,326 @@
 
 import UIKit
 
-class MyDenViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class MyDenViewController: UIViewController {
     
-    let denImageView = UIImageView()
-    let photoLibraryButton = UIButton(type: .custom)
-    let cameraButton = UIButton(type: .custom)
-    let nameStack = UIStackView()
     let denNameLabel = UILabel()
-    let denTextField = UITextField()
-    let adultStack = UIStackView()
-    let denAdultsLabel = UILabel()
-    let denAdultsNumberLabel = UILabel()
-    let denAdultsStepper = UIStepper()
-    let kidStack = UIStackView()
-    let denKidsLabel = UILabel()
-    let denKidsNumberLabel = UILabel()
-    let denKidsStepper = UIStepper()
-    let saveButton = UIButton(type: .custom)
-    let singleTap = UITapGestureRecognizer()
+    
+    let mainStack = UIStackView()
+    
+    let totalLabel = UILabel()
+    let seperator = UIView()
+    
+    let grainLabel = UILabel()
+    let grainAmountLabel = UILabel()
+    let grainStack = UIStackView()
+    
+    let protienLabel = UILabel()
+    let protienAmountLabel = UILabel()
+    let protienStack = UIStackView()
+    
+    let fruitLabel = UILabel()
+    let fruitAmountLabel = UILabel()
+    let fruitStack = UIStackView()
+    
+    let vegetableLabel = UILabel()
+    let vegetableAmountLabel = UILabel()
+    let vegetableStack = UIStackView()
+    
+    let legumeLabel = UILabel()
+    let legumeAmountLabel = UILabel()
+    let legumeStack = UIStackView()
+    
+    let dairyLabel = UILabel()
+    let dairyAmountLabel = UILabel()
+    let dairyStack = UIStackView()
+    
+    let sugarLabel = UILabel()
+    let sugarAmountLabel = UILabel()
+    let sugarStack = UIStackView()
+    
+    let leaveningLabel = UILabel()
+    let leaveningAmountLabel = UILabel()
+    let leaveningStack = UIStackView()
+    
+    let saltLabel = UILabel()
+    let saltAmountLabel = UILabel()
+    let saltStack = UIStackView()
+    
+    let fatLabel = UILabel()
+    let fatAmountLabel = UILabel()
+    let fatStack = UIStackView()
+    
+    let waterLabel = UILabel()
+    let waterAmountLabel = UILabel()
+    let waterStack = UIStackView()
+    
+    let medicalLabel = UILabel()
+    let medicalAmountLabel = UILabel()
+    let medicalStack = UIStackView()
+    
+    let otherLabel = UILabel()
+    let otherAmountLabel = UILabel()
+    let otherStack = UIStackView()
+    
+    let grainString = PickerViewProperties.catagories[1]
+    let protienString = PickerViewProperties.catagories[2]
+    let fruitString = PickerViewProperties.catagories[3]
+    let vegetableString = PickerViewProperties.catagories[4]
+    let legumeString = PickerViewProperties.catagories[5]
+    let dairyString = PickerViewProperties.catagories[6]
+    let sugarString = PickerViewProperties.catagories[7]
+    let leaveningString = PickerViewProperties.catagories[8]
+    let saltString = PickerViewProperties.catagories[9]
+    let fatString = PickerViewProperties.catagories[10]
+    let waterString = PickerViewProperties.catagories[11]
+    let medicalString = PickerViewProperties.catagories[12]
+    let otherString = PickerViewProperties.catagories[0]
+    
+    let pounds = PickerViewProperties.units[0]
+    let gallon = PickerViewProperties.units[2]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupObjects()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillshow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        calculateTotals()
+    }
+    
+    func calculateTotals() {
+        let grains = GoalController.shared.findAmountStoredFor(Category: grainString, inGoalUnits: pounds, isGoalLiquid: false)
+        let protien = GoalController.shared.findAmountStoredFor(Category: protienString, inGoalUnits: pounds, isGoalLiquid: false)
+        let fruit = GoalController.shared.findAmountStoredFor(Category: fruitString, inGoalUnits: pounds, isGoalLiquid: false)
+        let vegetable = GoalController.shared.findAmountStoredFor(Category: vegetableString, inGoalUnits: pounds, isGoalLiquid: false)
+        let legume = GoalController.shared.findAmountStoredFor(Category: legumeString, inGoalUnits: pounds, isGoalLiquid: false)
+        let dairy = GoalController.shared.findAmountStoredFor(Category: dairyString, inGoalUnits: pounds, isGoalLiquid: false)
+        let sugar = GoalController.shared.findAmountStoredFor(Category: sugarString, inGoalUnits: pounds, isGoalLiquid: false)
+        let leavening = GoalController.shared.findAmountStoredFor(Category: leaveningString, inGoalUnits: pounds, isGoalLiquid: false)
+        let salt = GoalController.shared.findAmountStoredFor(Category: saltString, inGoalUnits: pounds, isGoalLiquid: false)
+        let fat = GoalController.shared.findAmountStoredFor(Category: fatString, inGoalUnits: pounds, isGoalLiquid: false)
+        let water = GoalController.shared.findAmountStoredFor(Category: waterString, inGoalUnits: gallon, isGoalLiquid: true)
+        let medical = GoalController.shared.findAmountStoredFor(Category: medicalString, inGoalUnits: pounds, isGoalLiquid: false)
+        let other = GoalController.shared.findAmountStoredFor(Category: otherString, inGoalUnits: pounds, isGoalLiquid: false)
+        
+        grainAmountLabel.text = grains != 0 ? "\(Int(grains)) lbs" : "-"
+        protienAmountLabel.text = protien != 0 ? "\(Int(protien)) lbs" : "-"
+        fruitAmountLabel.text = fruit != 0 ? "\(Int(fruit)) lbs" : "-"
+        vegetableAmountLabel.text = vegetable != 0 ? "\(Int(vegetable)) lbs" : "-"
+        legumeAmountLabel.text = legume != 0 ? "\(Int(legume)) lbs" : "-"
+        dairyAmountLabel.text = dairy != 0 ? "\(Int(dairy)) lbs" : "-"
+        sugarAmountLabel.text = sugar != 0 ? "\(Int(sugar)) lbs" : "-"
+        leaveningAmountLabel.text = leavening != 0 ? "\(Int(leavening)) lbs" : "-"
+        saltAmountLabel.text = salt != 0 ? "\(Int(salt)) lbs" : "-"
+        fatAmountLabel.text = fat != 0 ? "\(Int(fat)) lbs" : "-"
+        waterAmountLabel.text = water != 0 ? "\(Int(water)) gal" : "-"
+        medicalAmountLabel.text = medical != 0 ? "\(Int(medical)) lbs" : "-"
+        otherAmountLabel.text = other != 0 ? "\(Int(other)) lbs" : "-"
+    }
 
     func setupObjects() {
-        view.addSubview(denImageView)
-        view.addSubview(photoLibraryButton)
-        view.addSubview(cameraButton)
-        view.addSubview(nameStack)
-        view.addSubview(saveButton)
-        view.addSubview(adultStack)
-        view.addSubview(kidStack)
-        setupDenImageView()
-        setupPhotoLibraryButton()
-        setupCameraButton()
-        setupNameStack()
-        setupDenNameLabel()
-        setupDenTextField()
-        setupAdultStack()
-        setupKidStack()
-        setupDenAdultsLabel()
-        setupDenAdultsNumberLabel()
-        setupDenAdultsStepper()
-        setupDenKidsLabel()
-        setupDenKidsNumberLabel()
-        setupDenKidsStepper()
-        setupSaveButton()
-        singleTap.numberOfTapsRequired = 1
-        singleTap.addTarget(self, action: #selector(endEditing))
-    }
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            denImageView.image = image
-        } else {
-            print("error picking image from imagepicker")
-        }
-        self.dismiss(animated: true, completion: nil)
+        setupNameLabel()
+        setupTotalLabel()
+        setupSeperator()
+        setupMainStack()
+        setupGrainStack()
+        setupProtienStack()
+        setupFruitStack()
+        setupVegetableStack()
+        setupLegumeStack()
+        setupDairyStack()
+        setupSugarStack()
+        setupLeaveningStack()
+        setupSaltStack()
+        setupFatStack()
+        setupWaterStack()
+        setupMedicalStack()
+        setupOtherStack()
     }
     
-    @objc func startHighlightLibrary() {
-        photoLibraryButton.backgroundColor = Colors.softBlue
-        photoLibraryButton.tintColor = .white
-    }
     
-    @objc func stopHighlightLibrary() {
-        photoLibraryButton.backgroundColor = Colors.green
-        photoLibraryButton.tintColor = nil
-    }
-    
-    @objc func libraryButtonPressed() {
-        stopHighlightLibrary()
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        imagePicker.allowsEditing = false
-        self.present(imagePicker, animated: true) {
-        }
-    }
-    
-    @objc func startHighlightCamera() {
-        cameraButton.backgroundColor = Colors.softBlue
-        cameraButton.tintColor = .white
-    }
-    
-    @objc func stopHighlightCamera() {
-        cameraButton.backgroundColor = Colors.green
-        cameraButton.tintColor = nil
-    }
-    
-    @objc func CameraButtonPressed() {
-        stopHighlightCamera()
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = UIImagePickerControllerSourceType.camera
-        imagePicker.allowsEditing = false
-        self.present(imagePicker, animated: true) {
-        }
-    }
-    
-    @objc func startHighlightSave() {
-        saveButton.backgroundColor = Colors.softBlue
-        saveButton.setTitleColor(.white, for: .normal)
-    }
-    
-    @objc func stopHighlightSave() {
-        saveButton.backgroundColor = Colors.green
-        saveButton.setTitleColor(.black, for: .normal)
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        view.endEditing(true)
-        return true
-    }
-    @objc func endEditing() {
-        view.endEditing(true)
-    }
-    
-    //FIXME: - possibly need to move view up because textview covers it
-    
-    @objc func keyBoardWillshow() {
-//        view.frame.origin.y = -50
-        view.addGestureRecognizer(singleTap)
-    }
-    
-    @objc func keyBoardWillHide() {
-//        view.frame.origin.y = view.frame.height * 0.08
-        view.removeGestureRecognizer(singleTap)
-    }
-    
-    @objc func saveButtonPressed() {
-        guard let name = denTextField.text,
-            !name.isEmpty,
-            let kids = denKidsNumberLabel.text,
-            !kids.isEmpty,
-            let adults = denAdultsNumberLabel.text,
-            !adults.isEmpty,
-            let picture = denImageView.image
-            else {stopHighlightSave() ; presentSaveAlert(WithTitle: "Uh Oh", message: "All fields need a value") ; return}
-        
-        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: kids)) && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: adults)) {
-            UserController.shared.updateUser(HouseholdName: name, picture: picture, adults: adults, kids: kids)
-            presentSaveAnimation()
-        }
-        stopHighlightSave()
-    }
-    
-    func presentSaveAlert(WithTitle title: String, message: String) {
-        var alert = UIAlertController()
-        if message == "" {
-            alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        } else {
-            alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        }
-        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-        alert.addAction(dismiss)
-        present(alert, animated: true, completion: nil)
-    }
-}
-
-////////////////////////////////////////////////////////
-//CONSTRAINTS
-////////////////////////////////////////////////////////
-
-extension MyDenViewController {
-    
-    func setupDenImageView() {
-        guard let userimageData = UserController.shared.user?.picture else {return}
-        let image = UIImage(data: userimageData)
-        denImageView.image = image
-        setupDenImageViewConstraints()
-    }
-    
-    func setupPhotoLibraryButton() {
-        photoLibraryButton.frame = CGRect(x: (view.frame.size.width * 0.5) - 80, y: (view.bounds.size.height * 0.35 + 20), width: 50, height: 50)
-        photoLibraryButton.setImage(#imageLiteral(resourceName: "photoLibrary"), for: .normal)
-        photoLibraryButton.tintColor = .black
-        photoLibraryButton.backgroundColor = Colors.green
-        photoLibraryButton.layer.cornerRadius = photoLibraryButton.bounds.size.width * 0.5
-        photoLibraryButton.addTarget(self, action: #selector(startHighlightLibrary), for: .touchDown)
-        photoLibraryButton.addTarget(self, action: #selector(stopHighlightLibrary), for: .touchUpOutside)
-        photoLibraryButton.addTarget(self, action: #selector(libraryButtonPressed), for: .touchUpInside)
-    }
-    
-    func setupCameraButton() {
-        cameraButton.frame = CGRect(x: (view.frame.size.width * 0.5) + 30, y: (view.bounds.size.height * 0.35) + 20, width: 50, height: 50)
-        cameraButton.setImage(#imageLiteral(resourceName: "camera"), for: .normal)
-        cameraButton.tintColor = .black
-        cameraButton.backgroundColor = Colors.green
-        cameraButton.layer.cornerRadius = photoLibraryButton.bounds.size.width * 0.5
-        cameraButton.addTarget(self, action: #selector(startHighlightCamera), for: .touchDown)
-        cameraButton.addTarget(self, action: #selector(stopHighlightCamera), for: .touchUpOutside)
-        cameraButton.addTarget(self, action: #selector(CameraButtonPressed), for: .touchUpInside)
-    }
-    
-    func setupDenNameLabel() {
-        denNameLabel.text = "Den Name"
+    func setupNameLabel() {
+        view.addSubview(denNameLabel)
+        let houseHoldName = UserController.shared.user?.houseHoldName ?? "My Den"
+        denNameLabel.text = houseHoldName
         denNameLabel.textAlignment = .center
+        denNameLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        denNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        denNameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.03).isActive = true
+        denNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.02).isActive = true
+        denNameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.02).isActive = true
+        denNameLabel.bottomAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.08).isActive = true
     }
     
-    func setupDenTextField() {
-        guard let userName = UserController.shared.user?.houseHoldName else {return}
-        denTextField.text = userName
-        denTextField.setLeftPaddingPoints(5)
-        denTextField.layer.borderWidth = 1
-        denTextField.layer.borderColor = Colors.softBlue.cgColor
-        denTextField.layer.cornerRadius = 12
-        denTextField.returnKeyType = .done
-        denTextField.autocorrectionType = UITextAutocorrectionType.no
-        denTextField.delegate = self
+    func setupMainStack() {
+        view.addSubview(mainStack)
+        mainStack.axis = .vertical
+        mainStack.distribution = .fillProportionally
+        mainStack.spacing = 2
+        mainStack.addArrangedSubview(totalLabel)
+        mainStack.addArrangedSubview(seperator)
+        mainStack.addArrangedSubview(grainStack)
+        mainStack.addArrangedSubview(protienStack)
+        mainStack.addArrangedSubview(fruitStack)
+        mainStack.addArrangedSubview(vegetableStack)
+        mainStack.addArrangedSubview(legumeStack)
+        mainStack.addArrangedSubview(dairyStack)
+        mainStack.addArrangedSubview(sugarStack)
+        mainStack.addArrangedSubview(leaveningStack)
+        mainStack.addArrangedSubview(saltStack)
+        mainStack.addArrangedSubview(fatStack)
+        mainStack.addArrangedSubview(waterStack)
+        mainStack.addArrangedSubview(medicalStack)
+        mainStack.addArrangedSubview(otherStack)
+        mainStack.translatesAutoresizingMaskIntoConstraints = false
+        mainStack.topAnchor.constraint(equalTo: denNameLabel.bottomAnchor, constant: view.frame.height * 0.03).isActive = true
+        mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
+        mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
+        mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.frame.height * -0.1).isActive = true
     }
     
-
-    
-    func setupNameStack() {
-        nameStack.addArrangedSubview(denNameLabel)
-        nameStack.addArrangedSubview(denTextField)
-        nameStack.axis = .vertical
-        nameStack.backgroundColor = .black
-        nameStack.distribution = .fillEqually
-        setupNameStackConstraints()
-    }
-
-    func setupDenAdultsLabel() {
-        denAdultsLabel.text = "Adults"
-        denAdultsLabel.textAlignment = .center
-        
+    func setupTotalLabel() {
+        totalLabel.textAlignment = .right
+        totalLabel.text = "Totals"
+        totalLabel.font = UIFont.boldSystemFont(ofSize: 18)
     }
     
-    func setupDenAdultsNumberLabel() {
-        let userAdults = UserController.shared.user?.adults
-        denAdultsNumberLabel.text = "\(userAdults ?? "0")"
-        denAdultsNumberLabel.textAlignment = .center
+    func setupSeperator() {
+        seperator.translatesAutoresizingMaskIntoConstraints = false
+        seperator.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        seperator.backgroundColor = Colors.mediumGray
     }
     
-    func setupDenAdultsStepper() {
-        guard let user = UserController.shared.user else {return}
-        let adults = user.adults ?? "0"
-        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: adults)){
-        denAdultsStepper.stepValue = 1
-        denAdultsStepper.value = Double(adults)!
-        denAdultsStepper.maximumValue = 50.0
-        denAdultsStepper.isContinuous = false
-        denAdultsStepper.autorepeat = false
-        denAdultsStepper.addTarget(self, action: #selector(adultsStepperTouched), for: .touchUpInside)
-        }
+    func setupGrainStack() {
+        grainStack.addArrangedSubview(grainLabel)
+        grainStack.addArrangedSubview(grainAmountLabel)
+        grainStack.axis = .horizontal
+        grainStack.distribution = .fillEqually
+        grainLabel.text = "Grains"
+        grainAmountLabel.textAlignment = .right
+        grainStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
     
-    @objc func adultsStepperTouched() {
-        let adultsNumber = Int(denAdultsStepper.value)
-        denAdultsNumberLabel.text = "\(adultsNumber)"
+    func setupProtienStack() {
+        protienStack.addArrangedSubview(protienLabel)
+        protienStack.addArrangedSubview(protienAmountLabel)
+        protienStack.axis = .horizontal
+        protienStack.distribution = .fillEqually
+        protienLabel.text = "Protien"
+        protienAmountLabel.textAlignment = .right
+        protienStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
     
-    func setupAdultStack() {
-        adultStack.axis = .vertical
-        adultStack.distribution = .fillEqually
-        adultStack.spacing = 8
-        adultStack.addArrangedSubview(denAdultsLabel)
-        adultStack.addArrangedSubview(denAdultsNumberLabel)
-        adultStack.addArrangedSubview(denAdultsStepper)
-        setupAdultStackConstraints()
+    func setupFruitStack() {
+        fruitStack.addArrangedSubview(fruitLabel)
+        fruitStack.addArrangedSubview(fruitAmountLabel)
+        fruitStack.axis = .horizontal
+        fruitStack.distribution = .fillEqually
+        fruitLabel.text = "Fruit"
+        fruitAmountLabel.textAlignment = .right
+        fruitStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
     
-    func setupDenKidsLabel() {
-        denKidsLabel.text = "Kids"
-        denKidsLabel.textAlignment = .center
+    func setupVegetableStack() {
+        vegetableStack.addArrangedSubview(vegetableLabel)
+        vegetableStack.addArrangedSubview(vegetableAmountLabel)
+        vegetableStack.axis = .horizontal
+        vegetableStack.distribution = .fillEqually
+        vegetableLabel.text = "Vegetables"
+        vegetableAmountLabel.textAlignment = .right
+        vegetableStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
     
-    func setupDenKidsNumberLabel() {
-        let userKids = UserController.shared.user?.kids
-        denKidsNumberLabel.text = "\(userKids ?? "0")"
-        denKidsNumberLabel.textAlignment = .center
+    func setupLegumeStack() {
+        legumeStack.addArrangedSubview(legumeLabel)
+        legumeStack.addArrangedSubview(legumeAmountLabel)
+        legumeStack.axis = .horizontal
+        legumeStack.distribution = .fillEqually
+        legumeLabel.text = "Legums"
+        legumeAmountLabel.textAlignment = .right
+        legumeStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
     
-    func setupDenKidsStepper() {
-        guard let user = UserController.shared.user else {return}
-        let kids = user.kids ?? "0"
-        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: kids)){
-            denKidsStepper.stepValue = 1
-            denKidsStepper.value = Double(kids)!
-            denKidsStepper.maximumValue = 50.0
-            denKidsStepper.isContinuous = false
-            denKidsStepper.autorepeat = false
-            denKidsStepper.addTarget(self, action: #selector(kidsStepperTouched), for: .touchUpInside)
-        }
+    func setupDairyStack() {
+        dairyStack.addArrangedSubview(dairyLabel)
+        dairyStack.addArrangedSubview(dairyAmountLabel)
+        dairyStack.axis = .horizontal
+        dairyStack.distribution = .fillEqually
+        dairyLabel.text = "Dairy"
+        dairyAmountLabel.textAlignment = .right
+        dairyStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
     
-    @objc func kidsStepperTouched() {
-        let kidsNumber = Int(denKidsStepper.value)
-        denKidsNumberLabel.text = "\(kidsNumber)"
+    func setupSugarStack() {
+        sugarStack.addArrangedSubview(sugarLabel)
+        sugarStack.addArrangedSubview(sugarAmountLabel)
+        sugarStack.axis = .horizontal
+        sugarStack.distribution = .fillEqually
+        sugarLabel.text = "Sugar"
+        sugarAmountLabel.textAlignment = .right
+        sugarStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
     
-    
-    func setupKidStack() {
-        kidStack.axis = .vertical
-        kidStack.spacing = 8
-        kidStack.distribution = .fillEqually
-        kidStack.addArrangedSubview(denKidsLabel)
-        kidStack.addArrangedSubview(denKidsNumberLabel)
-        kidStack.addArrangedSubview(denKidsStepper)
-        setupKidsStackConstraints()
+    func setupLeaveningStack() {
+        leaveningStack.addArrangedSubview(leaveningLabel)
+        leaveningStack.addArrangedSubview(leaveningAmountLabel)
+        leaveningStack.axis = .horizontal
+        leaveningStack.distribution = .fillEqually
+        leaveningLabel.text = "Leavening"
+        leaveningAmountLabel.textAlignment = .right
+        leaveningStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
     
-    func setupSaveButton() {
-        saveButton.frame = CGRect(x: (view.frame.size.width * 0.5) - 25, y: (view.bounds.size.height * 0.9) - 50 , width: 50, height: 50)
-        saveButton.setTitle("Save", for: .normal)
-        saveButton.setTitleColor(.black, for: .normal)
-        saveButton.backgroundColor = Colors.green
-        saveButton.layer.cornerRadius = photoLibraryButton.bounds.size.width * 0.5
-        saveButton.addTarget(self, action: #selector(startHighlightSave), for: .touchDown)
-        saveButton.addTarget(self, action: #selector(stopHighlightSave), for: .touchUpOutside)
-        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
+    func  setupSaltStack() {
+        saltStack.addArrangedSubview(saltLabel)
+        saltStack.addArrangedSubview(saltAmountLabel)
+        saltStack.axis = .horizontal
+        saltStack.distribution = .fillEqually
+        saltLabel.text = "Salt"
+        saltAmountLabel.textAlignment = .right
+        saltStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
     
-    func setupDenImageViewConstraints() {
-        denImageView.translatesAutoresizingMaskIntoConstraints = false
-        denImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 15).isActive = true
-        denImageView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.35).isActive = true
-        NSLayoutConstraint(item: denImageView, attribute: .height, relatedBy: .equal, toItem: denImageView, attribute: .width, multiplier: 1.0, constant: 0).isActive = true
-        denImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
-    }
-    func setupNameStackConstraints() {
-        nameStack.translatesAutoresizingMaskIntoConstraints = false
-        nameStack.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.frame.size.height * 0.35) + 80).isActive = true
-        nameStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
-        nameStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
-        nameStack.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.1).isActive = true
+    func setupFatStack() {
+        fatStack.addArrangedSubview(fatLabel)
+        fatStack.addArrangedSubview(fatAmountLabel)
+        fatStack.axis = .horizontal
+        fatStack.distribution = .fillEqually
+        fatLabel.text = "Fat"
+        fatAmountLabel.textAlignment = .right
+        fatStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
     
-    func setupAdultStackConstraints() {
-        adultStack.translatesAutoresizingMaskIntoConstraints = false
-        adultStack.topAnchor.constraint(equalTo: nameStack.bottomAnchor, constant: 20).isActive = true
-        adultStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.size.width * 0.1).isActive = true
-        adultStack.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: view.frame.size.width * -0.1).isActive = true
-        adultStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant:(view.bounds.size.height * -0.1) - 50).isActive = true
+    func setupWaterStack() {
+        waterStack.addArrangedSubview(waterLabel)
+        waterStack.addArrangedSubview(waterAmountLabel)
+        waterStack.axis = .horizontal
+        waterStack.distribution = .fillEqually
+        waterLabel.text = "Water"
+        waterAmountLabel.textAlignment = .right
+        waterStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
     
-    func setupKidsStackConstraints() {
-        kidStack.translatesAutoresizingMaskIntoConstraints = false
-        kidStack.topAnchor.constraint(equalTo: nameStack.bottomAnchor, constant: 20).isActive = true
-        kidStack.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: view.frame.size.width * 0.1).isActive = true
-        kidStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.size.width * -0.1).isActive = true
-        kidStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: (view.bounds.size.height * -0.1) - 50).isActive = true
+    func setupMedicalStack() {
+        medicalStack.addArrangedSubview(medicalLabel)
+        medicalStack.addArrangedSubview(medicalAmountLabel)
+        medicalStack.axis = .horizontal
+        medicalStack.distribution = .fillEqually
+        medicalLabel.text = "Medical"
+        medicalAmountLabel.textAlignment = .right
+        medicalStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
+    }
+    
+    func setupOtherStack() {
+        otherStack.addArrangedSubview(otherLabel)
+        otherStack.addArrangedSubview(otherAmountLabel)
+        otherStack.axis = .horizontal
+        otherStack.distribution = .fillEqually
+        otherLabel.text = "Other"
+        otherAmountLabel.textAlignment = .right
+        otherStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }
 }
 

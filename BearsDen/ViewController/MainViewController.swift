@@ -95,6 +95,9 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
             view.addSubview(shelfEditView)
             window.addSubview(blackView)
             window.addSubview(shelfEditView)
+            shelfEditView.layer.cornerRadius = CornerRadius.imageView
+            shelfEditView.layer.borderColor = Colors.softBlue.cgColor
+            shelfEditView.layer.borderWidth = 2
             editShelfViewController.delegate = self
             editShelfViewController.shelfImage = #imageLiteral(resourceName: "BearOnHill")
             let width = window.frame.width * 0.8

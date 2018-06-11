@@ -120,6 +120,7 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
     @objc func startHighlightSave() {
         saveButton.backgroundColor = Colors.softBlue
         saveButton.setTitleColor(.white, for: .normal)
+       
     }
     @objc func stopHighlightSave() {
         saveButton.backgroundColor = .white
@@ -233,8 +234,7 @@ extension ShelfEditViewController {
     
     func setupDismissButton() {
         dismissButton.setTitle("Dismiss", for: .normal)
-        dismissButton.layer.borderWidth = 1
-        dismissButton.layer.borderColor = Colors.softBlue.cgColor
+
         dismissButton.setTitleColor(.black, for: .normal)
         dismissButton.addTarget(self, action: #selector(startHighlightDismiss), for: .touchDown)
         dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
@@ -244,14 +244,13 @@ extension ShelfEditViewController {
         dismissButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         dismissButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
         dismissButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
-        
+        dismissButton.addBorders(edges: [.top, .right], color: Colors.softBlue)
     }
     
     func setupSaveButton() {
         saveButton.setTitle("Save", for: .normal)
         saveButton.setTitleColor(.black, for: .normal)
-        saveButton.layer.borderWidth = 1
-        saveButton.layer.borderColor = Colors.softBlue.cgColor
+
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(startHighlightSave), for: .touchDown)
         saveButton.addTarget(self, action: #selector(stopHighlightSave), for: .touchUpOutside)
@@ -260,5 +259,6 @@ extension ShelfEditViewController {
         saveButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         saveButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
+        saveButton.addBorders(edges: [.top, .left], color: Colors.softBlue)
     }
 }
