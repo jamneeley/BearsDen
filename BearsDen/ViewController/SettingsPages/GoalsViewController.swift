@@ -44,6 +44,10 @@ class GoalsSectionHeader: UICollectionReusableView {
         sectionHeaderLabel.text = sectionHeader
     }
 }
+
+
+
+
 class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, GoalsCollectionViewCellDelegate {
 
     let collectionView: UICollectionView = {
@@ -64,7 +68,7 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
         collectionView.delegate = self
         collectionView.register(GoalsCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
         collectionView.register(GoalsSectionHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: header)
-        setupObjects()
+        setupCollectionView()
     }
     override func viewDidAppear(_ animated: Bool) {
         collectionView.reloadData()
@@ -83,10 +87,7 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
             
         }
     }
-    
-    func setupObjects() {
-        setupCollectionView()
-    }
+
     
     override func viewDidDisappear(_ animated: Bool) {
         let count = UserController.shared.user?.goals?.count ?? 0

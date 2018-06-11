@@ -22,7 +22,7 @@
 		9D84779E209A76AF005F219B /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D84779D209A76AF005F219B /* View+Extension.swift */; };
 		9D8477A0209A76B6005F219B /* GlobalProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D84779F209A76B6005F219B /* GlobalProperties.swift */; };
 		9D8477A2209A7C65005F219B /* ItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477A1209A7C65005F219B /* ItemsViewController.swift */; };
-		9D8477A4209A8045005F219B /* ShelfTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477A3209A8045005F219B /* ShelfTableViewCell.swift */; };
+		9D8477A4209A8045005F219B /* ShelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477A3209A8045005F219B /* ShelfCollectionViewCell.swift */; };
 		9D8477A6209A8052005F219B /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8477A5209A8052005F219B /* ItemTableViewCell.swift */; };
 		9D8477A8209A86BB005F219B /* backX2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8477A7209A86BB005F219B /* backX2.png */; };
 		9D8477AA209B90D5005F219B /* BackLargeX1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D8477A9209B90D5005F219B /* BackLargeX1.png */; };
@@ -142,7 +142,7 @@
 		9D84779D209A76AF005F219B /* View+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		9D84779F209A76B6005F219B /* GlobalProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalProperties.swift; sourceTree = "<group>"; };
 		9D8477A1209A7C65005F219B /* ItemsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewController.swift; sourceTree = "<group>"; };
-		9D8477A3209A8045005F219B /* ShelfTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfTableViewCell.swift; sourceTree = "<group>"; };
+		9D8477A3209A8045005F219B /* ShelfCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShelfCollectionViewCell.swift; sourceTree = "<group>"; };
 		9D8477A5209A8052005F219B /* ItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
 		9D8477A7209A86BB005F219B /* backX2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backX2.png; sourceTree = "<group>"; };
 		9D8477A9209B90D5005F219B /* BackLargeX1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackLargeX1.png; sourceTree = "<group>"; };
@@ -265,11 +265,11 @@
 		9D8477B3209D2164005F219B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				9D8477A3209A8045005F219B /* ShelfTableViewCell.swift */,
+				9D8477A3209A8045005F219B /* ShelfCollectionViewCell.swift */,
+				9DB6172B20B3110F00B87C6C /* TipsCollectionViewCell.swift */,
 				9D8477A5209A8052005F219B /* ItemTableViewCell.swift */,
 				9D8477AF209D0486005F219B /* SettingsCollectionViewCell.swift */,
 				9DCF094820A60FE4009471F8 /* ShoppingListTableViewCell.swift */,
-				9DB6172B20B3110F00B87C6C /* TipsCollectionViewCell.swift */,
 				9DF445FA20C89EFA005EB7CC /* GoalsCollectionViewCell.swift */,
 				9DD54C7520C9ABCF00AB3C52 /* GoalDetailCollectionViewCell.swift */,
 				9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */,
@@ -603,7 +603,7 @@
 				9D8477D220A237DB005F219B /* ContainerViewTransitions.swift in Sources */,
 				9D84779E209A76AF005F219B /* View+Extension.swift in Sources */,
 				9D8477A0209A76B6005F219B /* GlobalProperties.swift in Sources */,
-				9D8477A4209A8045005F219B /* ShelfTableViewCell.swift in Sources */,
+				9D8477A4209A8045005F219B /* ShelfCollectionViewCell.swift in Sources */,
 				9D84780020A35DDB005F219B /* NSLayoutConstraint+Extensions.swift in Sources */,
 				9D847781209925B9005F219B /* ewDenNameViewController.swift in Sources */,
 				9D8477F220A35DBD005F219B /* CameraViewController.swift in Sources */,

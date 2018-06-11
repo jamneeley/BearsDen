@@ -244,7 +244,7 @@ extension ShelfEditViewController {
         dismissButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         dismissButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
         dismissButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
-        dismissButton.addBorders(edges: [.top, .right], color: Colors.softBlue)
+        let _ = dismissButton.addBorders(edges: [.top, .right], color: Colors.softBlue)
     }
     
     func setupSaveButton() {
@@ -259,6 +259,6 @@ extension ShelfEditViewController {
         saveButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         saveButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
-        saveButton.addBorders(edges: [.top, .left], color: Colors.softBlue)
+        let _ = saveButton.addBorders(edges: [.top, .left], color: Colors.softBlue)
     }
 }
