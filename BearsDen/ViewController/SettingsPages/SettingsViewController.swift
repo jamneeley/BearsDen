@@ -26,7 +26,7 @@ class Setting {
     }
 }
 
-class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, SettingCellDelegate /*MFMailComposeViewControllerDelegate*/  {
+class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, SettingCellDelegate {
 
     let settings: [Setting] = {
         
@@ -85,62 +85,29 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             denImageView.image = image
+            UserController.shared.change(Picture: image)
         } else {
             print("error picking image from imagepicker")
         }
         self.dismiss(animated: true, completion: nil)
     }
     
-    //MARK: -SEND EMAIL METHODS
-    
-//    func configureMailController() -> MFMailComposeViewController {
-//        let mailComposerVC = MFMailComposeViewController()
-//        mailComposerVC.mailComposeDelegate = self
-//        mailComposerVC.setToRecipients(["bearsdenfoodstorage@gmail.com"])
-//        mailComposerVC.setSubject("Question")
-//        mailComposerVC.setMessageBody("this message is from james", isHTML: false)
-//
-//        return mailComposerVC
-//    }
-//
-//
-//    func showMailError() {
-//        let alert = UIAlertController(title: "Uh Oh", message: "Your device could not sent email", preferredStyle: .alert)
-//        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-//        alert.addAction(dismiss)
-//        self.present(alert, animated: true, completion: nil)
-//    }
-    
-    //called when the user taps on send or cancel
-//    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-//        controller.dismiss(animated: true, completion: nil)
-//
-//        if let error = error {
-//            print("\(error)")
-//        }
-//    }
-    
     //MARK: - CELL DELEGATE
     
     func settingActionTaken(settingNumber: Int) {
         switch settingNumber {
         case 1:
-            print("den name touched")
+            print("denNameCell, this should not be called")
         case 2:
-            print("adults stepper touched")
+            print("adultsStepper, this should not be called")
         case 3:
-            print("kids stepper touched")
+            print("kidsStepper, this should not be called")
         case 4:
-            print("tutorial button touched")
+            let tutorialViewController = TutorialOptionsViewController()
+            let navController = UINavigationController(rootViewController: tutorialViewController)
+            self.present(navController, animated: true, completion: nil)
         case 5:
-            
-//            let mailComposeViewController = configureMailController()
-//            if MFMailComposeViewController.canSendMail() {
-//                self.present(mailComposeViewController, animated: true, completion: nil)
-//            } else {
-//                showMailError()
-//            }
-            print("this should not run")
+            print("questionsCell, this should not be called")
         case 6:
             print("donation button touched")
         case 7:
@@ -149,7 +116,6 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             print("setting number passed to delegate is out of range")
         }
     }
-    
     
     @objc func startHighlightLibrary() {
         photoLibraryButton.backgroundColor = Colors.softBlue

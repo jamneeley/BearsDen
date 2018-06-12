@@ -26,6 +26,8 @@ class ItemTableViewCell: UITableViewCell {
     let expirationDateLabel = UILabel()
     let quantityLabel = UILabel()
     let stockedLabel = UILabel()
+    let weightLabel = UILabel()
+    let categoryLabel = UILabel()
     let barCodeLabel = UILabel()
     let quantityStepper = UIStepper()
     let addToShoppingListButton = UIButton()
@@ -35,17 +37,23 @@ class ItemTableViewCell: UITableViewCell {
         setupViews()
         addSubview(itemNameLabel)
         addSubview(expirationDateLabel)
+        addSubview(weightLabel)
+        addSubview(categoryLabel)
         addSubview(addToShoppingListButton)
         addSubview(stockedLabel)
         addSubview(quantityLabel)
         addSubview(quantityStepper)
-        addConstraintsWithFormat(format: "V:|-5-[v0]-5-[v1]-10-[v2(45)]-10-|", views: itemNameLabel, expirationDateLabel, addToShoppingListButton)
-        addConstraintsWithFormat(format: "V:|-5-[v0]-30-[v1]-5-[v2]-5-|", views: stockedLabel, quantityLabel, quantityStepper )
-        addConstraintsWithFormat(format: "H:|-10-[v0]", views: itemNameLabel)
-        addConstraintsWithFormat(format: "H:|-10-[v0]", views: expirationDateLabel)
-        
+        addConstraintsWithFormat(format: "V:|-5-[v0]", views: itemNameLabel)
+        itemNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: frame.height * -1.25).isActive = true
+        addConstraintsWithFormat(format: "V:[v0(45)]-10-|", views: addToShoppingListButton)
+        addConstraintsWithFormat(format: "V:[v0]-5-|", views: expirationDateLabel)
+        addConstraintsWithFormat(format: "V:|-5-[v0]-5-[v1]-5-[v2]-5-[v3]-5-[v4]-5-|", views: stockedLabel, weightLabel, categoryLabel, quantityLabel, quantityStepper )
+        addConstraintsWithFormat(format: "H:|-10-[v0(\(frame.width * 0.73))]", views: itemNameLabel)
+        expirationDateLabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0).isActive = true
         addConstraintsWithFormat(format: "H:|-10-[v0(45)]", views: addToShoppingListButton)
         addConstraintsWithFormat(format: "H:[v0]-10-|", views: stockedLabel)
+        addConstraintsWithFormat(format: "H:[v0]-10-|", views: weightLabel)
+        addConstraintsWithFormat(format: "H:[v0]-10-|", views: categoryLabel)
         addConstraintsWithFormat(format: "H:[v0]-10-|", views: quantityLabel)
         addConstraintsWithFormat(format: "H:[v0]-10-|", views: quantityStepper)
 
@@ -60,15 +68,27 @@ class ItemTableViewCell: UITableViewCell {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         let itemQuantity = Int(item.quantity)
+        let weight = item.weight ?? "N/A"
+        let unit = item.unit ?? "N/A"
+        let category = item.catagory ?? "N/A"
+
+        itemNameLabel.numberOfLines = 3
         backgroundColor = .white
         itemNameLabel.text = item.name
+        expirationDateLabel.textAlignment = .center
         expirationDateLabel.text = "Exp Date: \(dateFormatter.string(from: stocked))"
         stockedLabel.text = "Stocked: \(dateFormatter.string(from: expirationDate))"
+        weightLabel.text = "Weight: \(weight) \(unit)"
+        categoryLabel.text = "Category: \(category)"
         quantityLabel.text = "Quantity: \(itemQuantity)"
-        itemNameLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        itemNameLabel.font = UIFont.boldSystemFont(ofSize: 16)
         expirationDateLabel.font = UIFont.boldSystemFont(ofSize: 12)
         stockedLabel.font = UIFont.boldSystemFont(ofSize: 11)
+        weightLabel.font = UIFont.boldSystemFont(ofSize: 11)
+        categoryLabel.font = UIFont.boldSystemFont(ofSize: 11)
         stockedLabel.textColor = Colors.mediumGray
+        weightLabel.textColor = Colors.mediumGray
+        categoryLabel.textColor = Colors.mediumGray
     }
     
 

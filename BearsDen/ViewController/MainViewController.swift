@@ -10,10 +10,6 @@ import UIKit
 
 class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, shelvesViewControllerDelegate  {
     
-
-    
-
-
     //non page dependent objects
     let navBar = UIView()
     let settingsButton = UIButton(type: UIButtonType.system)
@@ -99,6 +95,9 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
             view.addSubview(shelfEditView)
             window.addSubview(blackView)
             window.addSubview(shelfEditView)
+            shelfEditView.layer.cornerRadius = CornerRadius.imageView
+            shelfEditView.layer.borderColor = Colors.softBlue.cgColor
+            shelfEditView.layer.borderWidth = 2
             editShelfViewController.delegate = self
             editShelfViewController.shelfImage = #imageLiteral(resourceName: "BearOnHill")
             let width = window.frame.width * 0.8
@@ -155,7 +154,9 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         // Goal METHODS
     
     @objc func addGoalButtonTapped() {
-        print("AddGoalButton Pressed")
+        let goalDetailVC = GoalDetailViewController()
+        let navController = UINavigationController(rootViewController: goalDetailVC)
+        self.present(navController, animated: true, completion: nil)
     }
     
         // SHOPPING METHODS
@@ -182,8 +183,8 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     func didSelectCellAtRow(shelf: Shelf) {
         let itemView = ItemsViewController()
         itemView.shelf = shelf
-        let navItem = UINavigationController(rootViewController: itemView)
-        present(navItem, animated: true, completion: nil)
+        let navController = UINavigationController(rootViewController: itemView)
+        present(navController, animated: true, completion: nil)
     }
 }
 

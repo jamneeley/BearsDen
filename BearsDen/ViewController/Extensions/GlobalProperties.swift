@@ -11,8 +11,9 @@ import UIKit
 struct Colors {
     static let softBlue = UIColor(red: 0.0/255.0, green: 115.0/255.0, blue: 255.0/255.0, alpha: 1.0)
     static let green = UIColor(red: 89.0/255.0, green: 189.0/255.0, blue: 89.0/255.0, alpha: 1.0)
+    static let pulsingGreen = UIColor(red: 119.0/255.0, green: 219.0/255.0, blue: 119.0/255.0, alpha: 0.3)
     static let yellow = UIColor(red: 244.0/255.0, green: 186.0/255.0, blue: 48.0/255, alpha: 1.0)
-    static let veryLightGray = UIColor(red: 240.0/255.0, green: 240.0/255.0, blue: 240.0/255.0, alpha: 1.0)
+    static let veryLightGray = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 1.0)
     static let lightGray = UIColor(red: 235.0/255.0, green: 235.0/255.0, blue: 235.0/255.0, alpha: 1.0)
     static let mediumGray = UIColor(red: 150.0/255.0, green: 150.0/255.0, blue: 150.0/255.0, alpha: 1.0)
     static let darkGray = UIColor(red: 50.0/255.0, green: 50.0/255.0, blue: 50.0/255.0, alpha: 1.0)
@@ -26,6 +27,24 @@ struct CornerRadius {
 }
 
 struct PickerViewProperties {
-    static let units: [String] = ["lb.", "oz.", "gal."]
-    static let catagories: [String] = ["Grain", "Legume", "Dairy", "Sugar", "Leavening", "Salt", "Fat", "Water", "Protein", "Fruit", "Vegetable", "Medical", "Other"]
+    static let units: [String] = ["lb.", "oz.", "gal.", "fl. oz."]
+    static let catagories: [String] = ["Other", "Grain", "Protein", "Fruit", "Vegetable", "Legume", "Dairy", "Sugar", "Leavening", "Salt", "Fat", "Water", "Medical"]
 }
+
+struct GoalDetailItem {
+    
+    let name: String
+    var isSelected: Bool
+
+}
+
+
+
+
+
+
+
+
+
+
+

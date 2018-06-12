@@ -33,7 +33,7 @@ class TipDetailViewController: UIViewController {
         super.viewDidLoad()
         setupObjects()
         view.backgroundColor = .white
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .done, target: self, action: #selector(dismissView))
+
     }
     
     func updateViews() {
@@ -44,13 +44,22 @@ class TipDetailViewController: UIViewController {
     }
     
     func setupObjects() {
+        setupNavBar()
         setupScrollView()
         setupContentView()
         setupTitleLabel()
         setupTextView()
     }
     
-    @objc func dismissView() {
+    func setupNavBar() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .plain, target: self, action: #selector(backButtonPressed))
+        navigationController?.navigationBar.tintColor = .white
+        let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        navigationController?.navigationBar.barTintColor = Colors.softBlue
+    }
+    
+    @objc func backButtonPressed() {
         self.dismiss(animated: true, completion: nil)
     }
     

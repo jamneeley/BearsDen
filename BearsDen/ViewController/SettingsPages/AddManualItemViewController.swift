@@ -48,7 +48,6 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
     let barCodeStack = UIStackView()
     
     //Buttons
-    let saveButton = UIButton(type: .custom)
     let barcodeButton = UIButton(type: .custom)
     let clearButton = UIButton(type: .custom)
     
@@ -60,51 +59,55 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
     var inDataBase: Bool?
     var itemExists: Bool?
     var cloudItem : CloudItem?
+    
     var barcode: String? {
         didSet {
             barcodeTextField.text = barcode
         }
     }
     var rotationAngle: CGFloat = -90 * (.pi/180)
+    var viewControllerToPopTo: UIViewController?
     
-    func doesItemExist() {
-        guard let itemExist = itemExists else {return}
-        if itemExist {
-            print("item exists?")
-            return
-        } else {
-            presentSaveAlert(WithTitle: "Sorry, that item isnt in our database", message: "Save the item with a barcode and next time it will :)")
-            itemExists = nil
-        }
-    }
+    
+    //FIXME: - make this work!
+    
+//    func doesItemExist() {
+//        if itemExists != nil || false{
+//            print("item exists?")
+//            return
+//        } else {
+//            presentSaveAlert(WithTitle: "Sorry, that item isnt in our database", message: "Save the item with a barcode and next time it will :)")
+//            itemExists = nil
+//        }
+//    }
     
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         unitPicker.frame = CGRect(x: 0, y: 0, width: unitPickerView.frame.width, height: unitPickerView.frame.height)
         catagoryPicker.frame = CGRect(x: 0, y: 0, width: catagoryPickerView.frame.width, height: catagoryPickerView.frame.height)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupObjects()
         view.backgroundColor = .white
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonPressed))
         NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil);
         
-        print(unitPickerView.frame)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        doesItemExist()
+//        doesItemExist()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        setupObjects()
     }
     
     func setupObjects() {
         //bottom stack
-        setupSaveButton()
         setupDatePicker()
         setupDateLabel()
         setupBarCodeButton()
@@ -155,16 +158,6 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         barcodeButton.imageView?.tintColor = nil
     }
     
-    @objc func startHighlightSave() {
-        saveButton.layer.backgroundColor = Colors.softBlue.cgColor
-        saveButton.imageView?.tintColor = .white
-    }
-    
-    @objc func stopHighlightSave() {
-        saveButton.layer.backgroundColor = Colors.green.cgColor
-        saveButton.imageView?.tintColor = nil
-    }
-    
     @objc func clearButtonPressed() {
         stopHighlightclear()
         barcodeTextField.text = ""
@@ -180,16 +173,29 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         navigationController?.pushViewController(scannerViewController, animated: true)
     }
     
+    
+    
     @objc func saveButtonPressed() {
     self.view.isUserInteractionEnabled = false
-        stopHighlightSave()
         guard let name = nameTextField.text,
-            let quantityAsString = quantityTextField.text,
-            let shelf = self.shelf else {return}
+        let quantityAsString = quantityTextField.text,
+        let shelf = self.shelf,
+        let weight = weightTextField.text
+        else {return}
         let date = datePicker.date
+        let unitIndex = unitPicker.selectedRow(inComponent: 0)
+        let catagoryIndex = catagoryPicker.selectedRow(inComponent: 0)
+        let unit = PickerViewProperties.units[unitIndex]
+        let catagory = PickerViewProperties.catagories[catagoryIndex]
+        var isLiquid = false
         
-        //is there a quantity and is it a number?
-        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) && quantityAsString != "" && name != ""{
+        if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
+            isLiquid = true
+        }
+        
+        //is there a quantity and weight and are they both numbers?
+        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) &&  CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: weight))  && quantityAsString != "" && name != "" && weight != "" {
+            
             let barcodeNumber = barcodeTextField.text
             let quantity = Double(quantityAsString)
             
@@ -197,62 +203,51 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
             if barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)){
                 //does this barcode already exist in the DB?
                 if cloudItem != nil && inDataBase == true {
-                    CloudItemController.shared.update(cloudItem: self.cloudItem!, name: name) { (success) in
+                    CloudItemController.shared.update(cloudItem: self.cloudItem!, name: name, weight: weight, catagory: catagory, unit: unit) { (success) in
                         //reset the clouditem
                         self.cloudItem = nil
                         self.inDataBase = nil
-                        
-                        let weight = "2"
-                        let catagory = "other"
-                        
-                        
-                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                        print("ITEM SAVED WITH BARCODE AND CLOUD ITEM UPDATED")
+                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
-                            self.saveAnimation()
+                            self.presentSaveAnimation()
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
+                            self.weightTextField.text = ""
                         }
                     }
                 // barcode doesnt exists in the database
                 } else {
-                    CloudItemController.shared.createCloudItem(withName: name, barcode: barcodeNumber!) { (success) in
+                    CloudItemController.shared.createCloudItem(withName: name, weight: weight, catagory: catagory, unit: unit, barcode: barcodeNumber!) { (success) in
                         //reset the clouditem
                         self.cloudItem = nil
                         self.inDataBase = nil
-                        
-                        let weight = "2"
-                        let catagory = "other"
-                        
-                        
-                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                        print("ITEM SAVED WITH BARCODE AND CLOUD ITEM SAVED")
+                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
-                            self.saveAnimation()
+                            self.presentSaveAnimation()
                             self.nameTextField.text = ""
                             self.barcodeTextField.text = ""
+                            self.weightTextField.text = ""
                         }
                     }
                 }
             //there isnt a barcode number or it isnt a number
             } else {
-                
-                
-                
-                let weight = "2"
-                let catagory = "other"
-                
-                
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, catagory: catagory, barcode: "", shelf: shelf)
-                saveAnimation()
+                print("ITEM SAVED LOCALLY WITHOUT BARCODE")
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
+                presentSaveAnimation()
                 nameTextField.text = ""
                 barcodeTextField.text = ""
-                
+                weightTextField.text = ""
             }
         //itemName and quantity doesnt exist or quantity isnt a number
         } else {
-            presentSaveAlert(WithTitle: "Uh Oh", message: "You need an item name and quantity")
+            presentSaveAlert(WithTitle: "Uh Oh", message: "You need an item name, quantity and weight")
         }
         self.view.isUserInteractionEnabled = true
     }
+    
     
     func presentSaveAlert(WithTitle title: String, message: String) {
         var alert = UIAlertController()
@@ -270,23 +265,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         self.view.endEditing(true)
         return true
     }
-    
-    func saveAnimation() {
-        let brightView = UIView()
-        brightView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        view.addSubview(brightView)
-        brightView.backgroundColor = Colors.clear
-        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseIn], animations: {
-            brightView.backgroundColor = Colors.white
-        }) { (success) in
-            UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
-                brightView.backgroundColor = Colors.clear
-                brightView.removeFromSuperview()
-            }, completion: { (success) in
-            })
-        }
-    }
-    
+        
     //MARK: - UIPICKER DATA SOURCE
     
     
@@ -317,10 +296,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         let label = UILabel()
         label.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         label.textAlignment = .center
-    
-        
         if pickerView == unitPicker {
-            print("TITLES SHOULD BE APPEARING")
             label.text = PickerViewProperties.units[row]
         } else if pickerView == catagoryPicker{
             label.text = PickerViewProperties.catagories[row]
@@ -348,20 +324,57 @@ extension AddManualItemViewController: BarcodeScannerCodeDelegate {
                     self.inDataBase = true
                     self.cloudItem = localClouditem
                     self.nameTextField.text = localClouditem.name
+                    self.weightTextField.text = localClouditem.weight
+                    
+                    let unitIndex = self.findIndexOf(Unit: localClouditem.unit, catagory: "")
+                    let catagoryIndex = self.findIndexOf(Unit: "", catagory: localClouditem.catagory)
+                    
+                    
+                    self.catagoryPicker.selectRow(catagoryIndex, inComponent: 0, animated: false)
+                    self.unitPicker.selectRow(unitIndex, inComponent: 0, animated: false)
                     self.barcodeTextField.text = code
-                    self.navigationController?.popViewController(animated: true)
-                    print("exists")
+                    
+                    if let viewToPopTo = self.viewControllerToPopTo {
+                        self.navigationController?.popToViewController(viewToPopTo, animated: true)
+                    }else {
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             } else {
                 DispatchQueue.main.async {
                     self.inDataBase = false
                     self.cloudItem = nil
                     self.barcodeTextField.text = code
-                    self.navigationController?.popViewController(animated: true)
-                    print("doesnt exist")
+                    if let viewToPopTo = self.viewControllerToPopTo {
+                        self.navigationController?.popToViewController(viewToPopTo, animated: true)
+                    }else {
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
         }
+    }
+    
+    func findIndexOf(Unit: String, catagory: String) -> Int {
+        if Unit != "" {
+            for item in PickerViewProperties.units {
+                if Unit == item {
+                    guard let index = PickerViewProperties.units.index(of: item) else {print("index doesnt exist for catagory"); return 0}
+                    print(index)
+                    return index
+                }
+            }
+        } else {
+            for item in PickerViewProperties.catagories {
+                if catagory == item {
+                    guard let index = PickerViewProperties.catagories.index(of: item) else {print("index doesnt exist for catagory"); return 0}
+                    print(index)
+                    return index
+                }
+            }
+        }
+        print("Not unit or catagory")
+        return 0
     }
 }
 
@@ -403,89 +416,87 @@ extension AddManualItemViewController {
         view.addSubview(entryStack)
         entryStack.addArrangedSubview(upperStack)
         entryStack.addArrangedSubview(lowerStack)
-        entryStack.axis = .vertical
-        entryStack.spacing = 10
-        setupStackViewConstraints()
-        entryStack.distribution = .fillEqually
-
         
         upperStack.addArrangedSubview(nameStack)
         upperStack.addArrangedSubview(quantityStack)
         upperStack.addArrangedSubview(weightStack)
+        
+        lowerStack.addArrangedSubview(unitStack)
+        lowerStack.addArrangedSubview(catagoryStack)
+        
+        nameStack.addArrangedSubview(nameLabel)
+        nameStack.addArrangedSubview(nameTextField)
+        quantityStack.addArrangedSubview(quantityLabel)
+        quantityStack.addArrangedSubview(quantityTextField)
+        weightStack.addArrangedSubview(weightLabel)
+        weightStack.addArrangedSubview(weightTextField)
+        
+        unitStack.addArrangedSubview(unitLabel)
+        unitStack.addArrangedSubview(unitPickerView)
+        unitPickerView.addSubview(unitPicker)
+        
+        catagoryStack.addArrangedSubview(catagoryLabel)
+        catagoryStack.addArrangedSubview(catagoryPickerView)
+        catagoryPickerView.addSubview(catagoryPicker)
+        
+        
+        entryStack.axis = .vertical
+        entryStack.spacing = 10
+        entryStack.distribution = .fillEqually
+
         upperStack.axis = .vertical
         upperStack.spacing = 10
         upperStack.distribution = .fillEqually
-        lowerStack.addArrangedSubview(unitStack)
-        lowerStack.addArrangedSubview(catagoryStack)
+        
         lowerStack.axis = .vertical
         lowerStack.spacing = 5
         lowerStack.distribution = .fillEqually
         
         //NAME STACK
-        nameStack.addArrangedSubview(nameLabel)
-        nameStack.addArrangedSubview(nameTextField)
-        nameLabel.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 260)!)
-        nameLabel.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        nameTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        nameTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
+        
         nameTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
-        nameTextField.heightAnchor.constraint(equalToConstant: view.frame.height * 0.05).isActive = true
         nameStack.distribution = .fill
         nameStack.axis = .horizontal
         nameStack.spacing = 5
         
         //QUANTITY STACK
-        quantityStack.addArrangedSubview(quantityLabel)
-        quantityStack.addArrangedSubview(quantityTextField)
-        quantityLabel.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 260)!)
-        quantityLabel.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        quantityTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        quantityTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
+        
         quantityTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
-        quantityTextField.heightAnchor.constraint(equalToConstant: view.frame.height * 0.05).isActive = true
         quantityStack.distribution = .fill
         quantityStack.axis = .horizontal
         quantityStack.spacing = 5
         
         //WEIGHT STACK
-        weightStack.addArrangedSubview(weightLabel)
-        weightStack.addArrangedSubview(weightTextField)
-        weightLabel.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 260)!)
-        weightLabel.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        weightTextField.contentHuggingPriority(for: UILayoutConstraintAxis(rawValue: 220)!)
-        weightTextField.contentCompressionResistancePriority(for: UILayoutConstraintAxis(rawValue: 260)!)
+    
         weightTextField.widthAnchor.constraint(equalToConstant: view.frame.width * 0.67).isActive = true
-        weightTextField.heightAnchor.constraint(equalToConstant: view.frame.height * 0.05).isActive = true
         weightStack.distribution = .fill
         weightStack.axis = .horizontal
         weightStack.spacing = 5
         
         //UNIT STACK
-        unitStack.addArrangedSubview(unitLabel)
-        unitStack.addArrangedSubview(unitPickerView)
+        
         unitPickerView.layer.borderWidth = 1
         unitPickerView.layer.borderColor = Colors.softBlue.cgColor
         unitPickerView.layer.cornerRadius = CornerRadius.textField
-        unitPickerView.addSubview(unitPicker)
-        unitPicker.transform = CGAffineTransform(rotationAngle: rotationAngle)
+        
+        
         unitStack.distribution = .fill
         unitStack.spacing = 5
         unitStack.axis = .vertical
         
         //CATAGORY STACK
-        catagoryStack.addArrangedSubview(catagoryLabel)
-        catagoryStack.addArrangedSubview(catagoryPickerView)
+        
         catagoryPickerView.layer.borderWidth = 1
         catagoryPickerView.layer.borderColor = Colors.softBlue.cgColor
         catagoryPickerView.layer.cornerRadius = CornerRadius.textField
-        catagoryPickerView.addSubview(catagoryPicker)
-        catagoryPicker.transform = CGAffineTransform(rotationAngle: rotationAngle)
-        catagoryStack.backgroundColor = .yellow
+        
         
         catagoryStack.distribution = .fill
         catagoryStack.spacing = 5
         catagoryStack.axis = .vertical
         
+        
+        setupStackViewConstraints()
     }
     
     func setupNameObjects() {
@@ -534,14 +545,15 @@ extension AddManualItemViewController {
     func setupUnitObjects() {
         unitLabel.text = "Unit"
         unitLabel.textAlignment = .left
+        unitPicker.transform = CGAffineTransform(rotationAngle: rotationAngle)
         unitPicker.delegate = self
         unitPicker.dataSource = self
     }
     
     func setupCatagoryObjects() {
-        
         catagoryLabel.text = "Catagory"
         catagoryLabel.textAlignment = .left
+        catagoryPicker.transform = CGAffineTransform(rotationAngle: rotationAngle)
         catagoryPicker.delegate = self
         catagoryPicker.dataSource = self
     }
@@ -583,7 +595,7 @@ extension AddManualItemViewController {
     
     func setupBarCodeButton() {
         view.addSubview(barcodeButton)
-        barcodeButton.frame = CGRect(x: view.frame.width * 0.96 - 50, y: view.frame.height * 0.6, width: 40, height: 40)
+        barcodeButton.frame = CGRect(x: view.frame.width * 0.96 - 50, y: view.frame.height * 0.67, width: 40, height: 40)
         barcodeButton.setImage(#imageLiteral(resourceName: "barCodeButton"), for: .normal)
         barcodeButton.setTitleColor(.white, for: .normal)
         barcodeButton.backgroundColor = Colors.green
@@ -596,7 +608,7 @@ extension AddManualItemViewController {
     
     func setupClearButton() {
         view.addSubview(clearButton)
-        clearButton.frame = CGRect(x: view.frame.width * 0.052, y: view.frame.height * 0.6, width: 40, height: 40)
+        clearButton.frame = CGRect(x: view.frame.width * 0.052, y: view.frame.height * 0.67, width: 40, height: 40)
         clearButton.setImage(#imageLiteral(resourceName: "ClearBarCodeButton"), for: .normal)
         clearButton.setTitleColor(.black, for: .normal)
         clearButton.backgroundColor = Colors.green
@@ -628,28 +640,13 @@ extension AddManualItemViewController {
         setupDatePickerConstraints()
     }
     
-    func setupSaveButton() {
-        view.addSubview(saveButton)
-        saveButton.frame = CGRect(x: view.frame.width * 0.5 - 25, y: view.frame.height * 0.90, width: 50, height: 50)
-        saveButton.setTitle("Save", for: .normal)
-        saveButton.setTitleColor(.black, for: .normal)
-        saveButton.backgroundColor = Colors.green
-        saveButton.layer.cornerRadius = 0.5 * saveButton.bounds.size.width
-        saveButton.clipsToBounds = true
-        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
-        saveButton.addTarget(self, action: #selector(startHighlightSave), for: .touchDown)
-        saveButton.addTarget(self, action: #selector(stopHighlightSave), for: .touchUpOutside)
-    }
-    
-    
-    
     ////////////////////////////////////
     //Constraints
     ///////////////////////////////////
     
     func setupStackViewConstraints() {
         entryStack.translatesAutoresizingMaskIntoConstraints = false
-        entryStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+        entryStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.frame.height * 0.02).isActive = true
         entryStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
         entryStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
         entryStack.bottomAnchor.constraint(equalTo: barCodeStack.topAnchor, constant: -10).isActive = true
@@ -657,8 +654,8 @@ extension AddManualItemViewController {
     
     func setupBarcodeStackConstraints() {
         barCodeStack.translatesAutoresizingMaskIntoConstraints = false
-        barCodeStack.topAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.04).isActive = true
-        barCodeStack.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.16).isActive = true
+        barCodeStack.topAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.1).isActive = true
+        barCodeStack.bottomAnchor.constraint(equalTo: dateLabel.topAnchor, constant: view.frame.height * -0.02).isActive = true
         barCodeStack.leadingAnchor.constraint(equalTo: clearButton.trailingAnchor, constant: 10).isActive = true
         barCodeStack.trailingAnchor.constraint(equalTo: barcodeButton.leadingAnchor, constant: -10).isActive = true
         
@@ -666,16 +663,16 @@ extension AddManualItemViewController {
     
     func setupDateLabelConstraints() {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.topAnchor.constraint(equalTo: datePicker.topAnchor, constant: -20).isActive = true
+        dateLabel.topAnchor.constraint(equalTo: datePicker.topAnchor, constant: -32).isActive = true
         dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
         dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
-        dateLabel.bottomAnchor.constraint(equalTo:  datePicker.topAnchor, constant: -2).isActive = true
+        dateLabel.bottomAnchor.constraint(equalTo:  datePicker.topAnchor, constant: -12).isActive = true
     }
     
     func setupDatePickerConstraints() {
         datePicker.translatesAutoresizingMaskIntoConstraints =  false
-        datePicker.topAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.2).isActive = true
-        datePicker.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -10).isActive = true
+        datePicker.topAnchor.constraint(equalTo: view.centerYAnchor, constant: view.frame.height * 0.3).isActive = true
+        datePicker.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.frame.height * 0.05).isActive = true
         datePicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
         datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
     }

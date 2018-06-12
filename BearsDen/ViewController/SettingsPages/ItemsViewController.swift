@@ -46,7 +46,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     @objc func backButtonPressed() {
-        navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
     }
     
@@ -59,6 +58,9 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             view.addSubview(shelfEditView)
             window.addSubview(blackView)
             window.addSubview(shelfEditView)
+            shelfEditView.layer.cornerRadius = CornerRadius.imageView
+            shelfEditView.layer.borderColor = Colors.softBlue.cgColor
+            shelfEditView.layer.borderWidth = 2
             editShelfViewController.delegate = self
             let image = UIImage(data: shelfImageData)
             editShelfViewController.shelfImage = image
@@ -200,17 +202,19 @@ extension ItemsViewController: BarcodeScannerCodeDelegate {
             if let cloudItem = cloudItem {
                 DispatchQueue.main.async {
                     guard let shelf = self.shelf else {return}
-                    let barCodeController = AddBarcodeViewController()
-                    self.navigationController?.popViewController(animated: true)
-                    self.navigationController?.pushViewController(barCodeController, animated: true)
-                    barCodeController.cloudItem = cloudItem
-                    barCodeController.shelf = shelf
+                    let addBarCodeController = AddBarcodeViewController()
+//                    self.navigationController?.popViewController(animated: true)
+                    self.navigationController?.pushViewController(addBarCodeController, animated: true)
+                    addBarCodeController.viewControllerToPopTo = self
+                    addBarCodeController.shelf = shelf
+                    addBarCodeController.cloudItem = cloudItem
                 }
             } else {
                 DispatchQueue.main.async {
                     let addManualController = AddManualItemViewController()
-                    self.navigationController?.popViewController(animated: true)
+//                    self.navigationController?.popViewController(animated: true)
                     self.navigationController?.pushViewController(addManualController, animated: true)
+                    addManualController.viewControllerToPopTo = self
                     addManualController.shelf = self.shelf
                     addManualController.barcode = code
                     addManualController.itemExists = false
@@ -219,6 +223,7 @@ extension ItemsViewController: BarcodeScannerCodeDelegate {
         }
     }
 }
+
 
 extension ItemsViewController: BarcodeScannerErrorDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
