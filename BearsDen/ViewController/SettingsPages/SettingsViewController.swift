@@ -103,7 +103,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         case 3:
             print("kidsStepper, this should not be called")
         case 4:
-            let tutorialViewController = TutorialDetailViewController()
+            let tutorialViewController = TutorialOptionsViewController()
             let navController = UINavigationController(rootViewController: tutorialViewController)
             self.present(navController, animated: true, completion: nil)
         case 5:
