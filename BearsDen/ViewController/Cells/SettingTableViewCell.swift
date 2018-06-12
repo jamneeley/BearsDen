@@ -114,7 +114,7 @@ class SettingTableViewCell: UITableViewCell, UITextFieldDelegate {
             }
         case 4:
             if let button = object as? UIButton {
-                button.setTitle("Show", for: .normal)
+                button.setTitle("Go", for: .normal)
                 button.setTitleColor(.black, for: .normal)
                 button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
                 button.isUserInteractionEnabled = true

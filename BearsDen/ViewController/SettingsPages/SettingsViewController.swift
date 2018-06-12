@@ -97,15 +97,17 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     func settingActionTaken(settingNumber: Int) {
         switch settingNumber {
         case 1:
-            print("den name touched")
+            print("denNameCell, this should not be called")
         case 2:
-            print("adults stepper touched")
+            print("adultsStepper, this should not be called")
         case 3:
-            print("kids stepper touched")
+            print("kidsStepper, this should not be called")
         case 4:
-            print("tutorial button touched")
+            let tutorialViewController = TutorialDetailViewController()
+            let navController = UINavigationController(rootViewController: tutorialViewController)
+            self.present(navController, animated: true, completion: nil)
         case 5:
-            print("this should not run")
+            print("questionsCell, this should not be called")
         case 6:
             print("donation button touched")
         case 7:
