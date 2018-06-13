@@ -46,6 +46,12 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     }()
     
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        tableView.reloadData()
+    }
+    
+    
     let scrollView = UIScrollView()
     let contentView = UIView()
     let denImageView = UIImageView()

@@ -9,7 +9,7 @@
 import UIKit
 
 struct tutorialOptionsDataSource {
-    static let items: [String] = ["Adding a shelf", "Adding an item to a shelf", "How goals work", "how to add a shopping list item", "Calculator?", "Tips", "My Den?", "Whats in the settings?"]
+    static let items: [String] = ["Menu Items?", "Adding an item to a shelf", "How goals work", "how to add a shopping list item", "Calculator?"]
 }
 
 class TutorialOptionsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -60,7 +60,7 @@ class TutorialOptionsViewController: UIViewController, UICollectionViewDelegate,
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: view.frame.height * 0.15)
+        return CGSize(width: collectionView.frame.width - 15, height: view.frame.height * 0.15)
     }
     
     
@@ -68,6 +68,7 @@ class TutorialOptionsViewController: UIViewController, UICollectionViewDelegate,
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! TutorialCollectionViewCell
         cell.layer.cornerRadius = CornerRadius.textField
         cell.tutorialName = tutorialOptionsDataSource.items[indexPath.row]
+        cell.dropShadow()
         return cell
     }
     
@@ -108,8 +109,8 @@ class TutorialOptionsViewController: UIViewController, UICollectionViewDelegate,
     func setupCollectionViewConstraints() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05 - 15).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05 + 15).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
     
