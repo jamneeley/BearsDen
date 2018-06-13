@@ -276,12 +276,12 @@
 			isa = PBXGroup;
 			children = (
 				9D8477A3209A8045005F219B /* ShelfCollectionViewCell.swift */,
-				9DB6172B20B3110F00B87C6C /* TipsCollectionViewCell.swift */,
 				9D8477A5209A8052005F219B /* ItemTableViewCell.swift */,
 				9D8477AF209D0486005F219B /* SettingsCollectionViewCell.swift */,
 				9DCF094820A60FE4009471F8 /* ShoppingListTableViewCell.swift */,
 				9DF445FA20C89EFA005EB7CC /* GoalsCollectionViewCell.swift */,
 				9DD54C7520C9ABCF00AB3C52 /* GoalDetailCollectionViewCell.swift */,
+				9DB6172B20B3110F00B87C6C /* TipsCollectionViewCell.swift */,
 				9DF445F620C6DDEC005EB7CC /* SettingTableViewCell.swift */,
 				9DB078A820CF313E0013F1CA /* TutorialCollectionViewCell.swift */,
 			);
@@ -342,17 +342,9 @@
 			isa = PBXGroup;
 			children = (
 				9DB078AF20CF37A60013F1CA /* TutorialDetailCollectionViewCell.swift */,
-				9DB078AE20CF37640013F1CA /* ViewControllers */,
-			);
-			path = TutorialPages;
-			sourceTree = "<group>";
-		};
-		9DB078AE20CF37640013F1CA /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
 				9DB078AB20CF37540013F1CA /* TutorialDetailViewController.swift */,
 			);
-			path = ViewControllers;
+			path = TutorialPages;
 			sourceTree = "<group>";
 		};
 		9DC82CDF208A50810068DD8E = {

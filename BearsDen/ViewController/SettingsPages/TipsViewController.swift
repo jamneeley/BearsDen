@@ -38,9 +38,9 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 40
+        layout.minimumLineSpacing = 20
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
+        cv.backgroundColor = Colors.veryLightGray
         return cv
     }()
     
@@ -49,7 +49,7 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.veryLightGray
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(TipsCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
@@ -63,7 +63,7 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: header, for: indexPath) as? TipsSectionHeader {
-            sectionHeader.backgroundColor = .white
+            sectionHeader.backgroundColor = Colors.clear
             sectionHeader.sectionHeader = TipsController.shared.sectionHeaders[indexPath.section]
             sectionHeader.sectionHeaderLabel.textAlignment = .left
             sectionHeader.sectionHeaderLabel.numberOfLines = 0
@@ -78,7 +78,10 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width / 2 - (view.frame.width * 0.025), height: view.frame.height * 0.35)
+        let width = (collectionView.frame.width - 50)
+        let height = view.frame.height * 0.15
+
+        return CGSize(width: width, height: height)
     }
 
     
@@ -103,6 +106,7 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! TipsCollectionViewCell
         let tip = TipsController.shared.tips[indexPath.section][indexPath.row]
         cell.tip = tip
+        cell.dropShadow()
         cell.layer.cornerRadius = 12
         return cell
     }
@@ -115,11 +119,10 @@ class TipsViewController: UIViewController, UICollectionViewDelegate, UICollecti
 extension TipsViewController {
     func setupCollectionView() {
         view.addSubview(collectionView)
-        collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }

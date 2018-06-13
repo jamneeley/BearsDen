@@ -20,7 +20,7 @@ class ShelvesViewController: UIViewController, UICollectionViewDelegate, UIColle
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 25
+        layout.minimumLineSpacing = 15
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = Colors.veryLightGray
         return cv
@@ -72,7 +72,7 @@ class ShelvesViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: view.frame.height * 0.2)
+        return CGSize(width: collectionView.frame.width - 15, height: view.frame.height * 0.2)
     }
 
     
@@ -81,6 +81,7 @@ class ShelvesViewController: UIViewController, UICollectionViewDelegate, UIColle
         if let shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf {
             cell.shelf = shelf
             cell.delegate = self
+            cell.dropShadow()
             cell.layer.cornerRadius = CornerRadius.textField
             return cell
         } else {
@@ -112,8 +113,8 @@ extension ShelvesViewController {
     func setupCollectionViewConstraints() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05 - 15).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05 + 15).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }

@@ -123,6 +123,44 @@ extension UIView {
         
         return borders
     }
+    
+    
+    
+    // OUTPUT 1
+    func dropShadow(scale: Bool = true) {
+        layer.masksToBounds = false
+        layer.shadowColor = Colors.darkGray.cgColor
+        layer.shadowOpacity = 0.4
+        layer.shadowOffset = CGSize(width: -3, height: 3)
+        layer.shadowRadius = 7
+        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+    
+    // OUTPUT 2
+    func dropShadow(color: UIColor, opacity: Float = 0.5, offSet: CGSize, radius: CGFloat = 1, scale: Bool = true) {
+        layer.masksToBounds = false
+        layer.shadowColor = color.cgColor
+        layer.shadowOpacity = opacity
+        layer.shadowOffset = offSet
+        layer.shadowRadius = radius
+        
+        layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+    
+    func randomNumber(from: UInt32, to: UInt32) -> CGFloat{
+        return CGFloat((arc4random() % (to - from)) + from)
+    }
+    
+    func randomBackgroundColor(hueFrom: UInt32, hueTo: UInt32, satFrom: UInt32, satTo: UInt32, brightFrom: UInt32, brightTo: UInt32) {
+        let hue = randomNumber(from: hueFrom, to: hueTo)
+        let saturation = randomNumber(from: satFrom, to: satTo)
+        let brightness = randomNumber(from: brightFrom, to: brightTo)
+        backgroundColor =  UIColor(hue: hue/360.0, saturation: saturation/100.0, brightness: brightness/100.0, alpha: 1.0)
+    }
 }
 
 

@@ -18,7 +18,6 @@ class TutorialDetailViewController: UIViewController, UICollectionViewDelegate, 
         }
     }
     
-    
     let cellID = "pageCell"
     
     
@@ -130,6 +129,12 @@ class TutorialDetailViewController: UIViewController, UICollectionViewDelegate, 
 
 
 struct TutorialDataSource {
+    
+    /*
+  
+ */
+    
+    //OverView of everything
     static let instructionZero: [Instruction] = {
         let test1 = Instruction(image: #imageLiteral(resourceName: "TrashIcon"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
         let test2 = Instruction(image: #imageLiteral(resourceName: "backX2"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
@@ -140,7 +145,7 @@ struct TutorialDataSource {
         
         return [test1, test2, test3, test4, test5, test6]
     }()
-    
+    //Adding shelf/item
     static let instructionOne: [Instruction] = {
         let test1 = Instruction(image: #imageLiteral(resourceName: "TrashIcon"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
         let test2 = Instruction(image: #imageLiteral(resourceName: "backX2"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
@@ -151,7 +156,7 @@ struct TutorialDataSource {
         
         return [test1, test2, test3, test4, test5, test6]
     }()
-    
+    //How goals work
     static let instructionTwo: [Instruction] = {
         let test1 = Instruction(image: #imageLiteral(resourceName: "TrashIcon"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
         let test2 = Instruction(image: #imageLiteral(resourceName: "backX2"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
@@ -162,7 +167,7 @@ struct TutorialDataSource {
         
         return [test1, test2, test3, test4, test5, test6]
     }()
-    
+    //how to add a shopping list item
     static let instructionThree: [Instruction] = {
         let test1 = Instruction(image: #imageLiteral(resourceName: "TrashIcon"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
         let test2 = Instruction(image: #imageLiteral(resourceName: "backX2"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
@@ -173,7 +178,7 @@ struct TutorialDataSource {
         
         return [test1, test2, test3, test4, test5, test6]
     }()
-    
+    //Calculator?
     static let instructionFour: [Instruction] = {
         let test1 = Instruction(image: #imageLiteral(resourceName: "TrashIcon"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
         let test2 = Instruction(image: #imageLiteral(resourceName: "backX2"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
@@ -185,6 +190,7 @@ struct TutorialDataSource {
         return [test1, test2, test3, test4, test5, test6]
     }()
     
+    //tips and my den
     static let instructionFive: [Instruction] = {
         let test1 = Instruction(image: #imageLiteral(resourceName: "TrashIcon"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
         let test2 = Instruction(image: #imageLiteral(resourceName: "backX2"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
@@ -206,7 +212,7 @@ struct TutorialDataSource {
         
         return [test1, test2, test3, test4, test5, test6]
     }()
-    
+    //Whats in the settings?
     static let instructionSeven: [Instruction] = {
         let test1 = Instruction(image: #imageLiteral(resourceName: "TrashIcon"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")
         let test2 = Instruction(image: #imageLiteral(resourceName: "backX2"), directions: "THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE THIS  THIS IS A TESTER MESSAGE THIS IS A TESTER MESSAGE ")

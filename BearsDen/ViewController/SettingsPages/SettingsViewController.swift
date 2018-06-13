@@ -109,7 +109,10 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         case 5:
             print("questionsCell, this should not be called")
         case 6:
-            print("donation button touched")
+            let alert = UIAlertController(title: "Coming Soon", message: "Thank you for wanting to donate :)", preferredStyle: .alert)
+            let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+            alert.addAction(dismiss)
+            present(alert, animated: true, completion: nil)
         case 7:
             SKStoreReviewController.requestReview()
         default:
