@@ -26,10 +26,11 @@ class TipsCollectionViewCell: UICollectionViewCell {
         addSubview(titleLabel)
         addConstraintsWithFormat(format: "H:|-15-[v0]-15-|", views: seperator)
         addConstraintsWithFormat(format: "H:|-5-[v0]-5-|", views: titleLabel)
-        addConstraintsWithFormat(format: "V:[v0(2)]-5-[v1(80)]-5-|", views: seperator, titleLabel)
-        seperator.backgroundColor = Colors.mediumGray
+        addConstraintsWithFormat(format: "V:|-5-[v0(80)]", views: titleLabel)
+        addConstraintsWithFormat(format: "V:[v0(2)]-5-|", views: seperator)
+        seperator.randomBackgroundColor(hueFrom: 35, hueTo: 55, satFrom: 90, satTo: 100, brightFrom: 90, brightTo: 100)
         seperator.layer.cornerRadius = 4
-        self.backgroundColor = Colors.veryLightGray
+        self.backgroundColor = .white
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.boldSystemFont(ofSize: 14)
@@ -42,16 +43,4 @@ class TipsCollectionViewCell: UICollectionViewCell {
         guard let tip = tip else {return}
         titleLabel.text = tip.keys.first
     }
-    
-    func randomNumber(from: UInt32, to: UInt32) -> CGFloat{
-        return CGFloat((arc4random() % (to - from)) + from)
-    }
-    
-//    func randomColor() ->UIColor {
-////        let hue = randomNumber(from: 165, to: 250)
-////        let saturation = randomNumber(from: 5, to: 15)
-//        let brightness = randomNumber(from: 85, to: 95)
-//
-//        return UIColor(hue: 1.0/360.0, saturation: 0/100.0, brightness: brightness/100.0, alpha: 1.0)
-//    }
 }

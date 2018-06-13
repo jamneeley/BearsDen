@@ -24,6 +24,7 @@ class TutorialDetailCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .white
         setupBackGroundView()
         setupImageView()
         setupDirectionsLabel()
@@ -33,19 +34,20 @@ class TutorialDetailCollectionViewCell: UICollectionViewCell {
         addSubview(backgroundBlueView)
         backgroundBlueView.addSubview(tutorialImageView)
         backgroundBlueView.addSubview(directionsLabel)
-        
-        backgroundBlueView.backgroundColor = Colors.softBlue
+        backgroundBlueView.backgroundColor = Colors.yellow
         backgroundBlueView.layer.cornerRadius = CornerRadius.imageView
+        backgroundBlueView.frame = CGRect(x: 0, y: 0, width: frame.width * 0.87, height: frame.height * 0.815)
+        backgroundBlueView.dropShadow()
         backgroundBlueView.translatesAutoresizingMaskIntoConstraints = false
         backgroundBlueView.topAnchor.constraint(equalTo: topAnchor, constant: frame.height * 0.1).isActive = true
         backgroundBlueView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: frame.width * 0.08).isActive = true
         backgroundBlueView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: frame.width * -0.08).isActive = true
         backgroundBlueView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: frame.height * -0.1).isActive = true
-        
     }
     
     func setupImageView() {
         tutorialImageView.layer.cornerRadius = CornerRadius.imageView
+        tutorialImageView.clipsToBounds = true
         tutorialImageView.translatesAutoresizingMaskIntoConstraints = false
         tutorialImageView.topAnchor.constraint(equalTo: backgroundBlueView.topAnchor, constant: frame.height * 0.05).isActive = true
         tutorialImageView.leadingAnchor.constraint(equalTo: backgroundBlueView.leadingAnchor, constant: frame.width * 0.05).isActive = true
@@ -59,10 +61,10 @@ class TutorialDetailCollectionViewCell: UICollectionViewCell {
         directionsLabel.font = UIFont.boldSystemFont(ofSize: 16)
         directionsLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        directionsLabel.topAnchor.constraint(equalTo: tutorialImageView.bottomAnchor, constant: 20).isActive = true
-        directionsLabel.leadingAnchor.constraint(equalTo: backgroundBlueView.leadingAnchor, constant: frame.width * 0.05).isActive = true
-        directionsLabel.trailingAnchor.constraint(equalTo: backgroundBlueView.trailingAnchor, constant: frame.width * -0.05).isActive = true
-        directionsLabel.bottomAnchor.constraint(equalTo: backgroundBlueView.bottomAnchor, constant: frame.height * -0.05).isActive = true
+        directionsLabel.topAnchor.constraint(equalTo: tutorialImageView.bottomAnchor, constant: 10).isActive = true
+        directionsLabel.leadingAnchor.constraint(equalTo: backgroundBlueView.leadingAnchor, constant: frame.width * 0.04).isActive = true
+        directionsLabel.trailingAnchor.constraint(equalTo: backgroundBlueView.trailingAnchor, constant: frame.width * -0.04).isActive = true
+        directionsLabel.bottomAnchor.constraint(equalTo: backgroundBlueView.bottomAnchor, constant: frame.height * -0.01).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

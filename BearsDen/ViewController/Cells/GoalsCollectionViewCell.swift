@@ -66,8 +66,8 @@ class GoalsCollectionViewCell: UICollectionViewCell {
         setupProgressCircle()
         addSubview(seperator)
         addConstraintsWithFormat(format: "H:|-25-[v0]-25-|", views: seperator)
-        addConstraintsWithFormat(format: "V:|-\(frame.height * 0.62)-[v0(2)]", views: seperator)
-        seperator.backgroundColor = Colors.mediumGray
+        addConstraintsWithFormat(format: "V:|-\(frame.height * 0.90)-[v0(2)]", views: seperator)
+        seperator.randomBackgroundColor(hueFrom: 35, hueTo: 55, satFrom: 90, satTo: 100, brightFrom: 90, brightTo: 100)
         seperator.layer.cornerRadius = 4
     }
     
@@ -102,7 +102,7 @@ class GoalsCollectionViewCell: UICollectionViewCell {
     
     func setupProgressCircle() {
         let x = frame.width * 0.5
-        let y = frame.height * 0.32
+        let y = frame.height * 0.45
         let radius = frame.width * 0.75 / 2
         
         let circlePosition = CGPoint(x: x, y: y)

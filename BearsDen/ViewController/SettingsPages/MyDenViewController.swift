@@ -12,6 +12,8 @@ class MyDenViewController: UIViewController {
     
     let denNameLabel = UILabel()
     
+    let mainView = UIView()
+    
     let mainStack = UIStackView()
     
     let totalLabel = UILabel()
@@ -88,7 +90,7 @@ class MyDenViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.veryLightGray
         setupObjects()
     }
     
@@ -128,6 +130,7 @@ class MyDenViewController: UIViewController {
     }
 
     func setupObjects() {
+        setupMainView()
         setupNameLabel()
         setupTotalLabel()
         setupSeperator()
@@ -147,22 +150,34 @@ class MyDenViewController: UIViewController {
         setupOtherStack()
     }
     
+    func setupMainView() {
+        view.addSubview(mainView)
+        mainView.backgroundColor = .white
+        mainView.layer.cornerRadius = CornerRadius.imageView
+        mainView.frame = CGRect(x: 0, y: 0, width: view.frame.width * 0.85, height: view.frame.height * 0.85)
+        mainView.dropShadow()
+        mainView.translatesAutoresizingMaskIntoConstraints = false
+        mainView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.04).isActive = true
+        mainView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.08).isActive = true
+        mainView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.08).isActive = true
+        mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.frame.height * -0.04).isActive = true
+    }
     
     func setupNameLabel() {
-        view.addSubview(denNameLabel)
+        mainView.addSubview(denNameLabel)
         let houseHoldName = UserController.shared.user?.houseHoldName ?? "My Den"
         denNameLabel.text = houseHoldName
         denNameLabel.textAlignment = .center
         denNameLabel.font = UIFont.boldSystemFont(ofSize: 24)
         denNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        denNameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.03).isActive = true
-        denNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.02).isActive = true
-        denNameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.02).isActive = true
-        denNameLabel.bottomAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.08).isActive = true
+        denNameLabel.topAnchor.constraint(equalTo: mainView.topAnchor, constant: mainView.frame.height * 0.03).isActive = true
+        denNameLabel.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: mainView.frame.width * 0.02).isActive = true
+        denNameLabel.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: mainView.frame.width * -0.02).isActive = true
+        denNameLabel.bottomAnchor.constraint(equalTo: mainView.topAnchor, constant: mainView.frame.width * 0.15).isActive = true
     }
     
     func setupMainStack() {
-        view.addSubview(mainStack)
+        mainView.addSubview(mainStack)
         mainStack.axis = .vertical
         mainStack.distribution = .fillProportionally
         mainStack.spacing = 2
@@ -182,10 +197,10 @@ class MyDenViewController: UIViewController {
         mainStack.addArrangedSubview(medicalStack)
         mainStack.addArrangedSubview(otherStack)
         mainStack.translatesAutoresizingMaskIntoConstraints = false
-        mainStack.topAnchor.constraint(equalTo: denNameLabel.bottomAnchor, constant: view.frame.height * 0.03).isActive = true
-        mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
-        mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
-        mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.frame.height * -0.1).isActive = true
+        mainStack.topAnchor.constraint(equalTo: denNameLabel.bottomAnchor, constant: mainView.frame.height * 0.05).isActive = true
+        mainStack.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: mainView.frame.width * 0.05).isActive = true
+        mainStack.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: mainView.frame.width * -0.05).isActive = true
+        mainStack.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: mainView.frame.height * -0.05).isActive = true
     }
     
     func setupTotalLabel() {
@@ -197,7 +212,7 @@ class MyDenViewController: UIViewController {
     func setupSeperator() {
         seperator.translatesAutoresizingMaskIntoConstraints = false
         seperator.heightAnchor.constraint(equalToConstant: 2).isActive = true
-        seperator.backgroundColor = Colors.mediumGray
+        seperator.randomBackgroundColor(hueFrom: 35, hueTo: 55, satFrom: 90, satTo: 100, brightFrom: 90, brightTo: 100)
     }
     
     func setupGrainStack() {

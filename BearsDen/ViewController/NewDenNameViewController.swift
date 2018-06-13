@@ -62,9 +62,8 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
         guard let denName = houseTextField.text, !denName.isEmpty else {return}
         UserController.shared.createUser(housHouldName: denName)
         UserController.shared.change(Picture: #imageLiteral(resourceName: "BearOnHill"))
-        let addShelfInstructions = AddShelfInstructionsViewController()
+        let addShelfInstructions = WelcomeToBearsDenViewController()
         self.present(addShelfInstructions, animated: true, completion: nil)
-        UserDefaults.standard.set(true, forKey: "isCurrentUser")
     }
 }
 

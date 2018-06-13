@@ -124,7 +124,7 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: view.frame.height * 0.85)
+        return CGSize(width: collectionView.frame.width - 15, height: view.frame.height * 0.65)
     }
     
     
@@ -144,6 +144,7 @@ class GoalsViewController: UIViewController,  UICollectionViewDelegate, UICollec
             cell.delegate = self
             cell.percentComplete = percent
             cell.goal = goal
+            cell.dropShadow()
             cell.layer.cornerRadius = 12
             return cell
         } else {
@@ -161,8 +162,8 @@ extension GoalsViewController {
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05 - 15).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05 + 15).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }

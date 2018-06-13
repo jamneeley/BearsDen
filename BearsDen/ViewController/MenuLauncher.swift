@@ -186,7 +186,7 @@ extension MenuLauncher {
     
     func setupSeperator() {
         mainView.addSubview(seperator)
-        seperator.backgroundColor = Colors.lightGray
+        seperator.randomBackgroundColor(hueFrom: 35, hueTo: 55, satFrom: 90, satTo: 100, brightFrom: 90, brightTo: 100)
         setupSeperatorConstraints()
     }
     

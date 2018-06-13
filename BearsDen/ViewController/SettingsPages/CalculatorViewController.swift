@@ -120,7 +120,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     func setupInstructionLabel() {
         view.addSubview(instructionLabel)
         instructionLabel.text = "* Change household size in \"Settings\"\n* Calculations are based off national averages"
-        instructionLabel.textColor = Colors.darkGray
+        instructionLabel.textColor = Colors.verydarkGray
         instructionLabel.font = UIFont.boldSystemFont(ofSize: 10)
         instructionLabel.textAlignment = .center
         setupInstructionLabelConstraints()
@@ -162,6 +162,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         adultNumberLabel.text = adults
         kidNumberLabel.text = kids
         weeksTextField.placeholder = "0"
+        weeksTextField.backgroundColor = .white
         weeksTextField.layer.borderWidth = 2
         weeksTextField.layer.borderColor = Colors.softBlue.cgColor
         weeksTextField.layer.cornerRadius = 12
@@ -203,7 +204,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     
     func setupScrollViewSeperator() {
         view.addSubview(scrollViewSeperator)
-        scrollViewSeperator.backgroundColor = Colors.softBlue
+        scrollViewSeperator.randomBackgroundColor(hueFrom: 35, hueTo: 55, satFrom: 90, satTo: 100, brightFrom: 90, brightTo: 100)
         scrollViewSeperator.translatesAutoresizingMaskIntoConstraints = false
         scrollViewSeperator.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: -2).isActive = true
         scrollViewSeperator.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
@@ -304,7 +305,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     
     func setupSeperator() {
         contentView.addSubview(seperator)
-        seperator.backgroundColor = Colors.yellow
+        seperator.randomBackgroundColor(hueFrom: 35, hueTo: 55, satFrom: 90, satTo: 100, brightFrom: 90, brightTo: 100)
         seperator.translatesAutoresizingMaskIntoConstraints = false
         seperator.topAnchor.constraint(equalTo: mainCalculatorStack.bottomAnchor, constant: 20).isActive = true
         seperator.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.2).isActive = true
