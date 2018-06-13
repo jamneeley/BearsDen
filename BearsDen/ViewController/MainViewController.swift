@@ -8,9 +8,8 @@
 
 import UIKit
 
-class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
-
+class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, shelvesViewControllerDelegate  {
+    
     //non page dependent objects
     let navBar = UIView()
     let settingsButton = UIButton(type: UIButtonType.system)
@@ -18,13 +17,18 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     
     //viewcontrollers
     lazy var shelvesView: ShelvesViewController = {
-        return ShelvesViewController()
+        let sv = ShelvesViewController()
+        sv.delegate = self
+        return sv
     }()
     lazy var goalsView: GoalsViewController = {
         return GoalsViewController()
     }()
     lazy var shoppingView: ShoppingListViewController = {
         return ShoppingListViewController()
+    }()
+    lazy var calculatorView: CalculatorViewController = {
+       return CalculatorViewController()
     }()
     lazy var tipsView: TipsViewController = {
         return TipsViewController()
@@ -52,8 +56,8 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     var globalCurrentView: Int?
     
     // computed settings launcher....only fires code once
-    lazy var settingsLauncher: SettingsLauncher = {
-        let launcher = SettingsLauncher()
+    lazy var menuLauncher: MenuLauncher = {
+        let launcher = MenuLauncher()
         launcher.mainParentView = self
         return launcher
     }()
@@ -76,7 +80,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     //MARK: - Button Actions
     
     @objc func settingsButtonTapped() {
-        settingsLauncher.showSettings()
+        menuLauncher.showMenu()
     }
     
         // SHELF METHODS
@@ -91,6 +95,9 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
             view.addSubview(shelfEditView)
             window.addSubview(blackView)
             window.addSubview(shelfEditView)
+            shelfEditView.layer.cornerRadius = CornerRadius.imageView
+            shelfEditView.layer.borderColor = Colors.softBlue.cgColor
+            shelfEditView.layer.borderWidth = 2
             editShelfViewController.delegate = self
             editShelfViewController.shelfImage = #imageLiteral(resourceName: "BearOnHill")
             let width = window.frame.width * 0.8
@@ -147,7 +154,9 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         // Goal METHODS
     
     @objc func addGoalButtonTapped() {
-        print("AddGoalButton Pressed")
+        let goalDetailVC = GoalDetailViewController()
+        let navController = UINavigationController(rootViewController: goalDetailVC)
+        self.present(navController, animated: true, completion: nil)
     }
     
         // SHOPPING METHODS
@@ -169,7 +178,14 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         alert.addAction(save)
         present(alert, animated: true, completion: nil)
     }
-
+    
+    
+    func didSelectCellAtRow(shelf: Shelf) {
+        let itemView = ItemsViewController()
+        itemView.shelf = shelf
+        let navController = UINavigationController(rootViewController: itemView)
+        present(navController, animated: true, completion: nil)
+    }
 }
 
 
@@ -209,9 +225,9 @@ extension MainViewController {
 
     func setupShelvesView() {
         shelvesView.willMove(toParentViewController: self)
+        
         addChildViewController(shelvesView)
         self.view.addSubview(shelvesView.view)
-//        shelvesView.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         shelvesView.view.frame = CGRect(x: 0, y: view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
         shelvesView.didMove(toParentViewController: self)
         globalCurrentView = 1

@@ -46,6 +46,125 @@ extension UITextField {
     }
 }
 
+extension String {
+    var isInt: Bool {
+        return Int(self) != nil
+    }
+} 
+
+extension Double {
+    func roundToPlaces(places: Int) ->Double {
+        let divisor = pow(10, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+}
+
+extension UIViewController {
+    func presentSaveAnimation() {
+        let brightView = UIView()
+        brightView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        view.addSubview(brightView)
+        brightView.backgroundColor = Colors.clear
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseIn], animations: {
+            brightView.backgroundColor = Colors.white
+        }) { (success) in
+            UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+                brightView.backgroundColor = Colors.clear
+                brightView.removeFromSuperview()
+            }, completion: { (success) in
+            })
+        }
+    }
+    
+    func presentAlert(Title: String, message: String) {
+        let alert = UIAlertController(title: Title, message: message, preferredStyle: .alert)
+        let dismiss = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        alert.addAction(dismiss)
+        present(alert, animated: true, completion: nil)
+    }
+}
+
+extension UIView {
+    func addBorders(edges: UIRectEdge, color: UIColor, inset: CGFloat = 0.0, thickness: CGFloat = 1.0) -> [UIView] {
+        
+        var borders = [UIView]()
+        
+        @discardableResult
+        func addBorder(formats: String...) -> UIView {
+            let border = UIView(frame: .zero)
+            border.backgroundColor = color
+            border.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(border)
+            addConstraints(formats.flatMap {
+                NSLayoutConstraint.constraints(withVisualFormat: $0,
+                                               options: [],
+                                               metrics: ["inset": inset, "thickness": thickness],
+                                               views: ["border": border]) })
+            borders.append(border)
+            return border
+        }
+        
+        
+        if edges.contains(.top) || edges.contains(.all) {
+            addBorder(formats: "V:|-0-[border(==thickness)]", "H:|-inset-[border]-inset-|")
+        }
+        
+        if edges.contains(.bottom) || edges.contains(.all) {
+            addBorder(formats: "V:[border(==thickness)]-0-|", "H:|-inset-[border]-inset-|")
+        }
+        
+        if edges.contains(.left) || edges.contains(.all) {
+            addBorder(formats: "V:|-inset-[border]-inset-|", "H:|-0-[border(==thickness)]")
+        }
+        
+        if edges.contains(.right) || edges.contains(.all) {
+            addBorder(formats: "V:|-inset-[border]-inset-|", "H:[border(==thickness)]-0-|")
+        }
+        
+        return borders
+    }
+    
+    
+    
+    // OUTPUT 1
+    func dropShadow(scale: Bool = true) {
+        layer.masksToBounds = false
+        layer.shadowColor = Colors.darkGray.cgColor
+        layer.shadowOpacity = 0.4
+        layer.shadowOffset = CGSize(width: -3, height: 3)
+        layer.shadowRadius = 7
+        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+    
+    // OUTPUT 2
+    func dropShadow(color: UIColor, opacity: Float = 0.5, offSet: CGSize, radius: CGFloat = 1, scale: Bool = true) {
+        layer.masksToBounds = false
+        layer.shadowColor = color.cgColor
+        layer.shadowOpacity = opacity
+        layer.shadowOffset = offSet
+        layer.shadowRadius = radius
+        
+        layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+    
+    func randomNumber(from: UInt32, to: UInt32) -> CGFloat{
+        return CGFloat((arc4random() % (to - from)) + from)
+    }
+    
+    func randomBackgroundColor(hueFrom: UInt32, hueTo: UInt32, satFrom: UInt32, satTo: UInt32, brightFrom: UInt32, brightTo: UInt32) {
+        let hue = randomNumber(from: hueFrom, to: hueTo)
+        let saturation = randomNumber(from: satFrom, to: satTo)
+        let brightness = randomNumber(from: brightFrom, to: brightTo)
+        backgroundColor =  UIColor(hue: hue/360.0, saturation: saturation/100.0, brightness: brightness/100.0, alpha: 1.0)
+    }
+}
+
+
+
 
 
 

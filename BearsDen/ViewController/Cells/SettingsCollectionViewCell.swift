@@ -13,12 +13,12 @@ class SettingsCollectionViewCell: UICollectionViewCell {
     override var isHighlighted: Bool {
         didSet {
             self.backgroundColor = isHighlighted ? Colors.softBlue : .white
-            self.nameLabel.textColor = isHighlighted ? .white : Colors.darkGray
+            self.nameLabel.textColor = isHighlighted ? .white : Colors.verydarkGray
             iconImageView.tintColor = isHighlighted ? .white : Colors.mediumGray
         }
     }
     
-    var setting: Setting? {
+    var setting: MenuItem? {
         didSet {
             nameLabel.text = setting?.name
             if let imageName = setting?.imageName {
@@ -30,7 +30,7 @@ class SettingsCollectionViewCell: UICollectionViewCell {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Setting"
-        label.textColor = Colors.darkGray
+        label.textColor = Colors.verydarkGray
         return label
     }()
     

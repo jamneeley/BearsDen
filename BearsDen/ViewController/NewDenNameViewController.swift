@@ -61,10 +61,9 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
     @objc func letsStartButtonPressed() {
         guard let denName = houseTextField.text, !denName.isEmpty else {return}
         UserController.shared.createUser(housHouldName: denName)
-        UserController.shared.add(Picture: #imageLiteral(resourceName: "BearOnHill"))
-        let addShelfInstructions = AddShelfInstructionsViewController()
+        UserController.shared.change(Picture: #imageLiteral(resourceName: "BearOnHill"))
+        let addShelfInstructions = WelcomeToBearsDenViewController()
         self.present(addShelfInstructions, animated: true, completion: nil)
-        UserDefaults.standard.set(true, forKey: "isCurrentUser")
     }
 }
 
@@ -89,6 +88,7 @@ extension NewDenNameViewController {
     func setupBearHillView() {
         view.addSubview(bearHillView)
         bearHillView.image = #imageLiteral(resourceName: "BearOnHill")
+        bearHillView.layer.cornerRadius = CornerRadius.imageView
         setupBearHillViewConstraints()
     }
     

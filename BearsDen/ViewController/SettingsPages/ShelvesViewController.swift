@@ -8,76 +8,100 @@
 
 import UIKit
 
-class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
-    let tableView = UITableView()
+protocol shelvesViewControllerDelegate: class {
+    func didSelectCellAtRow(shelf: Shelf)
+}
 
+class ShelvesViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ShelfCollectionViewCellDelegate {
+
+    
+
+    
+    let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 15
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = Colors.veryLightGray
+        return cv
+    }()
+    
+    weak var delegate: shelvesViewControllerDelegate?
     
     var update: Bool = false {
         didSet {
-            tableView.reloadData()
+            collectionView.reloadData()
         }
-    }
-
-    deinit {
-        print("shelves view dealocated")
-    }
-    override func viewDidDisappear(_ animated: Bool) {
-//        tableView.removeFromSuperview()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = Colors.veryLightGray
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(ShelfCollectionViewCell.self, forCellWithReuseIdentifier: "shelfCell")
         setupObjects()
-        tableView.register(ShelfTableViewCell.self, forCellReuseIdentifier: "shelfCell")
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
+        collectionView.reloadData()
     }
     
     
     func setupObjects() {
-        setupTableView()
+        view.addSubview(collectionView)
+        setupCollectionViewConstraints()
     }
     
-    func setupTableView() {
-        view.addSubview(tableView)
-        tableView.delegate = self
-        tableView.dataSource = self
-        setupTableViewConstraints()
+    func deleteShelf(shelf: Shelf) {
+        let alert = UIAlertController(title: "Are you sure you want to delete \(shelf.name ?? "your shelf?")", message: nil, preferredStyle: .alert)
+        let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        let yes = UIAlertAction(title: "Yes", style: .default) { (success) in
+            ShelfController.shared.delete(Shelf: shelf)
+            self.collectionView.reloadData()
+        }
+        alert.addAction(no)
+        alert.addAction(yes)
+        present(alert, animated: true, completion: nil)
     }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return UserController.shared.user?.shelves?.count ?? 0
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = ShelfTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "shelfCell")
-        tableView.dequeueReusableCell(withIdentifier: "shelfCell", for: indexPath)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width - 15, height: view.frame.height * 0.2)
+    }
+
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "shelfCell", for: indexPath) as! ShelfCollectionViewCell
         if let shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf {
             cell.shelf = shelf
+            cell.delegate = self
+            cell.dropShadow()
+            cell.layer.cornerRadius = CornerRadius.textField
             return cell
         } else {
-            return UITableViewCell()
+            return UICollectionViewCell()
         }
     }
+    
     
     // Override to support editing the table view.
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            guard let shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf else {return}
-            ShelfController.shared.delete(Shelf: shelf)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        }
-    }
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            guard let shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf else {return}
+//            ShelfController.shared.delete(Shelf: shelf)
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//        }
+//    }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let itemView = ItemsViewController()
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let shelf: Shelf = UserController.shared.user?.shelves?[indexPath.row] as? Shelf else {return}
-        itemView.shelf = shelf
-        let navItem = UINavigationController(rootViewController: itemView)
-        present(navItem, animated: true, completion: nil)
+        delegate?.didSelectCellAtRow(shelf: shelf)
     }
 }
 
@@ -86,11 +110,108 @@ class ShelvesViewController: UIViewController, UITableViewDelegate, UITableViewD
 ////////////////////////////////////////////////////////
 
 extension ShelvesViewController {
-    func setupTableViewConstraints() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+    func setupCollectionViewConstraints() {
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.05 - 15).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.05 + 15).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }
+
+/*
+ 
+ 
+ //// COLLECTION VIEW
+ func buildCollectionView() {
+ let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+ layout.scrollDirection = .horizontal
+ layout.minimumInteritemSpacing = 0;
+ layout.minimumLineSpacing = 4;
+ 
+ collectionView = UICollectionView(frame: CGRect(x: 0, y: screenSize.midY - 120, width: screenSize.width, height: 180), collectionViewLayout: layout)
+ 
+ collectionView.dataSource = self
+ collectionView.delegate = self
+ collectionView.register(VideoCell.self, forCellWithReuseIdentifier: "videoCell")
+ collectionView.showsHorizontalScrollIndicator = false
+ collectionView.showsVerticalScrollIndicator = false
+ collectionView.contentInset = UIEdgeInsetsMake(0, 20, 0, 30)
+ collectionView.backgroundColor = UIColor.white()
+ collectionView.alpha = 0.0
+ 
+ 
+ //can swipe cells outside collectionview region
+ collectionView.layer.masksToBounds = false
+ 
+ 
+ swipeUpRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.deleteCell))
+ swipeUpRecognizer.delegate = self
+ 
+ collectionView.addGestureRecognizer(swipeUpRecognizer)
+ collectionView.isUserInteractionEnabled = true
+ }
+ 
+ /////CELL
+ class VideoCell : UICollectionViewCell {
+ var deleteView: UIButton!
+ var imageView: UIImageView!
+ 
+ override init(frame: CGRect) {
+ super.init(frame: frame)
+ 
+ deleteView = UIButton(frame: CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height))
+ deleteView.contentMode = UIViewContentMode.scaleAspectFit
+ contentView.addSubview(deleteView)
+ 
+ imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height))
+ imageView.contentMode = UIViewContentMode.scaleAspectFit
+ contentView.addSubview(imageView)
+ 
+ 
+ }
+ 
+ required init?(coder aDecoder: NSCoder) {
+ fatalError("init(coder:) has not been implemented")
+ }
+ }
+ 
+ ////////////////LOGIC
+ func deleteCell(sender: UIPanGestureRecognizer) {
+ let tapLocation = sender.location(in: self.collectionView)
+ let indexPath = self.collectionView.indexPathForItem(at: tapLocation)
+ 
+ if velocity.y < 0 {
+ //detect if there is a swipe up and detect it's distance. If the distance is far enough we snap the cells Imageview to the top otherwise we drop it back down. This works fine already.
+ }
+ }
+ 
+ 
+ 
+ 
+ ///// answer
+ 
+ 
+ let cellFrame = activeCell.frame
+ let rect = CGRectMake(cellFrame.origin.x, cellFrame.origin.y - cellFrame.height, cellFrame.width, cellFrame.height*2)
+ if CGRectContainsPoint(rect, point) {
+ // If swipe point is in the cell delete it
+ 
+ let indexPath = myView.indexPathForCell(activeCell)
+ cats.removeAtIndex(indexPath!.row)
+ myView.deleteItemsAtIndexPaths([indexPath!])
+ 
+ }
+
+ 
+ 
+ 
+ 
+ */
+
+
+
+
+
+
+

@@ -120,6 +120,7 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
     @objc func startHighlightSave() {
         saveButton.backgroundColor = Colors.softBlue
         saveButton.setTitleColor(.white, for: .normal)
+       
     }
     @objc func stopHighlightSave() {
         saveButton.backgroundColor = .white
@@ -131,11 +132,13 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
         print("update success")
         shelfTextField.text = shelf.name
         shelfImageView.image = image
+
     }
     
     func updatePicture() {
         guard let image = shelfImage else {return}
         shelfImageView.image = image
+
     }
 }
 
@@ -169,7 +172,7 @@ extension ShelfEditViewController {
         shelfNameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
     }
     
-    func  setupShelfTextField() {
+    func setupShelfTextField() {
         shelfTextField.setLeftPaddingPoints(10)
         shelfTextField.setRightPaddingPoints(10)
         shelfTextField.returnKeyType = .done
@@ -190,6 +193,8 @@ extension ShelfEditViewController {
     }
     
     func setupShelfImageView() {
+        shelfImageView.layer.masksToBounds = true
+        shelfImageView.layer.cornerRadius = CornerRadius.imageView
         shelfImageView.translatesAutoresizingMaskIntoConstraints = false
         shelfImageView.topAnchor.constraint(equalTo: shelfTextField.bottomAnchor, constant: 10).isActive = true
         shelfImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25).isActive = true
@@ -229,8 +234,7 @@ extension ShelfEditViewController {
     
     func setupDismissButton() {
         dismissButton.setTitle("Dismiss", for: .normal)
-        dismissButton.layer.borderWidth = 1
-        dismissButton.layer.borderColor = Colors.softBlue.cgColor
+
         dismissButton.setTitleColor(.black, for: .normal)
         dismissButton.addTarget(self, action: #selector(startHighlightDismiss), for: .touchDown)
         dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
@@ -240,14 +244,13 @@ extension ShelfEditViewController {
         dismissButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         dismissButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
         dismissButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
-        
+        let _ = dismissButton.addBorders(edges: [.top, .right], color: Colors.softBlue)
     }
     
     func setupSaveButton() {
         saveButton.setTitle("Save", for: .normal)
         saveButton.setTitleColor(.black, for: .normal)
-        saveButton.layer.borderWidth = 1
-        saveButton.layer.borderColor = Colors.softBlue.cgColor
+
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(startHighlightSave), for: .touchDown)
         saveButton.addTarget(self, action: #selector(stopHighlightSave), for: .touchUpOutside)
@@ -256,5 +259,6 @@ extension ShelfEditViewController {
         saveButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         saveButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
+        let _ = saveButton.addBorders(edges: [.top, .left], color: Colors.softBlue)
     }
 }

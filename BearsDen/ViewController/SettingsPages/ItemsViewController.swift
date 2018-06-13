@@ -24,8 +24,9 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        itemTableView.register(UITableViewCell.self, forCellReuseIdentifier: "itemCell")
+        itemTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "itemCell")
         itemTableView.delegate = self
+        itemTableView.allowsSelection = false
         setupObjects()
         
     }
@@ -45,7 +46,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     @objc func backButtonPressed() {
-        navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
     }
     
@@ -58,6 +58,9 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             view.addSubview(shelfEditView)
             window.addSubview(blackView)
             window.addSubview(shelfEditView)
+            shelfEditView.layer.cornerRadius = CornerRadius.imageView
+            shelfEditView.layer.borderColor = Colors.softBlue.cgColor
+            shelfEditView.layer.borderWidth = 2
             editShelfViewController.delegate = self
             let image = UIImage(data: shelfImageData)
             editShelfViewController.shelfImage = image
@@ -164,9 +167,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = ItemTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "itemCell")
-        
-        itemTableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath)
+        let cell = itemTableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath) as! ItemTableViewCell
         if shelf != nil {
             if let item = shelf?.items?[indexPath.row] as? Item {
                 cell.delegate = self
@@ -201,17 +202,19 @@ extension ItemsViewController: BarcodeScannerCodeDelegate {
             if let cloudItem = cloudItem {
                 DispatchQueue.main.async {
                     guard let shelf = self.shelf else {return}
-                    let barCodeController = AddBarcodeViewController()
-                    self.navigationController?.popViewController(animated: true)
-                    self.navigationController?.pushViewController(barCodeController, animated: true)
-                    barCodeController.cloudItem = cloudItem
-                    barCodeController.shelf = shelf
+                    let addBarCodeController = AddBarcodeViewController()
+//                    self.navigationController?.popViewController(animated: true)
+                    self.navigationController?.pushViewController(addBarCodeController, animated: true)
+                    addBarCodeController.viewControllerToPopTo = self
+                    addBarCodeController.shelf = shelf
+                    addBarCodeController.cloudItem = cloudItem
                 }
             } else {
                 DispatchQueue.main.async {
                     let addManualController = AddManualItemViewController()
-                    self.navigationController?.popViewController(animated: true)
+//                    self.navigationController?.popViewController(animated: true)
                     self.navigationController?.pushViewController(addManualController, animated: true)
+                    addManualController.viewControllerToPopTo = self
                     addManualController.shelf = self.shelf
                     addManualController.barcode = code
                     addManualController.itemExists = false
@@ -220,6 +223,7 @@ extension ItemsViewController: BarcodeScannerCodeDelegate {
         }
     }
 }
+
 
 extension ItemsViewController: BarcodeScannerErrorDelegate {
     func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {

@@ -66,7 +66,7 @@ class UserController {
         }
     }
     
-    func add(Picture picture: UIImage) {
+    func change(Picture picture: UIImage) {
         if let user = user {
             let data = UIImageJPEGRepresentation(picture, 1.0)
             user.picture = data
@@ -95,4 +95,6 @@ class UserController {
             print("Error decoding data from filemanager: \(error), \(error.localizedDescription)")
         }
     }
+    
+    
 }

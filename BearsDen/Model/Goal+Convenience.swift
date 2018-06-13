@@ -11,8 +11,10 @@ import CoreData
 
 extension Goal {
     
-    convenience init(completionDate: Date, user: User,  Context: NSManagedObjectContext = CoreDataStack.context) {
+    convenience init(name: String, creationDate: Date, completionDate: Date, user: User,  Context: NSManagedObjectContext = CoreDataStack.context) {
         self.init(context: Context)
+        self.name = name
+        self.creationDate = creationDate
         self.completionDate =  completionDate
         self.user = user
     }
