@@ -14,10 +14,6 @@ class SecondLaunchScreenViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupObjects()
-    }
-    
-    func setupObjects() {
         setupBackGroundView()
         setupLogoImage()
     }
@@ -55,30 +51,15 @@ class SecondLaunchScreenViewController: UIViewController {
         }) { (success) in
         }
     }
-}
 
+///////////////////////////
+//View Properties
+///////////////////////////
 
-
-////////////////////////////////////////////////////////
-//CONSTRAINTS
-///////////////////////////////////////////////////////
-extension SecondLaunchScreenViewController {
-    
     func setupBackGroundView() {
         view.addSubview(backGroundView)
         backGroundView.backgroundColor = Colors.softBlue
-        setupBackGroundViewConstraints()
-    }
     
-    func setupLogoImage() {
-        view.addSubview(logoView)
-        logoView.layer.cornerRadius = CornerRadius.imageView
-        logoView.image = UIImage(named: "BearsDenLogo")
-        logoView.contentMode = UIViewContentMode.scaleAspectFill
-        setupLogoImageConstraints()
-    }
-    
-    func setupBackGroundViewConstraints() {
         backGroundView.translatesAutoresizingMaskIntoConstraints = false
         backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         backGroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
@@ -86,9 +67,13 @@ extension SecondLaunchScreenViewController {
         backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
     }
     
-    func setupLogoImageConstraints() {
-        logoView.translatesAutoresizingMaskIntoConstraints = false
+    func setupLogoImage() {
+        view.addSubview(logoView)
+        logoView.layer.cornerRadius = CornerRadius.imageView
+        logoView.image = UIImage(named: "BearsDenLogo")
+        logoView.contentMode = UIViewContentMode.scaleAspectFill
         
+        logoView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(item: logoView, attribute: .height, relatedBy: .equal, toItem: logoView, attribute: .width, multiplier: 1.0, constant: 0).isActive = true
         logoView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -200 ).isActive = true
         logoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true

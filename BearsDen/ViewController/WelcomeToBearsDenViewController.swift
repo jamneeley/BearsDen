@@ -21,7 +21,6 @@ class WelcomeToBearsDenViewController: UIViewController, UICollectionViewDelegat
 
     let cellID = "pageCell"
     
-    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -49,7 +48,6 @@ class WelcomeToBearsDenViewController: UIViewController, UICollectionViewDelegat
         view.addSubview(collectionView)
         setupCollectionViewConstraints()
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
@@ -87,6 +85,10 @@ class WelcomeToBearsDenViewController: UIViewController, UICollectionViewDelegat
         self.present(mainViewController, animated: true, completion: nil)
         UserDefaults.standard.set(true, forKey: "isCurrentUser")
     }
+    
+///////////////////////////
+//View Properties
+///////////////////////////
     
     func setupCollectionViewConstraints() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false

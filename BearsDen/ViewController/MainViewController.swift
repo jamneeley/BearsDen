@@ -225,7 +225,6 @@ extension MainViewController {
 
     func setupShelvesView() {
         shelvesView.willMove(toParentViewController: self)
-        
         addChildViewController(shelvesView)
         self.view.addSubview(shelvesView.view)
         shelvesView.view.frame = CGRect(x: 0, y: view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
@@ -266,9 +265,7 @@ extension MainViewController {
     }
     
     func setupLabelConstraints() {
-        navBarLabel.translatesAutoresizingMaskIntoConstraints = false
-        navBarLabel.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
-        navBarLabel.centerXAnchor.constraint(equalTo: navBar.centerXAnchor, constant: 0).isActive = true
+
     }
 }
 
