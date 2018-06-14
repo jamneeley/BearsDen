@@ -517,7 +517,7 @@ extension AddManualItemViewController {
         quantityTextField.setLeftPaddingPoints(5)
         quantityTextField.layer.cornerRadius = 12
         quantityTextField.backgroundColor = .white
-        quantityTextField.keyboardType = .numberPad
+        quantityTextField.keyboardType = .decimalPad
         quantityTextField.text = "\(1)"
         quantityTextField.returnKeyType = .done
         self.quantityTextField.delegate = self
@@ -535,7 +535,7 @@ extension AddManualItemViewController {
         weightTextField.layer.cornerRadius = 12
         weightTextField.setLeftPaddingPoints(5)
         weightTextField.backgroundColor = .white
-        weightTextField.keyboardType = .numberPad
+        weightTextField.keyboardType = .decimalPad
         self.nameTextField.delegate = self;
         weightTextField.layer.borderWidth = 1
         weightTextField.layer.borderColor = Colors.softBlue.cgColor

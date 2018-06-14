@@ -52,12 +52,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     let waterAmountLabel = UILabel()
     
     let seperator = UIView()
-    
-    let noteLabel = UILabel()
-    let rotateTip = UILabel()
-    let storageTip = UILabel()
-    let weightTip = UILabel()
-    let waterTip = UILabel()
+
     let grainsExampleLabel = UILabel()
     let legumesExampleLabel = UILabel()
     let dairyExampleLabel = UILabel()
@@ -148,7 +143,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         numbersStack.addArrangedSubview(adultNumberLabel)
         numbersStack.addArrangedSubview(kidNumberLabel)
         numbersStack.addArrangedSubview(weeksTextField)
-        weeksTextField.keyboardType = .numberPad
+        weeksTextField.keyboardType = .decimalPad
         numbersStack.axis = .vertical
         numbersStack.distribution = .fillEqually
         adultTextLabel.text = "Adults"
@@ -316,11 +311,11 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     
     func setupExampleStack() {
         contentView.addSubview(exampleStack)
-        exampleStack.addArrangedSubview(noteLabel)
-        exampleStack.addArrangedSubview(rotateTip)
-        exampleStack.addArrangedSubview(storageTip)
-        exampleStack.addArrangedSubview(weightTip)
-        exampleStack.addArrangedSubview(waterTip)
+        
+        
+        
+        
+        
         exampleStack.addArrangedSubview(grainsExampleLabel)
         exampleStack.addArrangedSubview(legumesExampleLabel)
         exampleStack.addArrangedSubview(dairyExampleLabel)
@@ -330,13 +325,6 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         exampleStack.addArrangedSubview(fatsExampleLabel)
         exampleStack.axis = .vertical
         exampleStack.distribution = .fillEqually
-        noteLabel.textAlignment = .center
-        noteLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        noteLabel.text = "* NOTE: "
-        rotateTip.text = "* Always rotate your stored food into your normal diet, using up the oldest products first. This will save money and prevent waste."
-        storageTip.text = "* We recommend you store the items you like to eat and know how to use."
-        weightTip.text = "* Weights (except fats) are for dry or dehydrated foods—freeze-dried foods will weigh less."
-        waterTip.text = "* Water recommendation is based off 14 gal per individual every two weeks. It's rarely practical to store more. We suggest supplementing your water supply with a water filter or purification kit"
         
         grainsExampleLabel.text = "*  Grain (includes wheat, white rice, oats, corn, barley, pasta, etc.)"
         legumesExampleLabel.text = "*  Legumes (dried beans, split peas, lentils, nuts, etc.)"
@@ -346,10 +334,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         saltExampleLabel.text = "*  Salt (Table salt, sea salt, soy sauce, bouillon, etc.)"
         fatsExampleLabel.text = "*  Fats (Vegetable oils, shortening, canned butter, etc.)"
         
-        rotateTip.numberOfLines = 0
-        storageTip.numberOfLines = 0
-        weightTip.numberOfLines = 0
-        waterTip.numberOfLines = 0
+
         grainsExampleLabel.numberOfLines = 0
         legumesExampleLabel.numberOfLines = 0
         dairyExampleLabel.numberOfLines = 0
@@ -391,12 +376,14 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     
     @objc func calculateButtonPressed() {
         endHighlight()
-        guard let weeksString = weeksTextField.text, !weeksString.isEmpty,
-            let adultsString = UserController.shared.user?.adults,
-            let kidsString = UserController.shared.user?.kids
-            else {return}
+        disableKeyBoard()
+        guard let weeksString = weeksTextField.text, !weeksString.isEmpty else {presentAlert(Title: "Uh Oh", message: "You'll need to enter an amount for \"Weeks\""); return}
         
-        if weeksString.isInt, adultsString.isInt, kidsString.isInt {
+            let adultsString = UserController.shared.user?.adults ?? "0"
+            let kidsString = UserController.shared.user?.kids ?? "0"
+        
+        
+        if weeksString.isDouble, adultsString.isDouble, kidsString.isDouble {
             
             guard let weeks = Double(weeksString),
                 let adults = Double(adultsString),
@@ -422,6 +409,8 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
             waterAmountLabel.text = "\(waterAmount) Gal"
         }
     }
+    
+
 }
 
 

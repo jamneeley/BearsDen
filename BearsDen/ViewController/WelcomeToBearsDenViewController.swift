@@ -9,6 +9,8 @@
 import UIKit
 
 struct WelcomeToBearsDenInstructionsDataSource {
+    
+    //Collection View data source
     static let instructions: [Instruction] = {
         let test1 = Instruction(image: #imageLiteral(resourceName: "onBoarding1.8"), directions: "If you ever need help just tap the menu, go to \"Settings\" and go through the Tutorial")
         let test2 = Instruction(image: #imageLiteral(resourceName: "onBoarding2.1"), directions: "To start inventorying your food storage just tap the + button to add a shelf.")
@@ -19,6 +21,8 @@ struct WelcomeToBearsDenInstructionsDataSource {
 
 class WelcomeToBearsDenViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, WelcomeToBearsDenCollectionViewCellDelegate {
 
+    //MARK: - Properties
+    
     let cellID = "pageCell"
     
     let collectionView: UICollectionView = {
@@ -30,6 +34,8 @@ class WelcomeToBearsDenViewController: UIViewController, UICollectionViewDelegat
         cv.backgroundColor = Colors.white
         return cv
     }()
+    
+    //MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +54,8 @@ class WelcomeToBearsDenViewController: UIViewController, UICollectionViewDelegat
         view.addSubview(collectionView)
         setupCollectionViewConstraints()
     }
+    
+    //MARK: - CollectionView DataSource Methods
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
@@ -79,6 +87,8 @@ class WelcomeToBearsDenViewController: UIViewController, UICollectionViewDelegat
         return cell
     }
     
+    //MARK: - Button Method
+    
     func nextButtonPressed() {
         print("next button delegate works")
         let mainViewController = MainViewController()
@@ -87,7 +97,7 @@ class WelcomeToBearsDenViewController: UIViewController, UICollectionViewDelegat
     }
     
 ///////////////////////////
-//View Properties
+//MARK: - Views
 ///////////////////////////
     
     func setupCollectionViewConstraints() {

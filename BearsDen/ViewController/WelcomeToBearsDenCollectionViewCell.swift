@@ -13,6 +13,8 @@ protocol WelcomeToBearsDenCollectionViewCellDelegate: class {
 
 class WelcomeToBearsDenCollectionViewCell: UICollectionViewCell {
     
+    //MARK: - Properties
+    
     let backgroundBlueView = UIView()
     let tutorialImageView = UIImageView()
     let directionsLabel = UILabel()
@@ -38,6 +40,8 @@ class WelcomeToBearsDenCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //MARK: - Requires initialization
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -49,12 +53,14 @@ class WelcomeToBearsDenCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Button Method
+    
     @objc func nextButtonPressed() {
         delegate?.nextButtonPressed()
     }
 
 ///////////////////////////
-//View Properties
+//MARK: - Views
 ///////////////////////////
     
     //for first 2 pages

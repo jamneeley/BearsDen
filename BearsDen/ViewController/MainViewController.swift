@@ -10,6 +10,7 @@ import UIKit
 
 class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, shelvesViewControllerDelegate  {
     
+    //MARK: - Properties
     //non page dependent objects
     let navBar = UIView()
     let settingsButton = UIButton(type: UIButtonType.system)
@@ -66,18 +67,11 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupObjects()
-    }
-    
-    //MARK: - SetupObjects
-    
-    func setupObjects() {
         setupNavBar()
         setupShelvesView()
     }
 
-    
-    //MARK: - Button Actions
+    //MARK: - Button Methods
     
     @objc func settingsButtonTapped() {
         menuLauncher.showMenu()
@@ -154,6 +148,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         // Goal METHODS
     
     @objc func addGoalButtonTapped() {
+        print("add goal button pressed")
         let goalDetailVC = GoalDetailViewController()
         let navController = UINavigationController(rootViewController: goalDetailVC)
         self.present(navController, animated: true, completion: nil)
@@ -162,6 +157,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         // SHOPPING METHODS
     
     @objc func addShoppingItemButtonTapped() {
+        print("add shopping list button pressed")
         let alert = UIAlertController(title: "Add shopping item", message: nil, preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.autocorrectionType = UITextAutocorrectionType.no
@@ -179,6 +175,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         present(alert, animated: true, completion: nil)
     }
     
+    //MARK: - Cell Tapped
     
     func didSelectCellAtRow(shelf: Shelf) {
         let itemView = ItemsViewController()
@@ -186,14 +183,10 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         let navController = UINavigationController(rootViewController: itemView)
         present(navController, animated: true, completion: nil)
     }
-}
-
 
 ////////////////////////////////////////////////////////
-//CONSTRAINTS
+//MARK: - Views
 ////////////////////////////////////////////////////////
-
-extension MainViewController {
     
     func setupNavBar() {
         view.addSubview(navBar)
@@ -210,6 +203,13 @@ extension MainViewController {
         setup(Button: goalsAddButton)
         setup(Button: shoppingAddButton)
         setupButtonTargets()
+    }
+    
+    func setupLabel() {
+        navBarLabel.text = "Your shelves"
+        navBarLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        navBarLabel.textColor = .white
+        setupLabelConstraints()
     }
     
     func setup(Button button: UIButton) {
@@ -231,14 +231,7 @@ extension MainViewController {
         shelvesView.didMove(toParentViewController: self)
         globalCurrentView = 1
     }
-    
-    func setupLabel() {
-        navBarLabel.text = "Your shelves"
-        navBarLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        navBarLabel.textColor = .white
-        setupLabelConstraints()
-    }
-    
+
     func setupSettingsButtons() {
         settingsButton.setImage(#imageLiteral(resourceName: "settingIconX2"), for: .normal)
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
@@ -265,7 +258,9 @@ extension MainViewController {
     }
     
     func setupLabelConstraints() {
-
+        navBarLabel.translatesAutoresizingMaskIntoConstraints = false
+        navBarLabel.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -8).isActive = true
+        navBarLabel.centerXAnchor.constraint(equalTo: navBar.centerXAnchor, constant: 0).isActive = true
     }
 }
 

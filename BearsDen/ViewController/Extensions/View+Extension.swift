@@ -47,8 +47,8 @@ extension UITextField {
 }
 
 extension String {
-    var isInt: Bool {
-        return Int(self) != nil
+    var isDouble: Bool {
+        return Double(self) != nil
     }
 } 
 

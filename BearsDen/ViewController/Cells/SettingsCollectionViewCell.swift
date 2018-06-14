@@ -10,14 +10,8 @@ import UIKit
 
 class SettingsCollectionViewCell: UICollectionViewCell {
     
-    override var isHighlighted: Bool {
-        didSet {
-            self.backgroundColor = isHighlighted ? Colors.softBlue : .white
-            self.nameLabel.textColor = isHighlighted ? .white : Colors.verydarkGray
-            iconImageView.tintColor = isHighlighted ? .white : Colors.mediumGray
-        }
-    }
-    
+    //MARK: - Properties
+
     var setting: MenuItem? {
         didSet {
             nameLabel.text = setting?.name
@@ -27,37 +21,47 @@ class SettingsCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    let nameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Setting"
-        label.textColor = Colors.verydarkGray
-        return label
-    }()
+    let nameLabel = UILabel()
+    let iconImageView = UIImageView()
     
-    let iconImageView: UIImageView = {
-       let imageView = UIImageView()
-        imageView.image = UIImage(named: "settingsGear2x")
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = Colors.mediumGray
-        return imageView
-    }()
+    //MARK: - Cell Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        addSubview(nameLabel)
-        addSubview(iconImageView)
-        addConstraintsWithFormat(format: "H:|-8-[v0(30)]-20-[v1]|", views: iconImageView, nameLabel)
-        addConstraintsWithFormat(format: "V:|[v0]|", views: nameLabel)
-        addConstraintsWithFormat(format: "V:[v0(20)]", views: iconImageView)
-        iconImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
-    }
-    
-    func setupViews() {
-        backgroundColor = .white
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder: ) has not been implemented")
+    }
+    
+    override var isHighlighted: Bool {
+        didSet {
+            self.backgroundColor = isHighlighted ? Colors.softBlue : .white
+            self.nameLabel.textColor = isHighlighted ? .white : Colors.verydarkGray
+            iconImageView.tintColor = isHighlighted ? .white : Colors.mediumGray
+        }
+    }
+    
+//////////////////////
+//Views
+//////////////////////
+    
+    func setupViews() {
+        backgroundColor = .white
+        //Label
+        addSubview(nameLabel)
+        nameLabel.text = "Setting"
+        nameLabel.textColor = Colors.verydarkGray
+        //imageView
+        addSubview(iconImageView)
+        iconImageView.image = UIImage(named: "settingsGear2x")
+        iconImageView.contentMode = .scaleAspectFit
+        iconImageView.tintColor = Colors.mediumGray
+        //constraints
+        addConstraintsWithFormat(format: "H:|-8-[v0(30)]-20-[v1]|", views: iconImageView, nameLabel)
+        addConstraintsWithFormat(format: "V:|[v0]|", views: nameLabel)
+        addConstraintsWithFormat(format: "V:[v0(20)]", views: iconImageView)
+        iconImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
     }
 }

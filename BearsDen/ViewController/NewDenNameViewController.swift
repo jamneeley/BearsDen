@@ -38,6 +38,8 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
         setupSingleTap()
     }
     
+    //TextField delegate methods
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return true
@@ -67,7 +69,7 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
     }
 
 ///////////////////////////
-//View Properties
+//MARK: - Views
 ///////////////////////////
     
     func setupSingleTap() {
@@ -139,6 +141,5 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
         letsStartButton.clipsToBounds = true
         letsStartButton.addTarget(self, action: #selector(letsStartButtonPressed), for: .touchUpInside)
     }
-
 }
 

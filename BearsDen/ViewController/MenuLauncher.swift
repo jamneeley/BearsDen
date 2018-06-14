@@ -8,6 +8,8 @@
 
 import UIKit
 
+//MARK: - Menu Item Model
+
 class MenuItem: NSObject {
     let name: String
     let imageName: String
@@ -68,24 +70,18 @@ class MenuLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
         setupObjects()
     }
     
-    //MARK - setupViews
-    
     func setupObjects() {
         setupDenImageView()
         setupDenLabel()
         setupSeperator()
         setupCollectionViewConstraints()
     }
-    func checkDen() {
-        setupDenImageView()
-        setupDenLabel()
-    }
-    
 
     //MARK - Methods
     
     func showMenu() {
-        checkDen()
+        setupDenImageView()
+        setupDenLabel()
         if let window = UIApplication.shared.keyWindow {
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
             blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
@@ -105,6 +101,8 @@ class MenuLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
             }, completion: nil)
         }
     }
+    
+    //MARK: - Dismiss
     
     @objc func handleDismiss(MenuItem: MenuItem) {
         //FIXME: Crash when touching blackview
@@ -157,14 +155,11 @@ class MenuLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
         let menuItem = self.menuItem[indexPath.item]
         handleDismiss(MenuItem: menuItem)
     }
-}
-
-////////////////////////////////////////////////////////
-//CONSTRAINTS
-////////////////////////////////////////////////////////
-
-extension MenuLauncher {
     
+////////////////////////////////////////////////////////
+//MARK: - Views
+////////////////////////////////////////////////////////
+
     func setupDenImageView() {
         mainView.addSubview(denImage)
         denImage.clipsToBounds = true

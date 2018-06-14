@@ -15,13 +15,11 @@ class Setting {
     
     let title: String
     let object: UIView
-    let settingVariable: String
     let number: Int
     
-    init(title: String, object: UIView, settingVariable: String, number: Int) {
+    init(title: String, object: UIView, number: Int) {
         self.title = title
         self.object = object
-        self.settingVariable = settingVariable
         self.number = number
     }
 }
@@ -29,18 +27,15 @@ class Setting {
 class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, SettingCellDelegate {
 
     let settings: [Setting] = {
-        
-        let adultsNumber = UserController.shared.user?.adults ?? "0"
-        let kidsNumber = UserController.shared.user?.kids ?? "0"
-        
-        let denName = Setting(title: "Den Name", object: UITextField(), settingVariable: "", number: 1)
-        let adults = Setting(title: "Adults:", object: UIStepper(), settingVariable: adultsNumber, number: 2)
-        let kids = Setting(title: "Kids:", object: UIStepper(), settingVariable: kidsNumber, number: 3)
+
+        let denName = Setting(title: "Den Name", object: UITextField(), number: 1)
+        let adults = Setting(title: "Adults:", object: UIStepper(), number: 2)
+        let kids = Setting(title: "Kids:", object: UIStepper(), number: 3)
 //        let colorScheme = Setting(title: "Color Scheme", object: UISwitch(), settingVariable: "", number: 4)
-        let showTutorial = Setting(title: "Tutorial", object: UIButton(), settingVariable: "", number: 4)
-        let questions = Setting(title: "Questions?", object: UILabel(), settingVariable: "", number: 5)
-        let donate = Setting(title: "Donate to Developer", object: UIButton(), settingVariable: "", number: 6)
-        let rateUS = Setting(title: "Rate Us", object: UIButton(), settingVariable: "", number: 7)
+        let showTutorial = Setting(title: "Tutorial", object: UIButton(),number: 4)
+        let questions = Setting(title: "Questions?", object: UILabel(), number: 5)
+        let donate = Setting(title: "Donate to Developer", object: UIButton(), number: 6)
+        let rateUS = Setting(title: "Rate Us", object: UIButton(), number: 7)
         
         return [denName, adults, kids, showTutorial, questions, donate, rateUS]
     }()

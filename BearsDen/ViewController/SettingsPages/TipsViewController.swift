@@ -126,3 +126,19 @@ extension TipsViewController {
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }
+
+
+
+
+////TIPS
+
+/*
+ 
+noteLabel.text = "* NOTE: "
+rotateTip.text = "* Always rotate your stored food into your normal diet, using up the oldest products first. This will save money and prevent waste."
+storageTip.text = "* We recommend you store the items you like to eat and know how to use."
+weightTip.text = "* Weights (except fats) are for dry or dehydrated foods—freeze-dried foods will weigh less."
+waterTip.text = "* Water recommendation is based off 14 gal per individual every two weeks. It's rarely practical to store more. We suggest supplementing your water supply with a water filter or purification kit"
+
+ 
+ */

@@ -9,6 +9,7 @@
 import UIKit
 
 class SecondLaunchScreenViewController: UIViewController {
+    
     let backGroundView = UIView()
     let logoView = UIImageView()
 
@@ -23,6 +24,8 @@ class SecondLaunchScreenViewController: UIViewController {
         isNewUser()
     }
     
+    
+    //check if this is the users first time opening the app
     func isNewUser() {
         if UserDefaults.standard.object(forKey: "isCurrentUser") as? Bool == true {
             segueToExistingUser()
@@ -53,7 +56,7 @@ class SecondLaunchScreenViewController: UIViewController {
     }
 
 ///////////////////////////
-//View Properties
+//MARK: - Views
 ///////////////////////////
 
     func setupBackGroundView() {

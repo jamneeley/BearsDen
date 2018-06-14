@@ -10,6 +10,8 @@ import UIKit
 
 class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ItemCellDelegate, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    //MARK: - Properties
+    
     let itemTableView = UITableView()
     var shelf: Shelf?
     let manualAddButton = UIButton(type: .custom)
@@ -20,6 +22,8 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let view = ShelfEditViewController()
         return view
     }()
+    
+    //MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +52,8 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
     }
+    
+    //
     
     @objc func editShelfButtonPressed() {
         guard let shelfEditView = editShelfViewController.view, let shelfImageData = shelf?.photo  else {return}
@@ -91,6 +97,8 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    //MARK: - ImagePickerView Delegate Methods
+    
     func selectLibraryPhoto() {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
@@ -118,6 +126,8 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.dismiss(animated: true, completion: nil)
     }
     
+    //MARK: - Button Methods
+    
     @objc func startHighlightManual() {
         manualAddButton.layer.backgroundColor = Colors.softBlue.cgColor
         manualAddButton.imageView?.tintColor = .white
@@ -129,7 +139,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @objc func startHighlightBar() {
         barCodeAddButton.layer.backgroundColor = Colors.softBlue.cgColor
         barCodeAddButton.imageView?.tintColor = .white
-
+        
     }
     @objc func stopHighlightBar() {
         barCodeAddButton.layer.backgroundColor = Colors.green.cgColor
@@ -162,6 +172,8 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         present(alert, animated: true, completion: nil)
     }
     
+    //MARK: - TableView DataSource Methods
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return shelf?.items?.count ?? 0
     }
@@ -183,73 +195,19 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             guard let shelf = self.shelf,
-            let item = shelf.items?[indexPath.row] as? Item else {return}
+                let item = shelf.items?[indexPath.row] as? Item else {return}
             ItemController.shared.delete(Item: item)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-}
-
-extension ItemsViewController: BarcodeScannerCodeDelegate {
-    func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        print(code)
-        self.barcodeScanner(controller, didCaptureCode: code, type: type)
-    }
     
-    func barcodeScanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
-        
-        CloudItemController.shared.fetchCloudItem(WithBarcode: code) { (cloudItem) in
-            if let cloudItem = cloudItem {
-                DispatchQueue.main.async {
-                    guard let shelf = self.shelf else {return}
-                    let addBarCodeController = AddBarcodeViewController()
-//                    self.navigationController?.popViewController(animated: true)
-                    self.navigationController?.pushViewController(addBarCodeController, animated: true)
-                    addBarCodeController.viewControllerToPopTo = self
-                    addBarCodeController.shelf = shelf
-                    addBarCodeController.cloudItem = cloudItem
-                }
-            } else {
-                DispatchQueue.main.async {
-                    let addManualController = AddManualItemViewController()
-//                    self.navigationController?.popViewController(animated: true)
-                    self.navigationController?.pushViewController(addManualController, animated: true)
-                    addManualController.viewControllerToPopTo = self
-                    addManualController.shelf = self.shelf
-                    addManualController.barcode = code
-                    addManualController.itemExists = false
-                }
-            }
-        }
-    }
-}
-
-
-extension ItemsViewController: BarcodeScannerErrorDelegate {
-    func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
-        print("we got an error")
-    }
     
-    func barcodeScanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
-        print(error)
-    }
-}
-
-extension ItemsViewController: BarcodeScannerDismissalDelegate {
-    func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
-        print("scanner did dismiss")
-    }
     
-    func barcodeScannerDidDismiss(_ controller: BarcodeScannerViewController) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-}
-
+    
 ////////////////////////////////////////////////////////
-//CONSTRAINTS
+//MARK: - Views
 ////////////////////////////////////////////////////////
-
-extension ItemsViewController {
+    
     
     func setupTableView() {
         view.addSubview(itemTableView)
@@ -257,7 +215,7 @@ extension ItemsViewController {
         itemTableView.dataSource = self
         setupTableViewConstraints()
     }
-
+    
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .plain, target: self, action: #selector(backButtonPressed))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editShelfButtonPressed))
@@ -312,5 +270,63 @@ extension ItemsViewController {
         itemTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }
+
+//MARK: - BarCode Delegate Methods
+
+extension ItemsViewController: BarcodeScannerCodeDelegate {
+    func scanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
+        print(code)
+        self.barcodeScanner(controller, didCaptureCode: code, type: type)
+    }
+    
+    func barcodeScanner(_ controller: BarcodeScannerViewController, didCaptureCode code: String, type: String) {
+        
+        CloudItemController.shared.fetchCloudItem(WithBarcode: code) { (cloudItem) in
+            if let cloudItem = cloudItem {
+                DispatchQueue.main.async {
+                    guard let shelf = self.shelf else {return}
+                    let addBarCodeController = AddBarcodeViewController()
+                    //                    self.navigationController?.popViewController(animated: true)
+                    self.navigationController?.pushViewController(addBarCodeController, animated: true)
+                    addBarCodeController.viewControllerToPopTo = self
+                    addBarCodeController.shelf = shelf
+                    addBarCodeController.cloudItem = cloudItem
+                }
+            } else {
+                DispatchQueue.main.async {
+                    let addManualController = AddManualItemViewController()
+                    //                    self.navigationController?.popViewController(animated: true)
+                    self.navigationController?.pushViewController(addManualController, animated: true)
+                    addManualController.viewControllerToPopTo = self
+                    addManualController.shelf = self.shelf
+                    addManualController.barcode = code
+                    addManualController.itemExists = false
+                }
+            }
+        }
+    }
+}
+
+
+extension ItemsViewController: BarcodeScannerErrorDelegate {
+    func scanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
+        print("we got an error")
+    }
+    
+    func barcodeScanner(_ controller: BarcodeScannerViewController, didReceiveError error: Error) {
+        print(error)
+    }
+}
+
+extension ItemsViewController: BarcodeScannerDismissalDelegate {
+    func scannerDidDismiss(_ controller: BarcodeScannerViewController) {
+        print("scanner did dismiss")
+    }
+    
+    func barcodeScannerDidDismiss(_ controller: BarcodeScannerViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+}
+
 
 
