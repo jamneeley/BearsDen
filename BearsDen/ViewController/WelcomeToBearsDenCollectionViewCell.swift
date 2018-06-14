@@ -13,6 +13,8 @@ protocol WelcomeToBearsDenCollectionViewCellDelegate: class {
 
 class WelcomeToBearsDenCollectionViewCell: UICollectionViewCell {
     
+    //MARK: - Properties
+    
     let backgroundBlueView = UIView()
     let tutorialImageView = UIImageView()
     let directionsLabel = UILabel()
@@ -38,6 +40,8 @@ class WelcomeToBearsDenCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //MARK: - Requires initialization
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -45,10 +49,23 @@ class WelcomeToBearsDenCollectionViewCell: UICollectionViewCell {
         
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Button Method
+    
+    @objc func nextButtonPressed() {
+        delegate?.nextButtonPressed()
+    }
+
+///////////////////////////
+//MARK: - Views
+///////////////////////////
+    
     //for first 2 pages
     func setupBackGroundView() {
         addSubview(backgroundBlueView)
-        
         backgroundBlueView.backgroundColor = Colors.softBlue
         backgroundBlueView.layer.cornerRadius = CornerRadius.imageView
         backgroundBlueView.frame = CGRect(x: 0, y: 0, width: frame.width * 0.87, height: frame.height * 0.815)
@@ -107,13 +124,5 @@ class WelcomeToBearsDenCollectionViewCell: UICollectionViewCell {
         nextButton.layer.cornerRadius = 0.5 * nextButton.bounds.size.width
         nextButton.clipsToBounds = true
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func nextButtonPressed() {
-        delegate?.nextButtonPressed()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

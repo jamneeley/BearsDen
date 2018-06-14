@@ -7,6 +7,9 @@
 //
 
 import UIKit
+
+//MARK: - Delegate Protocol
+
 protocol shelfEditViewDelegate: class {
     func handleDismiss()
     func selectLibraryPhoto()
@@ -14,6 +17,8 @@ protocol shelfEditViewDelegate: class {
 }
 
 class ShelfEditViewController: UIViewController, UITextFieldDelegate {
+    
+    //MARK: - Properties
     
     var shelf: Shelf? {
         didSet {
@@ -37,6 +42,7 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
     let saveButton = UIButton(type: .custom)
     weak var delegate: shelfEditViewDelegate?
     
+    //MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,15 +56,23 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
         updateViews()
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        view.endEditing(true)
-        return true
-    }
+    //MARK: - Update Methods
+    
+    func updateViews() {
+        guard let shelf = shelf, let image = shelfImage else {return}
+        print("update success")
+        shelfTextField.text = shelf.name
+        shelfImageView.image = image
         
-    @objc func dismissButtonTapped() {
-        delegate?.handleDismiss()
-        stopHighlightDismiss()
     }
+    
+    func updatePicture() {
+        guard let image = shelfImage else {return}
+        shelfImageView.image = image
+        
+    }
+    
+    //MARK: - Button Methods
     
     @objc func saveButtonTapped() {
         stopHighlightSave()
@@ -71,13 +85,11 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
             ShelfController.shared.ChangePictureforShelf(Shelf: shelf, photo: shelfImage)
             ShelfController.shared.updateName(Shelf: shelf, name: name)
             delegate?.handleDismiss()
-            print("updated shelf")
         } else {
             ShelfController.shared.createShelfForUser(User: user, name: name, photo: image)
             shelfTextField.text = ""
             shelfImageView.image = #imageLiteral(resourceName: "BearOnHill")
             delegate?.handleDismiss()
-            print("Created new shelf")
         }
     }
     
@@ -94,6 +106,7 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
     @objc func libraryButtonPressed() {
         delegate?.selectLibraryPhoto()
     }
+    
     @objc func startHighlightCamera() {
         cameraButton.layer.backgroundColor = Colors.softBlue.cgColor
         cameraButton.imageView?.tintColor = .white
@@ -127,23 +140,21 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
         saveButton.setTitleColor(.black, for: .normal)
     }
     
-    func updateViews() {
-        guard let shelf = shelf, let image = shelfImage else {return}
-        print("update success")
-        shelfTextField.text = shelf.name
-        shelfImageView.image = image
-
+    //MARK: - TextField Delegate Methods
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return true
     }
     
-    func updatePicture() {
-        guard let image = shelfImage else {return}
-        shelfImageView.image = image
-
+    @objc func dismissButtonTapped() {
+        delegate?.handleDismiss()
+        stopHighlightDismiss()
     }
 }
 
 ////////////////////////////////////////////////////////
-//CONSTRAINTS
+//MARK: - Views
 ////////////////////////////////////////////////////////
 
 extension ShelfEditViewController {

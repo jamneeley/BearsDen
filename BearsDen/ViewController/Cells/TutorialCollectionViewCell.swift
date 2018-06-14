@@ -19,9 +19,15 @@ class TutorialCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //MARK: - Cell Initialization
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     
@@ -39,9 +45,5 @@ class TutorialCollectionViewCell: UICollectionViewCell {
         didSet {
             self.backgroundColor = isHighlighted ? Colors.softBlue : .white
         }
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

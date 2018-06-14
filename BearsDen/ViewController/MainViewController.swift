@@ -10,6 +10,7 @@ import UIKit
 
 class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, shelvesViewControllerDelegate  {
     
+    //MARK: - Properties
     //non page dependent objects
     let navBar = UIView()
     let settingsButton = UIButton(type: UIButtonType.system)
@@ -66,18 +67,11 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupObjects()
-    }
-    
-    //MARK: - SetupObjects
-    
-    func setupObjects() {
         setupNavBar()
         setupShelvesView()
     }
 
-    
-    //MARK: - Button Actions
+    //MARK: - Button Methods
     
     @objc func settingsButtonTapped() {
         menuLauncher.showMenu()
@@ -113,12 +107,15 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         }
     }
     @objc func handleDismiss() {
+
         if let window = UIApplication.shared.keyWindow {
             self.shelvesView.update = true
             guard let shelfEditView = editShelfViewController.view else {return}
+            
             self.blackView.alpha = 0
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 shelfEditView.frame = CGRect(x: -(window.frame.width), y: 0, width: shelfEditView.frame.width, height: shelfEditView.frame.height)
+                    shelfEditView.endEditing(true)
             }) { (success) in
             }
         }
@@ -154,6 +151,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         // Goal METHODS
     
     @objc func addGoalButtonTapped() {
+        print("add goal button pressed")
         let goalDetailVC = GoalDetailViewController()
         let navController = UINavigationController(rootViewController: goalDetailVC)
         self.present(navController, animated: true, completion: nil)
@@ -162,6 +160,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         // SHOPPING METHODS
     
     @objc func addShoppingItemButtonTapped() {
+        print("add shopping list button pressed")
         let alert = UIAlertController(title: "Add shopping item", message: nil, preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.autocorrectionType = UITextAutocorrectionType.no
@@ -179,6 +178,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         present(alert, animated: true, completion: nil)
     }
     
+    //MARK: - Cell Tapped
     
     func didSelectCellAtRow(shelf: Shelf) {
         let itemView = ItemsViewController()
@@ -186,14 +186,10 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         let navController = UINavigationController(rootViewController: itemView)
         present(navController, animated: true, completion: nil)
     }
-}
-
 
 ////////////////////////////////////////////////////////
-//CONSTRAINTS
+//MARK: - Views
 ////////////////////////////////////////////////////////
-
-extension MainViewController {
     
     func setupNavBar() {
         view.addSubview(navBar)
@@ -212,6 +208,13 @@ extension MainViewController {
         setupButtonTargets()
     }
     
+    func setupLabel() {
+        navBarLabel.text = "Your shelves"
+        navBarLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        navBarLabel.textColor = .white
+        setupLabelConstraints()
+    }
+    
     func setup(Button button: UIButton) {
         button.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -225,21 +228,13 @@ extension MainViewController {
 
     func setupShelvesView() {
         shelvesView.willMove(toParentViewController: self)
-        
         addChildViewController(shelvesView)
         self.view.addSubview(shelvesView.view)
         shelvesView.view.frame = CGRect(x: 0, y: view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
         shelvesView.didMove(toParentViewController: self)
         globalCurrentView = 1
     }
-    
-    func setupLabel() {
-        navBarLabel.text = "Your shelves"
-        navBarLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        navBarLabel.textColor = .white
-        setupLabelConstraints()
-    }
-    
+
     func setupSettingsButtons() {
         settingsButton.setImage(#imageLiteral(resourceName: "settingIconX2"), for: .normal)
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
