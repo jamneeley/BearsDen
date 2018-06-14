@@ -125,6 +125,8 @@ class SettingTableViewCell: UITableViewCell, UITextFieldDelegate {
             if let textField = object as? UITextField {
                 textField.addTarget(self, action: #selector(saveDenName), for: .editingDidEnd)
                 textField.text = UserController.shared.user?.houseHoldName
+                setupTextField(textField)
+                
             }
         case 2:
             if let stepper = object as? UIStepper {
@@ -153,7 +155,7 @@ class SettingTableViewCell: UITableViewCell, UITextFieldDelegate {
             }
         case 5:
             if let label = object as? UILabel {
-                label.text = "bearsdenfoodstorage@Gmail.com"
+                label.text = "bearsdenfoodstorage@gmail.com"
                 setupLabel(label)
             }
         case 6:
@@ -179,6 +181,7 @@ class SettingTableViewCell: UITableViewCell, UITextFieldDelegate {
         textField.textAlignment = .right
         textField.returnKeyType = .done
         textField.autocorrectionType = UITextAutocorrectionType.no
+        textField.returnKeyType = .done
         textField.setRightPaddingPoints(10)
         textField.setLeftPaddingPoints(10)
         textField.layer.borderWidth = 2

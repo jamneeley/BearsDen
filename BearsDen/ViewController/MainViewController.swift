@@ -107,12 +107,15 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         }
     }
     @objc func handleDismiss() {
+
         if let window = UIApplication.shared.keyWindow {
             self.shelvesView.update = true
             guard let shelfEditView = editShelfViewController.view else {return}
+            
             self.blackView.alpha = 0
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 shelfEditView.frame = CGRect(x: -(window.frame.width), y: 0, width: shelfEditView.frame.width, height: shelfEditView.frame.height)
+                    shelfEditView.endEditing(true)
             }) { (success) in
             }
         }

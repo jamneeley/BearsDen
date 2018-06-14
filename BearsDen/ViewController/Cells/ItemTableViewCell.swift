@@ -39,6 +39,7 @@ class ItemTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -50,7 +51,7 @@ class ItemTableViewCell: UITableViewCell {
     @objc func stepperTouched() {
         guard let item = item else {return}
         let itemQuantityDouble = quantityStepper.value
-        let itemQuantity = Int(quantityStepper.value)
+        let itemQuantity = Double(quantityStepper.value)
         quantityLabel.text = "Quantity: \(itemQuantity)"
         ItemController.shared.adjustQuantityFor(Item: item, quantity: itemQuantityDouble)
     }
@@ -102,7 +103,7 @@ class ItemTableViewCell: UITableViewCell {
             let expirationDate = item.expirationDate else {return}
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
-        let itemQuantity = Int(item.quantity)
+        let itemQuantity = Double(item.quantity)
         let weight = item.weight ?? "N/A"
         let unit = item.unit ?? "N/A"
         let category = item.catagory ?? "N/A"
@@ -148,15 +149,20 @@ class ItemTableViewCell: UITableViewCell {
         addToShoppingListButton.addTarget(self, action: #selector(endHighlightButton), for: .touchUpOutside)
     }
     
-    func setupConstraints() {
-        addConstraintsWithFormat(format: "V:|-5-[v0]", views: itemNameLabel)
-        itemNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: frame.height * -1.25).isActive = true
+    @objc func setupConstraints() {
+        itemNameLabel.backgroundColor = .yellow
+        let height = frame.height * 1.25
+        let width = frame.width * 0.4
+
+        addConstraintsWithFormat(format: "V:|-5-[v0]-\(height)-|", views: itemNameLabel)
+        addConstraintsWithFormat(format: "H:|-10-[v0]-\(width)-|", views: itemNameLabel)
+        
         addConstraintsWithFormat(format: "V:[v0(45)]-10-|", views: addToShoppingListButton)
+        addConstraintsWithFormat(format: "H:|-10-[v0(45)]", views: addToShoppingListButton)
+        
         addConstraintsWithFormat(format: "V:[v0]-5-|", views: expirationDateLabel)
         addConstraintsWithFormat(format: "V:|-5-[v0]-5-[v1]-5-[v2]-5-[v3]-5-[v4]-5-|", views: stockedLabel, weightLabel, categoryLabel, quantityLabel, quantityStepper )
-        addConstraintsWithFormat(format: "H:|-10-[v0(\(frame.width * 0.73))]", views: itemNameLabel)
         expirationDateLabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0).isActive = true
-        addConstraintsWithFormat(format: "H:|-10-[v0(45)]", views: addToShoppingListButton)
         addConstraintsWithFormat(format: "H:[v0]-10-|", views: stockedLabel)
         addConstraintsWithFormat(format: "H:[v0]-10-|", views: weightLabel)
         addConstraintsWithFormat(format: "H:[v0]-10-|", views: categoryLabel)

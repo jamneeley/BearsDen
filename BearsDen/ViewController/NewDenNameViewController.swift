@@ -16,7 +16,7 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
     let bearHillView = UIImageView()
     let promptLabel =  UILabel()
     let houseTextField = UITextField()
-    let letsStartButton = UIButton()
+    let nextButton = UIButton()
     let singleTap = UITapGestureRecognizer()
 
     //MARK: - LifeCycle
@@ -31,7 +31,7 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
 
     func setupObjects() {
         setupBackGroundView()
-        setupLetsStartButton()
+        setupNextButton()
         setupBearHillView()
         setupHouseTextField()
         setupPromptLabel()
@@ -60,9 +60,11 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
     }
     //MARK: - ButtonPressed
     
-    @objc func letsStartButtonPressed() {
+    @objc func nextButtonPressed() {
         guard let denName = houseTextField.text, !denName.isEmpty else {return}
         UserController.shared.createUser(housHouldName: denName)
+        UserController.shared.change(Adult: "0")
+        UserController.shared.change(Kids: "0")
         UserController.shared.change(Picture: #imageLiteral(resourceName: "BearOnHill"))
         let addShelfInstructions = WelcomeToBearsDenViewController()
         self.present(addShelfInstructions, animated: true, completion: nil)
@@ -127,19 +129,19 @@ class NewDenNameViewController: UIViewController, UITextFieldDelegate {
         houseTextField.translatesAutoresizingMaskIntoConstraints = false
         houseTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width * 0.1).isActive = true
         houseTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.1).isActive = true
-        houseTextField.bottomAnchor.constraint(equalTo: letsStartButton.topAnchor , constant: -30).isActive = true
+        houseTextField.bottomAnchor.constraint(equalTo: nextButton.topAnchor , constant: -30).isActive = true
         houseTextField.heightAnchor.constraint(equalToConstant: view.frame.height * 0.06).isActive = true
     }
     
-    func setupLetsStartButton() {
-        view.addSubview(letsStartButton)
-        letsStartButton.frame = CGRect(x: view.frame.width * 0.5 - 32.5, y: view.frame.height * 0.88, width: 65, height: 65)
-        letsStartButton.setTitle("Next", for: .normal)
-        letsStartButton.setTitleColor(.white, for: .normal)
-        letsStartButton.backgroundColor = Colors.green
-        letsStartButton.layer.cornerRadius = 0.5 * letsStartButton.bounds.size.width
-        letsStartButton.clipsToBounds = true
-        letsStartButton.addTarget(self, action: #selector(letsStartButtonPressed), for: .touchUpInside)
+    func setupNextButton() {
+        view.addSubview(nextButton)
+        nextButton.frame = CGRect(x: view.frame.width * 0.5 - 32.5, y: view.frame.height * 0.88, width: 65, height: 65)
+        nextButton.setTitle("Next", for: .normal)
+        nextButton.setTitleColor(.white, for: .normal)
+        nextButton.backgroundColor = Colors.green
+        nextButton.layer.cornerRadius = 0.5 * nextButton.bounds.size.width
+        nextButton.clipsToBounds = true
+        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
     }
 }
 

@@ -140,7 +140,7 @@ class GoalsCollectionViewCell: UICollectionViewCell {
         progressLayer.transform = CATransform3DMakeRotation(-CGFloat.pi / 2, 0, 0, 1)
         progressLayer.strokeEnd = 0
         
-        setupProgressTextLabels(x: x, y: y, radius: radius)
+        setupProgressTextStack(x: x, y: y, radius: radius)
     }
     
     func setupProgressPath(ForLayer layer: CAShapeLayer, strokColor: UIColor, fillColor: UIColor, path: CGPath, position: CGPoint) {
@@ -153,7 +153,7 @@ class GoalsCollectionViewCell: UICollectionViewCell {
         self.layer.addSublayer(layer)
     }
     
-    func setupProgressTextLabels(x: CGFloat, y: CGFloat, radius: CGFloat) {
+    func setupProgressTextStack(x: CGFloat, y: CGFloat, radius: CGFloat) {
         addSubview(circleTextStack)
         circleTextStack.addArrangedSubview(percentageLabel)
         circleTextStack.addArrangedSubview(completedLabel)
@@ -191,8 +191,7 @@ class GoalsCollectionViewCell: UICollectionViewCell {
         pulsatingLayer.add(animation, forKey: "pulsing")
     }
     
-    
-    
+
     @objc private func animateProgress() {
         print("animation should happen")
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")

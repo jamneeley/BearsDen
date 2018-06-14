@@ -53,6 +53,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     
     let seperator = UIView()
 
+    let noteLabel = UILabel()
     let grainsExampleLabel = UILabel()
     let legumesExampleLabel = UILabel()
     let dairyExampleLabel = UILabel()
@@ -228,7 +229,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
         contentView.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 2.5).isActive = true
+        contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 1.6).isActive = true
     }
     
     func setupMainCalculatorStack() {
@@ -241,7 +242,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         mainCalculatorStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
         mainCalculatorStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: view.frame.width * 0.05).isActive = true
         mainCalculatorStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: view.frame.width * -0.05).isActive = true
-        mainCalculatorStack.bottomAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -view.frame.height * 0.8).isActive = true
+        mainCalculatorStack.bottomAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -view.frame.height * 0.3).isActive = true
     }
     
     func setupItemCatagoryStack() {
@@ -311,11 +312,8 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     
     func setupExampleStack() {
         contentView.addSubview(exampleStack)
-        
-        
-        
-        
-        
+    
+        exampleStack.addArrangedSubview(noteLabel)
         exampleStack.addArrangedSubview(grainsExampleLabel)
         exampleStack.addArrangedSubview(legumesExampleLabel)
         exampleStack.addArrangedSubview(dairyExampleLabel)
@@ -325,6 +323,10 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         exampleStack.addArrangedSubview(fatsExampleLabel)
         exampleStack.axis = .vertical
         exampleStack.distribution = .fillEqually
+        
+        noteLabel.text = "* Note"
+        noteLabel.font = UIFont.boldSystemFont(ofSize: 22)
+        noteLabel.textAlignment = .center
         
         grainsExampleLabel.text = "*  Grain (includes wheat, white rice, oats, corn, barley, pasta, etc.)"
         legumesExampleLabel.text = "*  Legumes (dried beans, split peas, lentils, nuts, etc.)"
@@ -379,8 +381,15 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         disableKeyBoard()
         guard let weeksString = weeksTextField.text, !weeksString.isEmpty else {presentAlert(Title: "Uh Oh", message: "You'll need to enter an amount for \"Weeks\""); return}
         
+        if (UserController.shared.user?.adults == nil || UserController.shared.user?.adults == "0")  && (UserController.shared.user?.kids == nil || UserController.shared.user?.kids == "0") {
+            presentAlert(Title: "Uh Oh", message: "You may need to add either adults or kids to your den in the settings")
+            return
+        }
+
+    
             let adultsString = UserController.shared.user?.adults ?? "0"
             let kidsString = UserController.shared.user?.kids ?? "0"
+        
         
         
         if weeksString.isDouble, adultsString.isDouble, kidsString.isDouble {

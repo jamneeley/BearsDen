@@ -342,6 +342,7 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
         customTextView.layer.borderColor = Colors.softBlue.cgColor
         customTextView.heightAnchor.constraint(equalToConstant: frame.height * 0.5).isActive = true
         customTextView.backgroundColor = .white
+        setupCustomConstraints()
     }
     
     func setupCustomConstraints() {

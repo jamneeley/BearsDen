@@ -92,6 +92,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         setupObjects()
         view.backgroundColor = .white
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveButtonPressed))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "BackLargeX1"), style: .done, target: self, action: #selector(backButtonPressed))
         NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil);
         
@@ -173,6 +174,13 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         navigationController?.pushViewController(scannerViewController, animated: true)
     }
     
+    @objc func backButtonPressed() {
+        if let viewToPopTo = viewControllerToPopTo {
+            navigationController?.popToViewController(viewToPopTo, animated: true)
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
+    }
     
     
     @objc func saveButtonPressed() {
@@ -180,7 +188,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         guard let name = nameTextField.text,
         let quantityAsString = quantityTextField.text,
         let shelf = self.shelf,
-        let weight = weightTextField.text
+        let weightAsString = weightTextField.text
         else {return}
         let date = datePicker.date
         let unitIndex = unitPicker.selectedRow(inComponent: 0)
@@ -192,23 +200,28 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
         if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
             isLiquid = true
         }
-        
+    
         //is there a quantity and weight and are they both numbers?
-        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) &&  CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: weight))  && quantityAsString != "" && name != "" && weight != "" {
+        
+//         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: quantityAsString)) &&  CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: weightAsString))  &&
+        
+        
+        if quantityAsString != "" && name != "" && weightAsString != "", let quantity = quantityAsString.doubleValue, let weight = weightAsString.doubleValue {
             
+    
             let barcodeNumber = barcodeTextField.text
-            let quantity = Double(quantityAsString)
+//            let quantity = Double(quantityAsString)
             
             //is there a barcode and is it a number?
             if barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)){
                 //does this barcode already exist in the DB?
                 if cloudItem != nil && inDataBase == true {
-                    CloudItemController.shared.update(cloudItem: self.cloudItem!, name: name, weight: weight, catagory: catagory, unit: unit) { (success) in
+                    CloudItemController.shared.update(cloudItem: self.cloudItem!, name: name, weight: weightAsString, catagory: catagory, unit: unit) { (success) in
                         //reset the clouditem
                         self.cloudItem = nil
                         self.inDataBase = nil
                         print("ITEM SAVED WITH BARCODE AND CLOUD ITEM UPDATED")
-                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                        ItemController.shared.createItemWithAll(name: name, quantity: quantity, stocked: Date(), expirationDate: date, weight: "\(weight)", isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
                             self.presentSaveAnimation()
                             self.nameTextField.text = ""
@@ -218,12 +231,12 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
                     }
                 // barcode doesnt exists in the database
                 } else {
-                    CloudItemController.shared.createCloudItem(withName: name, weight: weight, catagory: catagory, unit: unit, barcode: barcodeNumber!) { (success) in
+                    CloudItemController.shared.createCloudItem(withName: name, weight: weightAsString, catagory: catagory, unit: unit, barcode: barcodeNumber!) { (success) in
                         //reset the clouditem
                         self.cloudItem = nil
                         self.inDataBase = nil
                         print("ITEM SAVED WITH BARCODE AND CLOUD ITEM SAVED")
-                        ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                        ItemController.shared.createItemWithAll(name: name, quantity: quantity, stocked: Date(), expirationDate: date, weight: "\(weight)", isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
                         DispatchQueue.main.async {
                             self.presentSaveAnimation()
                             self.nameTextField.text = ""
@@ -235,7 +248,7 @@ class AddManualItemViewController: UIViewController, UITextFieldDelegate, UIPick
             //there isnt a barcode number or it isnt a number
             } else {
                 print("ITEM SAVED LOCALLY WITHOUT BARCODE")
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity!, stocked: Date(), expirationDate: date, weight: weight, isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity, stocked: Date(), expirationDate: date, weight: "\(weight)", isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
                 presentSaveAnimation()
                 nameTextField.text = ""
                 barcodeTextField.text = ""

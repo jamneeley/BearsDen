@@ -23,6 +23,8 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return view
     }()
     
+    
+    
     //MARK: - LifeCycle
     
     override func viewDidLoad() {
@@ -38,6 +40,10 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         itemTableView.reloadData()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
     }
     
     func setupObjects() {
@@ -86,11 +92,13 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @objc func handleDismiss() {
         guard let shelfEditView = editShelfViewController.view,
         let shelf = shelf else {return}
+        
         navigationItem.title = shelf.name
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.blackView.alpha = 0
             if let window = UIApplication.shared.keyWindow {
                 shelfEditView.frame = CGRect(x: -(window.frame.width), y: 0, width: shelfEditView.frame.width, height: shelfEditView.frame.height)
+                shelfEditView.endEditing(true)
             }
         }) { (success) in
             print("animation complete")

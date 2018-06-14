@@ -39,19 +39,18 @@ class ShelvesViewController: UIViewController, UICollectionViewDelegate, UIColle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Colors.veryLightGray
-        setupObjects()
+        setupCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         collectionView.reloadData()
     }
     
-    func setupObjects() {
+    func setupCollectionView() {
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(ShelfCollectionViewCell.self, forCellWithReuseIdentifier: "shelfCell")
-        
         setupCollectionViewConstraints()
     }
     
