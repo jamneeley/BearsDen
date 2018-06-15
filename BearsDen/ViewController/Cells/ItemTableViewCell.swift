@@ -17,11 +17,7 @@ class ItemTableViewCell: UITableViewCell {
     
     //MARK: - Properties
     
-    var item: Item? {
-        didSet {
-            setupViews()
-        }
-    }
+    
     
     weak var delegate: ItemCellDelegate?
     
@@ -35,12 +31,23 @@ class ItemTableViewCell: UITableViewCell {
     let quantityStepper = UIStepper()
     let addToShoppingListButton = UIButton()
     
+    //Settable Properties
+    
+    var item: Item? {
+        didSet {
+            setupViews()
+        }
+    }
+    
     //MARK: - Cell Initialization
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectedBackgroundView?.backgroundColor = Colors.softBlue
-        selectionStyle = UITableViewCellSelectionStyle.blue
+    
+        selectionStyle = .blue
+        let selectionView = UIView()
+        selectionView.backgroundColor = Colors.softBlue
+        selectedBackgroundView = selectionView
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,7 +55,6 @@ class ItemTableViewCell: UITableViewCell {
     }
     
     //MARK: - Button Methods
-    
     @objc func stepperTouched() {
         guard let item = item else {return}
         let itemQuantityDouble = quantityStepper.value
@@ -74,12 +80,7 @@ class ItemTableViewCell: UITableViewCell {
         
         
     }
-    
-    override var isSelected: Bool {
-        didSet {
-            self.backgroundColor = isHighlighted ? Colors.softBlue : .white
-        }
-    }
+
     
 ///////////////////////////
 //MARK: - Views

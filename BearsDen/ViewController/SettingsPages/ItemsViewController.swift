@@ -23,8 +23,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return view
     }()
     
-    
-    
     //MARK: - LifeCycle
     
     override func viewDidLoad() {
@@ -33,16 +31,11 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         itemTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "itemCell")
         itemTableView.delegate = self
         setupObjects()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         itemTableView.reloadData()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
     }
     
     func setupObjects() {
@@ -57,8 +50,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
     }
-    
-    //
     
     @objc func editShelfButtonPressed() {
         guard let shelfEditView = editShelfViewController.view, let shelfImageData = shelf?.photo  else {return}
@@ -182,16 +173,15 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //MARK: - TableView DataSource Methods
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         guard let shelf = shelf else {return}
         if let item = shelf.items?[indexPath.row] as? Item {
             let editItemVC = EditItemViewController()
             editItemVC.item = item
             navigationController?.pushViewController(editItemVC, animated: true)
+            
         }
     }
-    
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return shelf?.items?.count ?? 0
     }
@@ -202,7 +192,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             if let item = shelf?.items?[indexPath.row] as? Item {
                 cell.delegate = self
                 cell.item = item
-                
                 return cell
             }
         } else {
