@@ -19,6 +19,12 @@ protocol shelfEditViewDelegate: class {
 class ShelfEditViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: - Properties
+    var removeInfo = false {
+        didSet{
+            shelfImageView.image = #imageLiteral(resourceName: "BearOnHill")
+            shelfTextField.text = ""
+        }
+    }
     
     var shelf: Shelf? {
         didSet {
@@ -71,6 +77,7 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
         shelfImageView.image = image
         
     }
+
     
     //MARK: - Button Methods
     
@@ -245,7 +252,7 @@ extension ShelfEditViewController {
     
     func setupDismissButton() {
         dismissButton.setTitle("Dismiss", for: .normal)
-
+        dismissButton.clipsToBounds = true
         dismissButton.setTitleColor(.black, for: .normal)
         dismissButton.addTarget(self, action: #selector(startHighlightDismiss), for: .touchDown)
         dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
@@ -261,7 +268,7 @@ extension ShelfEditViewController {
     func setupSaveButton() {
         saveButton.setTitle("Save", for: .normal)
         saveButton.setTitleColor(.black, for: .normal)
-
+        saveButton.clipsToBounds = true
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(startHighlightSave), for: .touchDown)
         saveButton.addTarget(self, action: #selector(stopHighlightSave), for: .touchUpOutside)

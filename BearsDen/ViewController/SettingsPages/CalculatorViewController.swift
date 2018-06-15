@@ -62,6 +62,12 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     let saltExampleLabel = UILabel()
     let fatsExampleLabel = UILabel()
     
+    var endEdit = false {
+        didSet {
+            view.endEditing(true)
+        }
+    }
+    
     //MARK: - LifeCycle
     
     override func viewDidLoad() {

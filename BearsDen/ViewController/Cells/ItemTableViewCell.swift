@@ -39,7 +39,8 @@ class ItemTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        selectedBackgroundView?.backgroundColor = Colors.softBlue
+        selectionStyle = UITableViewCellSelectionStyle.blue
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -70,6 +71,14 @@ class ItemTableViewCell: UITableViewCell {
             let user = UserController.shared.user  else {return}
         ShoppingItemController.shared.createShoppingItem(ForUser: user, name: itemName)
         delegate?.addedToShoppingList(itemName: itemName)
+        
+        
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            self.backgroundColor = isHighlighted ? Colors.softBlue : .white
+        }
     }
     
 ///////////////////////////
@@ -150,7 +159,6 @@ class ItemTableViewCell: UITableViewCell {
     }
     
     @objc func setupConstraints() {
-        itemNameLabel.backgroundColor = .yellow
         let height = frame.height * 1.25
         let width = frame.width * 0.4
 

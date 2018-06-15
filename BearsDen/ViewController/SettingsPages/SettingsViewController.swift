@@ -40,6 +40,12 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         return [denName, adults, kids, showTutorial, questions, donate, rateUS]
     }()
     
+    var endEdit = false {
+        didSet {
+            view.endEditing(true)
+        }
+    }
+    
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)

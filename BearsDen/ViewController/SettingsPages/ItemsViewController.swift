@@ -32,7 +32,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         view.backgroundColor = .white
         itemTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "itemCell")
         itemTableView.delegate = self
-        itemTableView.allowsSelection = false
         setupObjects()
         
     }
@@ -92,7 +91,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @objc func handleDismiss() {
         guard let shelfEditView = editShelfViewController.view,
         let shelf = shelf else {return}
-        
+        editShelfViewController.removeInfo = true
         navigationItem.title = shelf.name
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.blackView.alpha = 0
@@ -182,6 +181,17 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     //MARK: - TableView DataSource Methods
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        guard let shelf = shelf else {return}
+        if let item = shelf.items?[indexPath.row] as? Item {
+            let editItemVC = EditItemViewController()
+            editItemVC.item = item
+            navigationController?.pushViewController(editItemVC, animated: true)
+        }
+    }
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return shelf?.items?.count ?? 0
     }
@@ -192,6 +202,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             if let item = shelf?.items?[indexPath.row] as? Item {
                 cell.delegate = self
                 cell.item = item
+                
                 return cell
             }
         } else {
