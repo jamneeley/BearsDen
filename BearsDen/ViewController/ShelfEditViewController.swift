@@ -213,11 +213,11 @@ extension ShelfEditViewController {
     func setupShelfImageView() {
         shelfImageView.layer.masksToBounds = true
         shelfImageView.layer.cornerRadius = CornerRadius.imageView
+        shelfImageView.heightAnchor.constraint(equalToConstant: view.frame.width * 0.65).isActive = true
+        shelfImageView.widthAnchor.constraint(equalToConstant: view.frame.width * 0.65).isActive = true
+        shelfImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         shelfImageView.translatesAutoresizingMaskIntoConstraints = false
-        shelfImageView.topAnchor.constraint(equalTo: shelfTextField.bottomAnchor, constant: 10).isActive = true
-        shelfImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25).isActive = true
-        shelfImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25).isActive = true
-        shelfImageView.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: 60).isActive = true
+        shelfImageView.topAnchor.constraint(equalTo: shelfTextField.bottomAnchor, constant: 20).isActive = true
         if let shelf = shelf, let photoAsData = shelf.photo {
             let photo = UIImage(data: photoAsData)
             shelfImageView.image = photo
@@ -227,7 +227,7 @@ extension ShelfEditViewController {
     }
 
     func setupPhotoLibraryButton() {
-            photoLibraryButton.frame = CGRect(x: (view.frame.size.width * 0.5) - (view.frame.width * 0.2) - 50, y: (view.bounds.size.height * 0.5)  - (view.bounds.size.height * 0.25)  + 160, width: 50, height: 50)
+            photoLibraryButton.frame = CGRect(x: (view.frame.size.width * 0.5) - (view.frame.width * 0.2) - 50, y: (view.bounds.size.height * 0.55)  - (view.bounds.size.height * 0.25)  + 160, width: 50, height: 50)
             photoLibraryButton.setImage(#imageLiteral(resourceName: "photoLibrary"), for: .normal)
             photoLibraryButton.tintColor = .black
             photoLibraryButton.backgroundColor = Colors.green
@@ -240,7 +240,7 @@ extension ShelfEditViewController {
     func setupCameraButton() {
         print("\(view.bounds.size.width)")
         print("\(view.frame.width)")
-            cameraButton.frame = CGRect(x: (view.frame.size.width * 0.5) - (view.frame.width * 0.2) + 75, y: (view.bounds.size.height * 0.5)  - (view.bounds.size.height * 0.25)  + 160, width: 50, height: 50)
+            cameraButton.frame = CGRect(x: (view.frame.size.width * 0.5) - (view.frame.width * 0.2) + 75, y: (view.bounds.size.height * 0.55)  - (view.bounds.size.height * 0.25)  + 160, width: 50, height: 50)
             cameraButton.setImage(#imageLiteral(resourceName: "camera"), for: .normal)
             cameraButton.tintColor = .black
             cameraButton.backgroundColor = Colors.green

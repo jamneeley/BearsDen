@@ -128,7 +128,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
             editShelfViewController.delegate = self
             editShelfViewController.shelfImage = #imageLiteral(resourceName: "BearOnHill")
             let width = window.frame.width * 0.8
-            let height = window.frame.height * 0.75
+            let height = window.frame.height * 0.7
             
             shelfEditView.frame = CGRect(x: (window.frame.width - width), y: -(window.frame.height), width: width, height: height)
             blackView.frame = window.frame
