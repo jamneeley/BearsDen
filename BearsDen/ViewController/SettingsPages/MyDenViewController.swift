@@ -260,7 +260,7 @@ class MyDenViewController: UIViewController {
         legumeStack.addArrangedSubview(legumeAmountLabel)
         legumeStack.axis = .horizontal
         legumeStack.distribution = .fillEqually
-        legumeLabel.text = "Legums"
+        legumeLabel.text = "Legumes"
         legumeAmountLabel.textAlignment = .right
         legumeStack.heightAnchor.constraint(equalToConstant: view.frame.height * 0.045).isActive = true
     }

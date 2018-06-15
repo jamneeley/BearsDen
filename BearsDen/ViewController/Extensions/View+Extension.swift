@@ -44,12 +44,42 @@ extension UITextField {
         self.rightView = paddingView
         self.rightViewMode = .always
     }
+    
+    func addDoneButtonToKeyboard(myAction:Selector?){
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 300, height: 40))
+        doneToolbar.barStyle = UIBarStyle.default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: myAction)
+        
+        var items = [UIBarButtonItem]()
+        items.append(flexSpace)
+        items.append(done)
+        
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        self.inputAccessoryView = doneToolbar
+    }
 }
 
 extension String {
-    var isInt: Bool {
-        return Int(self) != nil
+    var isDouble: Bool {
+        return Double(self) != nil
     }
+    
+    struct NumFormatter {
+        static let instance = NumberFormatter()
+    }
+    
+    var doubleValue: Double? {
+        return NumFormatter.instance.number(from: self)?.doubleValue
+    }
+    
+    var integerValue: Int? {
+        return NumFormatter.instance.number(from: self)?.intValue
+    }
+    
 } 
 
 extension Double {

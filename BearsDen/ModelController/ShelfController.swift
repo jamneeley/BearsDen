@@ -17,7 +17,7 @@ class ShelfController {
         guard let image = UIImageJPEGRepresentation(photo, 1.0) else {return}
         let _ = Shelf(name: name, user: user, photo: image)
         UserController.shared.saveToCoreData()
-        print("shelf created")
+        
         
         let request: NSFetchRequest<Shelf> = Shelf.fetchRequest()
         do {

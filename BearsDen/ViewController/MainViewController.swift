@@ -10,6 +10,7 @@ import UIKit
 
 class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, shelvesViewControllerDelegate  {
     
+    //MARK: - Properties
     //non page dependent objects
     let navBar = UIView()
     let settingsButton = UIButton(type: UIButtonType.system)
@@ -55,6 +56,10 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     // current page in containerView property
     var globalCurrentView: Int?
     
+    var inset: CGFloat = 0
+    
+    var layedOut = false
+    
     // computed settings launcher....only fires code once
     lazy var menuLauncher: MenuLauncher = {
         let launcher = MenuLauncher()
@@ -66,20 +71,37 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupObjects()
+        inset = view.frame.height * 0.15
     }
     
-    //MARK: - SetupObjects
-    
-    func setupObjects() {
-        setupNavBar()
-        setupShelvesView()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        if !layedOut {
+            layedOut = true
+            
+            switch view.safeAreaInsets.top {
+            case 0...20:
+                inset = view.frame.height * 0.11
+            case 21...60:
+                inset = view.frame.height * 0.111
+            default:
+                print("bigger than 60")
+            }
+            setupNavBar()
+            setupShelvesView()
+        }
     }
-
-    
-    //MARK: - Button Actions
+    //MARK: - Button Methods
     
     @objc func settingsButtonTapped() {
+        switch globalCurrentView{
+        case 4:
+            calculatorView.endEdit = true
+        case 7:
+            settingsview.endEdit = true
+        default:
+            print("")
+        }
         menuLauncher.showMenu()
     }
     
@@ -101,7 +123,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
             editShelfViewController.delegate = self
             editShelfViewController.shelfImage = #imageLiteral(resourceName: "BearOnHill")
             let width = window.frame.width * 0.8
-            let height = window.frame.height * 0.75
+            let height = window.frame.height * 0.7
             
             shelfEditView.frame = CGRect(x: (window.frame.width - width), y: -(window.frame.height), width: width, height: height)
             blackView.frame = window.frame
@@ -113,12 +135,15 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         }
     }
     @objc func handleDismiss() {
+
         if let window = UIApplication.shared.keyWindow {
             self.shelvesView.update = true
             guard let shelfEditView = editShelfViewController.view else {return}
+            editShelfViewController.removeInfo = true
             self.blackView.alpha = 0
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 shelfEditView.frame = CGRect(x: -(window.frame.width), y: 0, width: shelfEditView.frame.width, height: shelfEditView.frame.height)
+                    shelfEditView.endEditing(true)
             }) { (success) in
             }
         }
@@ -179,6 +204,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         present(alert, animated: true, completion: nil)
     }
     
+    //MARK: - Cell Tapped
     
     func didSelectCellAtRow(shelf: Shelf) {
         let itemView = ItemsViewController()
@@ -186,14 +212,10 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         let navController = UINavigationController(rootViewController: itemView)
         present(navController, animated: true, completion: nil)
     }
-}
-
 
 ////////////////////////////////////////////////////////
-//CONSTRAINTS
+//MARK: - Views
 ////////////////////////////////////////////////////////
-
-extension MainViewController {
     
     func setupNavBar() {
         view.addSubview(navBar)
@@ -212,6 +234,13 @@ extension MainViewController {
         setupButtonTargets()
     }
     
+    func setupLabel() {
+        navBarLabel.text = "Your shelves"
+        navBarLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        navBarLabel.textColor = .white
+        setupLabelConstraints()
+    }
+    
     func setup(Button button: UIButton) {
         button.setImage(#imageLiteral(resourceName: "addX2"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -225,21 +254,14 @@ extension MainViewController {
 
     func setupShelvesView() {
         shelvesView.willMove(toParentViewController: self)
-        
         addChildViewController(shelvesView)
         self.view.addSubview(shelvesView.view)
-        shelvesView.view.frame = CGRect(x: 0, y: view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
+        shelvesView.view.frame = CGRect(x: 0, y: inset, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
+//        shelvesView.view.frame = CGRect(x: 0, y: (view.safeAreaInsets.top) + view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
         shelvesView.didMove(toParentViewController: self)
         globalCurrentView = 1
     }
-    
-    func setupLabel() {
-        navBarLabel.text = "Your shelves"
-        navBarLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        navBarLabel.textColor = .white
-        setupLabelConstraints()
-    }
-    
+
     func setupSettingsButtons() {
         settingsButton.setImage(#imageLiteral(resourceName: "settingIconX2"), for: .normal)
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
@@ -256,7 +278,9 @@ extension MainViewController {
         navBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        navBar.bottomAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.08).isActive = true
+        navBar.bottomAnchor.constraint(equalTo: view.topAnchor, constant: inset).isActive = true
+//        navBar.bottomAnchor.constraint(equalTo: view.topAnchor, constant: (view.safeAreaInsets.top) + view.frame.height * 0.08).isActive = true
+        print(view.safeAreaInsets.top)
     }
     
     func setupSettingsButtonConstraints() {

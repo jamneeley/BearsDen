@@ -7,6 +7,9 @@
 //
 
 import UIKit
+
+//MARK: - Delegate Protocol
+
 protocol shelfEditViewDelegate: class {
     func handleDismiss()
     func selectLibraryPhoto()
@@ -14,6 +17,14 @@ protocol shelfEditViewDelegate: class {
 }
 
 class ShelfEditViewController: UIViewController, UITextFieldDelegate {
+    
+    //MARK: - Properties
+    var removeInfo = false {
+        didSet{
+            shelfImageView.image = #imageLiteral(resourceName: "BearOnHill")
+            shelfTextField.text = ""
+        }
+    }
     
     var shelf: Shelf? {
         didSet {
@@ -37,6 +48,7 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
     let saveButton = UIButton(type: .custom)
     weak var delegate: shelfEditViewDelegate?
     
+    //MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,15 +62,24 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
         updateViews()
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        view.endEditing(true)
-        return true
-    }
+    //MARK: - Update Methods
+    
+    func updateViews() {
+        guard let shelf = shelf, let image = shelfImage else {return}
+        print("update success")
+        shelfTextField.text = shelf.name
+        shelfImageView.image = image
         
-    @objc func dismissButtonTapped() {
-        delegate?.handleDismiss()
-        stopHighlightDismiss()
     }
+    
+    func updatePicture() {
+        guard let image = shelfImage else {return}
+        shelfImageView.image = image
+        
+    }
+
+    
+    //MARK: - Button Methods
     
     @objc func saveButtonTapped() {
         stopHighlightSave()
@@ -71,13 +92,11 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
             ShelfController.shared.ChangePictureforShelf(Shelf: shelf, photo: shelfImage)
             ShelfController.shared.updateName(Shelf: shelf, name: name)
             delegate?.handleDismiss()
-            print("updated shelf")
         } else {
             ShelfController.shared.createShelfForUser(User: user, name: name, photo: image)
             shelfTextField.text = ""
             shelfImageView.image = #imageLiteral(resourceName: "BearOnHill")
             delegate?.handleDismiss()
-            print("Created new shelf")
         }
     }
     
@@ -94,6 +113,7 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
     @objc func libraryButtonPressed() {
         delegate?.selectLibraryPhoto()
     }
+    
     @objc func startHighlightCamera() {
         cameraButton.layer.backgroundColor = Colors.softBlue.cgColor
         cameraButton.imageView?.tintColor = .white
@@ -127,23 +147,21 @@ class ShelfEditViewController: UIViewController, UITextFieldDelegate {
         saveButton.setTitleColor(.black, for: .normal)
     }
     
-    func updateViews() {
-        guard let shelf = shelf, let image = shelfImage else {return}
-        print("update success")
-        shelfTextField.text = shelf.name
-        shelfImageView.image = image
-
+    //MARK: - TextField Delegate Methods
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return true
     }
     
-    func updatePicture() {
-        guard let image = shelfImage else {return}
-        shelfImageView.image = image
-
+    @objc func dismissButtonTapped() {
+        delegate?.handleDismiss()
+        stopHighlightDismiss()
     }
 }
 
 ////////////////////////////////////////////////////////
-//CONSTRAINTS
+//MARK: - Views
 ////////////////////////////////////////////////////////
 
 extension ShelfEditViewController {
@@ -195,11 +213,11 @@ extension ShelfEditViewController {
     func setupShelfImageView() {
         shelfImageView.layer.masksToBounds = true
         shelfImageView.layer.cornerRadius = CornerRadius.imageView
+        shelfImageView.heightAnchor.constraint(equalToConstant: view.frame.width * 0.65).isActive = true
+        shelfImageView.widthAnchor.constraint(equalToConstant: view.frame.width * 0.65).isActive = true
+        shelfImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         shelfImageView.translatesAutoresizingMaskIntoConstraints = false
-        shelfImageView.topAnchor.constraint(equalTo: shelfTextField.bottomAnchor, constant: 10).isActive = true
-        shelfImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25).isActive = true
-        shelfImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25).isActive = true
-        shelfImageView.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: 60).isActive = true
+        shelfImageView.topAnchor.constraint(equalTo: shelfTextField.bottomAnchor, constant: 20).isActive = true
         if let shelf = shelf, let photoAsData = shelf.photo {
             let photo = UIImage(data: photoAsData)
             shelfImageView.image = photo
@@ -209,7 +227,7 @@ extension ShelfEditViewController {
     }
 
     func setupPhotoLibraryButton() {
-            photoLibraryButton.frame = CGRect(x: (view.frame.size.width * 0.5) - (view.frame.width * 0.2) - 50, y: (view.bounds.size.height * 0.5)  - (view.bounds.size.height * 0.25)  + 160, width: 50, height: 50)
+            photoLibraryButton.frame = CGRect(x: (view.frame.size.width * 0.5) - (view.frame.width * 0.2) - 50, y: (view.bounds.size.height * 0.55)  - (view.bounds.size.height * 0.25)  + 160, width: 50, height: 50)
             photoLibraryButton.setImage(#imageLiteral(resourceName: "photoLibrary"), for: .normal)
             photoLibraryButton.tintColor = .black
             photoLibraryButton.backgroundColor = Colors.green
@@ -222,7 +240,7 @@ extension ShelfEditViewController {
     func setupCameraButton() {
         print("\(view.bounds.size.width)")
         print("\(view.frame.width)")
-            cameraButton.frame = CGRect(x: (view.frame.size.width * 0.5) - (view.frame.width * 0.2) + 75, y: (view.bounds.size.height * 0.5)  - (view.bounds.size.height * 0.25)  + 160, width: 50, height: 50)
+            cameraButton.frame = CGRect(x: (view.frame.size.width * 0.5) - (view.frame.width * 0.2) + 75, y: (view.bounds.size.height * 0.55)  - (view.bounds.size.height * 0.25)  + 160, width: 50, height: 50)
             cameraButton.setImage(#imageLiteral(resourceName: "camera"), for: .normal)
             cameraButton.tintColor = .black
             cameraButton.backgroundColor = Colors.green
@@ -234,7 +252,7 @@ extension ShelfEditViewController {
     
     func setupDismissButton() {
         dismissButton.setTitle("Dismiss", for: .normal)
-
+        dismissButton.clipsToBounds = true
         dismissButton.setTitleColor(.black, for: .normal)
         dismissButton.addTarget(self, action: #selector(startHighlightDismiss), for: .touchDown)
         dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
@@ -250,7 +268,7 @@ extension ShelfEditViewController {
     func setupSaveButton() {
         saveButton.setTitle("Save", for: .normal)
         saveButton.setTitleColor(.black, for: .normal)
-
+        saveButton.clipsToBounds = true
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(startHighlightSave), for: .touchDown)
         saveButton.addTarget(self, action: #selector(stopHighlightSave), for: .touchUpOutside)

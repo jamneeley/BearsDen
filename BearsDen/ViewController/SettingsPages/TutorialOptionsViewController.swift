@@ -9,7 +9,7 @@
 import UIKit
 
 struct tutorialOptionsDataSource {
-    static let items: [String] = ["Menu Items?", "Adding an item to a shelf", "How goals work", "how to add a shopping list item", "Calculator?"]
+    static let items: [String] = ["Menu Items?", "Adding an item to a shelf", "How goals work", "How to add a shopping list item", "Calculator?"]
 }
 
 class TutorialOptionsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

@@ -10,7 +10,7 @@ import UIKit
 
 
 class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GoalDetailCollectionViewCellDelegate {
-    
+
     //Top Portion of Screen
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -28,10 +28,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     var contentHeightAnchor: NSLayoutConstraint?
 
     var selectedCellsIndex: [Int] = []
-    
-
-    
-    
     
     //Bottom Portion of screen
     let collectionView: UICollectionView = {
@@ -69,7 +65,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        contentViewHeight = view.frame.height * 2.4
+        contentViewHeight = view.frame.height * 2.65
         view.backgroundColor = Colors.veryLightGray
         collectionView.register(GoalDetailCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
         setupObjects()
@@ -142,7 +138,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                         if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
                             isLiquid = true
                         }
-                        print("UPDATE CUSTOM ITEM ADDED")
                         GoalItemController.shared.create(GoalItemfor: goal, category: categoryText, unit: "", amount: "", isLiquid: isLiquid, customText: cell.customDescription, isCustom: true, isComplete: false)
                     } else {
                         let amountText = cell.amountText
@@ -153,7 +148,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                         if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
                             isLiquid = true
                         }
-                        print("UPDATE NORMAL ITEM ADDED")
                         GoalItemController.shared.create(GoalItemfor: goal, category: categoryText, unit: unitText, amount: amountText, isLiquid: isLiquid, customText: "", isCustom: false, isComplete: false)
 
                     }
@@ -168,7 +162,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                         if cell.isCustom {
                             let categoryText = cell.catagory
                             let cellTextViewText = cell.customDescription
-                            print("CREATE CUSTOM ITEM ADDED")
                             let unit = cell.unit
                             var isLiquid = false
                             if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
@@ -184,7 +177,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                             if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
                                 isLiquid = true
                             }
-                            print("CREATE NORMAL ITEM ADDED")
                             GoalItemController.shared.create(GoalItemfor: Goal, category: categoryText, unit: unitText, amount: amountText, isLiquid: isLiquid, customText: "", isCustom: false, isComplete: false)
                         }
                     }
@@ -354,7 +346,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
         contentView.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
-        contentHeightAnchor = contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 2.4)
+        contentHeightAnchor = contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 2.65)
         contentHeightAnchor?.isActive = true
     }
     

@@ -17,6 +17,10 @@ class ShoppingListViewController: UIViewController, UITableViewDelegate, UITable
             shoppingListTableView.reloadData()
         }
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        shoppingListTableView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

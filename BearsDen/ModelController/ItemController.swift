@@ -19,11 +19,16 @@ class ItemController {
     
 
     //not updated for unit, weight, and catagory...and currently not implemented in app
-    func update(Item item: Item, name: String, quantity: Double, expirationDate: Date, shelf: Shelf) {
+    
+    func update(Item item: Item, name: String, quantity: Double, expirationDate: Date, weight: String, isLiquid: Bool, unit: String, catagory: String,  barcode: String) {
         item.name = name
         item.quantity = quantity
         item.expirationDate = expirationDate
-        item.shelf = shelf
+        item.weight = weight
+        item.isLiquid = isLiquid
+        item.unit = unit
+        item.catagory = catagory
+        item.barcode = barcode
         UserController.shared.saveToCoreData()
     }
     
