@@ -75,17 +75,14 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     }
     
     override func viewWillLayoutSubviews() {
-        print("will layot")
         super.viewWillLayoutSubviews()
         if !layedOut {
             layedOut = true
             
             switch view.safeAreaInsets.top {
             case 0...20:
-                print("0...20")
                 inset = view.frame.height * 0.11
             case 21...60:
-                print("21...40")
                 inset = view.frame.height * 0.111
             default:
                 print("bigger than 60")
@@ -94,8 +91,6 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
             setupShelvesView()
         }
     }
-
-
     //MARK: - Button Methods
     
     @objc func settingsButtonTapped() {

@@ -202,9 +202,9 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
             let barcodeNumber = barcodeTextField.text
 
             //does cloudItem, barcode number exist?
-            if let cloudItem = self.cloudItem, barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)) {
+            if let cloudItem = self.cloudItem, barcodeNumber != "", let barcode = barcodeNumber?.integerValue {
                 
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity, stocked: Date(), expirationDate: date, weight: "\(weight)", isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity, stocked: Date(), expirationDate: date, weight: "\(weight)", isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: "\(barcode)", shelf: shelf)
                 
                     barcodeTextField.text = ""
                 CloudItemController.shared.update(cloudItem: cloudItem, name: name, weight: "\(weight)", catagory: catagory, unit: unit) { (success) in

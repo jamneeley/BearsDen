@@ -22,7 +22,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BearsDen/ViewController/Cells/ShelfCollectionViewCell.swift"
-            timestampString = "550790153.845644"
+            timestampString = "550792429.967795"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "68"
@@ -44,16 +44,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BearsDen/ModelController/GoalController.swift"
+            timestampString = "550792429.968116"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "findAmountStoredFor(Category:inGoalUnits:isGoalLiquid:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BearsDen/ViewController/Extensions/View+Extension.swift"
-            timestampString = "550790153.846002"
+            filePath = "BearsDen/ViewController/SettingsPages/AddItemVCs/AddBarcodeViewController.swift"
+            timestampString = "550792429.968348"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "addDoneButtonToKeyboard(myAction:)"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "saveButtonPressed()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BearsDen/ViewController/SettingsPages/AddItemVCs/AddManualItemViewController.swift"
+            timestampString = "550792429.96857"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "saveButtonPressed()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BearsDen/ViewController/SettingsPages/AddItemVCs/EditItemViewController.swift"
+            timestampString = "550792429.9688081"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
+            landmarkName = "updateButtonPressed()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

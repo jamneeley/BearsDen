@@ -74,7 +74,7 @@ class EditItemViewController: UIViewController, UITextFieldDelegate, UIPickerVie
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Update", style: .done, target: self, action: #selector(saveButtonPressed))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Update", style: .done, target: self, action: #selector(updateButtonPressed))
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -151,7 +151,7 @@ class EditItemViewController: UIViewController, UITextFieldDelegate, UIPickerVie
         navigationController?.pushViewController(scannerViewController, animated: true)
     }
     
-    @objc func saveButtonPressed() {
+    @objc func updateButtonPressed() {
         self.view.isUserInteractionEnabled = false
         guard let name = nameTextField.text,
             let quantityAsString = quantityTextField.text,

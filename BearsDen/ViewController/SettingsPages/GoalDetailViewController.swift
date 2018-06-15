@@ -138,7 +138,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                         if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
                             isLiquid = true
                         }
-                        print("UPDATE CUSTOM ITEM ADDED")
                         GoalItemController.shared.create(GoalItemfor: goal, category: categoryText, unit: "", amount: "", isLiquid: isLiquid, customText: cell.customDescription, isCustom: true, isComplete: false)
                     } else {
                         let amountText = cell.amountText
@@ -149,7 +148,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                         if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
                             isLiquid = true
                         }
-                        print("UPDATE NORMAL ITEM ADDED")
                         GoalItemController.shared.create(GoalItemfor: goal, category: categoryText, unit: unitText, amount: amountText, isLiquid: isLiquid, customText: "", isCustom: false, isComplete: false)
 
                     }
@@ -164,7 +162,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                         if cell.isCustom {
                             let categoryText = cell.catagory
                             let cellTextViewText = cell.customDescription
-                            print("CREATE CUSTOM ITEM ADDED")
                             let unit = cell.unit
                             var isLiquid = false
                             if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
@@ -180,7 +177,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
                             if unit == PickerViewProperties.units[2] || unit == PickerViewProperties.units[3] {
                                 isLiquid = true
                             }
-                            print("CREATE NORMAL ITEM ADDED")
                             GoalItemController.shared.create(GoalItemfor: Goal, category: categoryText, unit: unitText, amount: amountText, isLiquid: isLiquid, customText: "", isCustom: false, isComplete: false)
                         }
                     }
