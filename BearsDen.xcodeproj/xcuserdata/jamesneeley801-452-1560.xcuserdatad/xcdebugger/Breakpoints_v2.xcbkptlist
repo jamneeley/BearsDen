@@ -22,12 +22,38 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BearsDen/ViewController/Cells/ShelfCollectionViewCell.swift"
-            timestampString = "550786907.368542"
+            timestampString = "550789437.85078"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "68"
             endingLineNumber = "68"
             landmarkName = "setupViews()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            scope = "0"
+            stopOnStyle = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BearsDen/ViewController/Extensions/View+Extension.swift"
+            timestampString = "550789437.8511471"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "addDoneButtonToKeyboard(myAction:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

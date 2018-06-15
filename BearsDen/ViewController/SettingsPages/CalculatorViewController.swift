@@ -151,6 +151,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         numbersStack.addArrangedSubview(kidNumberLabel)
         numbersStack.addArrangedSubview(weeksTextField)
         weeksTextField.keyboardType = .decimalPad
+        weeksTextField.addDoneButtonToKeyboard(myAction: #selector(self.weeksTextField.resignFirstResponder))
         numbersStack.axis = .vertical
         numbersStack.distribution = .fillEqually
         adultTextLabel.text = "Adults"

@@ -10,7 +10,7 @@ import UIKit
 
 
 class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GoalDetailCollectionViewCellDelegate {
-    
+
     //Top Portion of Screen
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -28,10 +28,6 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     var contentHeightAnchor: NSLayoutConstraint?
 
     var selectedCellsIndex: [Int] = []
-    
-
-    
-    
     
     //Bottom Portion of screen
     let collectionView: UICollectionView = {
@@ -69,7 +65,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        contentViewHeight = view.frame.height * 2.4
+        contentViewHeight = view.frame.height * 2.65
         view.backgroundColor = Colors.veryLightGray
         collectionView.register(GoalDetailCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
         setupObjects()
@@ -354,7 +350,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate, UICollect
         contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
         contentView.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
-        contentHeightAnchor = contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 2.4)
+        contentHeightAnchor = contentView.heightAnchor.constraint(equalToConstant: view.frame.height * 2.65)
         contentHeightAnchor?.isActive = true
     }
     

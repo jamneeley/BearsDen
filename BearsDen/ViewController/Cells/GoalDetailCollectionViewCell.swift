@@ -10,6 +10,7 @@ import UIKit
 
 protocol GoalDetailCollectionViewCellDelegate: class {
     func switchTapped(cell: UICollectionViewCell, indexPath: Int, isSelected: Bool)
+    
 }
 
 class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, UITextViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -190,6 +191,7 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
         }
     }
     
+
 ////////////////////////
     //MARK: - VIEWS
 ///////////////////////
@@ -299,6 +301,8 @@ class GoalDetailCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, U
         amountTextField.setRightPaddingPoints(5)
         amountTextField.delegate = self
         amountTextField.returnKeyType = .done
+
+        amountTextField.addDoneButtonToKeyboard(myAction: #selector(self.amountTextField.resignFirstResponder))
     }
     
     func setupPickerViews() {

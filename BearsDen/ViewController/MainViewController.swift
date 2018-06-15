@@ -57,6 +57,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     var globalCurrentView: Int?
     
     var inset: CGFloat = 0
+    
     var layedOut = false
     
     // computed settings launcher....only fires code once
@@ -70,7 +71,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        inset = view.frame.height * 0.1
+        inset = view.frame.height * 0.15
     }
     
     override func viewWillLayoutSubviews() {
@@ -82,14 +83,13 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
             switch view.safeAreaInsets.top {
             case 0...20:
                 print("0...20")
-                inset = view.frame.height * 0.1
+                inset = view.frame.height * 0.11
             case 21...60:
                 print("21...40")
-                inset = view.frame.height * 0.11
+                inset = view.frame.height * 0.111
             default:
                 print("bigger than 60")
             }
-        
             setupNavBar()
             setupShelvesView()
         }
@@ -107,7 +107,6 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         default:
             print("")
         }
-        
         menuLauncher.showMenu()
     }
     

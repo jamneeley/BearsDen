@@ -433,6 +433,7 @@ extension AddBarcodeViewController {
         quantityTextField.layer.cornerRadius = 12
         quantityTextField.backgroundColor = .white
         quantityTextField.keyboardType = .decimalPad
+        quantityTextField.addDoneButtonToKeyboard(myAction: #selector(self.quantityTextField.resignFirstResponder))
         quantityTextField.text = "\(1)"
         quantityTextField.returnKeyType = .done
         self.quantityTextField.delegate = self
@@ -451,6 +452,7 @@ extension AddBarcodeViewController {
         weightTextField.setLeftPaddingPoints(5)
         weightTextField.backgroundColor = .white
         weightTextField.keyboardType = .decimalPad
+        weightTextField.addDoneButtonToKeyboard(myAction: #selector(self.weightTextField.resignFirstResponder))
         self.nameTextField.delegate = self;
         weightTextField.layer.borderWidth = 1
         weightTextField.layer.borderColor = Colors.softBlue.cgColor
