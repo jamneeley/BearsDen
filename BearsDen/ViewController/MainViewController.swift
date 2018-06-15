@@ -56,6 +56,10 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     // current page in containerView property
     var globalCurrentView: Int?
     
+    var inset: CGFloat = 0
+    
+    var layedOut = false
+    
     // computed settings launcher....only fires code once
     lazy var menuLauncher: MenuLauncher = {
         let launcher = MenuLauncher()
@@ -67,13 +71,37 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavBar()
-        setupShelvesView()
+        inset = view.frame.height * 0.15
     }
-
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        if !layedOut {
+            layedOut = true
+            
+            switch view.safeAreaInsets.top {
+            case 0...20:
+                inset = view.frame.height * 0.11
+            case 21...60:
+                inset = view.frame.height * 0.111
+            default:
+                print("bigger than 60")
+            }
+            setupNavBar()
+            setupShelvesView()
+        }
+    }
     //MARK: - Button Methods
     
     @objc func settingsButtonTapped() {
+        switch globalCurrentView{
+        case 4:
+            calculatorView.endEdit = true
+        case 7:
+            settingsview.endEdit = true
+        default:
+            print("")
+        }
         menuLauncher.showMenu()
     }
     
@@ -95,7 +123,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
             editShelfViewController.delegate = self
             editShelfViewController.shelfImage = #imageLiteral(resourceName: "BearOnHill")
             let width = window.frame.width * 0.8
-            let height = window.frame.height * 0.75
+            let height = window.frame.height * 0.7
             
             shelfEditView.frame = CGRect(x: (window.frame.width - width), y: -(window.frame.height), width: width, height: height)
             blackView.frame = window.frame
@@ -111,7 +139,7 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         if let window = UIApplication.shared.keyWindow {
             self.shelvesView.update = true
             guard let shelfEditView = editShelfViewController.view else {return}
-            
+            editShelfViewController.removeInfo = true
             self.blackView.alpha = 0
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 shelfEditView.frame = CGRect(x: -(window.frame.width), y: 0, width: shelfEditView.frame.width, height: shelfEditView.frame.height)
@@ -151,7 +179,6 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         // Goal METHODS
     
     @objc func addGoalButtonTapped() {
-        print("add goal button pressed")
         let goalDetailVC = GoalDetailViewController()
         let navController = UINavigationController(rootViewController: goalDetailVC)
         self.present(navController, animated: true, completion: nil)
@@ -160,7 +187,6 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         // SHOPPING METHODS
     
     @objc func addShoppingItemButtonTapped() {
-        print("add shopping list button pressed")
         let alert = UIAlertController(title: "Add shopping item", message: nil, preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.autocorrectionType = UITextAutocorrectionType.no
@@ -230,7 +256,8 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         shelvesView.willMove(toParentViewController: self)
         addChildViewController(shelvesView)
         self.view.addSubview(shelvesView.view)
-        shelvesView.view.frame = CGRect(x: 0, y: view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
+        shelvesView.view.frame = CGRect(x: 0, y: inset, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
+//        shelvesView.view.frame = CGRect(x: 0, y: (view.safeAreaInsets.top) + view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
         shelvesView.didMove(toParentViewController: self)
         globalCurrentView = 1
     }
@@ -251,7 +278,9 @@ class MainViewController: UIViewController, shelfEditViewDelegate, UIImagePicker
         navBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        navBar.bottomAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height * 0.08).isActive = true
+        navBar.bottomAnchor.constraint(equalTo: view.topAnchor, constant: inset).isActive = true
+//        navBar.bottomAnchor.constraint(equalTo: view.topAnchor, constant: (view.safeAreaInsets.top) + view.frame.height * 0.08).isActive = true
+        print(view.safeAreaInsets.top)
     }
     
     func setupSettingsButtonConstraints() {

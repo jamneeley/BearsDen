@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9D4670A720C5B5DB00D387FD /* TipDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4670A620C5B5DB00D387FD /* TipDetailViewController.swift */; };
+		9D5E2D7420D4249C007A8ED9 /* EditItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5E2D7320D4249C007A8ED9 /* EditItemViewController.swift */; };
 		9D7EA34720A4CF900005563C /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7EA34620A4CF900005563C /* CloudKitManager.swift */; };
 		9D7EA34920A4CF9C0005563C /* CloudItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7EA34820A4CF9C0005563C /* CloudItemController.swift */; };
 		9D7EA34B20A4E17C0005563C /* AddBarcodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */; };
@@ -161,6 +162,7 @@
 
 /* Begin PBXFileReference section */
 		9D4670A620C5B5DB00D387FD /* TipDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipDetailViewController.swift; sourceTree = "<group>"; };
+		9D5E2D7320D4249C007A8ED9 /* EditItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemViewController.swift; sourceTree = "<group>"; };
 		9D7EA34620A4CF900005563C /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		9D7EA34820A4CF9C0005563C /* CloudItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudItemController.swift; sourceTree = "<group>"; };
 		9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBarcodeViewController.swift; sourceTree = "<group>"; };
@@ -318,6 +320,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9D5E2D7520D42C58007A8ED9 /* AddItemVCs */ = {
+			isa = PBXGroup;
+			children = (
+				9D8477DB20A29F2B005F219B /* AddManualItemViewController.swift */,
+				9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */,
+				9D5E2D7320D4249C007A8ED9 /* EditItemViewController.swift */,
+			);
+			path = AddItemVCs;
+			sourceTree = "<group>";
+		};
 		9D84779C209A766F005F219B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -349,8 +361,7 @@
 			children = (
 				9D84779A209A7611005F219B /* ShelvesViewController.swift */,
 				9D8477A1209A7C65005F219B /* ItemsViewController.swift */,
-				9D8477DB20A29F2B005F219B /* AddManualItemViewController.swift */,
-				9D7EA34A20A4E17C0005563C /* AddBarcodeViewController.swift */,
+				9D5E2D7520D42C58007A8ED9 /* AddItemVCs */,
 				9D8477B720A0A1DD005F219B /* GoalsViewController.swift */,
 				9DF4460020C8ACC5005EB7CC /* GoalDetailViewController.swift */,
 				9D8477BB20A0A1F6005F219B /* ShoppingListViewController.swift */,
@@ -769,6 +780,7 @@
 				9DC82D05208A53490068DD8E /* Item+Convenience.swift in Sources */,
 				9DAD6F8D20A4C32D001F777F /* CloudItem.swift in Sources */,
 				9DD54C7620C9ABCF00AB3C52 /* GoalDetailCollectionViewCell.swift in Sources */,
+				9D5E2D7420D4249C007A8ED9 /* EditItemViewController.swift in Sources */,
 				9DB6172A20B307E100B87C6C /* TipsController.swift in Sources */,
 				9D84780120A35DDB005F219B /* UIViewController+Extensions.swift in Sources */,
 				9D8477A2209A7C65005F219B /* ItemsViewController.swift in Sources */,

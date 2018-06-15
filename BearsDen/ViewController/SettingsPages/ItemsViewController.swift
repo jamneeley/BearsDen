@@ -23,8 +23,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return view
     }()
     
-    
-    
     //MARK: - LifeCycle
     
     override func viewDidLoad() {
@@ -32,18 +30,12 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         view.backgroundColor = .white
         itemTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "itemCell")
         itemTableView.delegate = self
-        itemTableView.allowsSelection = false
         setupObjects()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         itemTableView.reloadData()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
     }
     
     func setupObjects() {
@@ -58,8 +50,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
     }
-    
-    //
     
     @objc func editShelfButtonPressed() {
         guard let shelfEditView = editShelfViewController.view, let shelfImageData = shelf?.photo  else {return}
@@ -77,7 +67,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let image = UIImage(data: shelfImageData)
             editShelfViewController.shelfImage = image
             let width = window.frame.width * 0.8
-            let height = window.frame.height * 0.75
+            let height = window.frame.height * 0.7
             
             shelfEditView.frame = CGRect(x: (window.frame.width - width), y: -(window.frame.height), width: width, height: height)
             blackView.frame = window.frame
@@ -92,7 +82,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @objc func handleDismiss() {
         guard let shelfEditView = editShelfViewController.view,
         let shelf = shelf else {return}
-        
+        editShelfViewController.removeInfo = true
         navigationItem.title = shelf.name
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.blackView.alpha = 0
@@ -182,6 +172,16 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     //MARK: - TableView DataSource Methods
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let shelf = shelf else {return}
+        if let item = shelf.items?[indexPath.row] as? Item {
+            let editItemVC = EditItemViewController()
+            editItemVC.item = item
+            navigationController?.pushViewController(editItemVC, animated: true)
+            
+        }
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return shelf?.items?.count ?? 0
     }

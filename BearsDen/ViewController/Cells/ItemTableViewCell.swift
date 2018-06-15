@@ -17,11 +17,7 @@ class ItemTableViewCell: UITableViewCell {
     
     //MARK: - Properties
     
-    var item: Item? {
-        didSet {
-            setupViews()
-        }
-    }
+    
     
     weak var delegate: ItemCellDelegate?
     
@@ -35,11 +31,23 @@ class ItemTableViewCell: UITableViewCell {
     let quantityStepper = UIStepper()
     let addToShoppingListButton = UIButton()
     
+    //Settable Properties
+    
+    var item: Item? {
+        didSet {
+            setupViews()
+        }
+    }
+    
     //MARK: - Cell Initialization
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+    
+        selectionStyle = .blue
+        let selectionView = UIView()
+        selectionView.backgroundColor = Colors.softBlue
+        selectedBackgroundView = selectionView
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -47,7 +55,6 @@ class ItemTableViewCell: UITableViewCell {
     }
     
     //MARK: - Button Methods
-    
     @objc func stepperTouched() {
         guard let item = item else {return}
         let itemQuantityDouble = quantityStepper.value
@@ -70,7 +77,10 @@ class ItemTableViewCell: UITableViewCell {
             let user = UserController.shared.user  else {return}
         ShoppingItemController.shared.createShoppingItem(ForUser: user, name: itemName)
         delegate?.addedToShoppingList(itemName: itemName)
+        
+        
     }
+
     
 ///////////////////////////
 //MARK: - Views
@@ -150,7 +160,6 @@ class ItemTableViewCell: UITableViewCell {
     }
     
     @objc func setupConstraints() {
-        itemNameLabel.backgroundColor = .yellow
         let height = frame.height * 1.25
         let width = frame.width * 0.4
 

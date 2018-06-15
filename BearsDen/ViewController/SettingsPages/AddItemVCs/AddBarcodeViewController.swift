@@ -202,9 +202,9 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
             let barcodeNumber = barcodeTextField.text
 
             //does cloudItem, barcode number exist?
-            if let cloudItem = self.cloudItem, barcodeNumber != "" && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: barcodeNumber!)) {
+            if let cloudItem = self.cloudItem, barcodeNumber != "", let barcode = barcodeNumber?.integerValue {
                 
-                ItemController.shared.createItemWithAll(name: name, quantity: quantity, stocked: Date(), expirationDate: date, weight: "\(weight)", isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: barcodeNumber!, shelf: shelf)
+                ItemController.shared.createItemWithAll(name: name, quantity: quantity, stocked: Date(), expirationDate: date, weight: "\(weight)", isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: "\(barcode)", shelf: shelf)
                 
                     barcodeTextField.text = ""
                 CloudItemController.shared.update(cloudItem: cloudItem, name: name, weight: "\(weight)", catagory: catagory, unit: unit) { (success) in
@@ -230,7 +230,7 @@ class AddBarcodeViewController: UIViewController, UITextFieldDelegate, UIPickerV
                         }
                     }
                 }
-            //NO BARCODE AND WAS SAVED LOCALLY BUT NOT ON THE CLOUD
+            //NO BARCODE AND WAS ONLY SAVED LOCALLY
             } else {
                 print("NO BARCODE AND WAS SAVED LOCALLY BUT NOT ON THE CLOUD")
                 ItemController.shared.createItemWithAll(name: name, quantity: quantity, stocked: Date(), expirationDate: date, weight: "\(weight)", isLiquid: isLiquid, unit: unit, catagory: catagory, barcode: "", shelf: shelf)
@@ -433,6 +433,7 @@ extension AddBarcodeViewController {
         quantityTextField.layer.cornerRadius = 12
         quantityTextField.backgroundColor = .white
         quantityTextField.keyboardType = .decimalPad
+        quantityTextField.addDoneButtonToKeyboard(myAction: #selector(self.quantityTextField.resignFirstResponder))
         quantityTextField.text = "\(1)"
         quantityTextField.returnKeyType = .done
         self.quantityTextField.delegate = self
@@ -451,6 +452,7 @@ extension AddBarcodeViewController {
         weightTextField.setLeftPaddingPoints(5)
         weightTextField.backgroundColor = .white
         weightTextField.keyboardType = .decimalPad
+        weightTextField.addDoneButtonToKeyboard(myAction: #selector(self.weightTextField.resignFirstResponder))
         self.nameTextField.delegate = self;
         weightTextField.layer.borderWidth = 1
         weightTextField.layer.borderColor = Colors.softBlue.cgColor

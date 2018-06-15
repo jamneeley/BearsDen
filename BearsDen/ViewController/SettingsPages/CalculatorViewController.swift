@@ -62,6 +62,12 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
     let saltExampleLabel = UILabel()
     let fatsExampleLabel = UILabel()
     
+    var endEdit = false {
+        didSet {
+            view.endEditing(true)
+        }
+    }
+    
     //MARK: - LifeCycle
     
     override func viewDidLoad() {
@@ -145,6 +151,7 @@ class CalculatorViewController: UIViewController, UITextFieldDelegate {
         numbersStack.addArrangedSubview(kidNumberLabel)
         numbersStack.addArrangedSubview(weeksTextField)
         weeksTextField.keyboardType = .decimalPad
+        weeksTextField.addDoneButtonToKeyboard(myAction: #selector(self.weeksTextField.resignFirstResponder))
         numbersStack.axis = .vertical
         numbersStack.distribution = .fillEqually
         adultTextLabel.text = "Adults"

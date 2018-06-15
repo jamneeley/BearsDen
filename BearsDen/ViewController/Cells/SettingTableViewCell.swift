@@ -131,8 +131,7 @@ class SettingTableViewCell: UITableViewCell, UITextFieldDelegate {
         case 2:
             if let stepper = object as? UIStepper {
                 let adultsString = UserController.shared.user?.adults ?? "0"
-                if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: adultsString)){
-                    let adults = Double(adultsString)!
+                if let adults = adultsString.doubleValue{
                     stepper.addTarget(self, action: #selector(adultsStepperTouched), for: .touchUpInside)
                     stepper.value = adults
                     setupStepper(stepper)
@@ -141,8 +140,7 @@ class SettingTableViewCell: UITableViewCell, UITextFieldDelegate {
         case 3:
             if let stepper = object as? UIStepper {
                 let kidsString = UserController.shared.user?.kids ?? "0"
-                if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: kidsString)){
-                    let kids = Double(kidsString)!
+                if let kids = kidsString.doubleValue {
                     stepper.addTarget(self, action: #selector(kidsStepperTouched), for: .touchUpInside)
                     stepper.value = kids
                     setupStepper(stepper)

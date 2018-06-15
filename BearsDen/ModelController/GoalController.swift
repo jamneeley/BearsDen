@@ -56,8 +56,8 @@ class GoalController {
                     if !item.isCustom {
                         if let category = item.category, let goalAmount = item.amount, let unit = item.unit {
                             //Can goal amount be converted to Float?
-                            if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: goalAmount)) {
-                                let goalTotal = Float(goalAmount)!
+                            if let amount = goalAmount.doubleValue {
+                                let goalTotal = Float(amount)
                                 var totalStored: Float = 0
                                 
     
@@ -108,11 +108,12 @@ class GoalController {
                 //make sure the category is the same and unwrapp unit
                 if item.catagory == category, let itemUnit = item.unit {
                     //make sure item.weight can be converted to float
-                    if let weight = item.weight, CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: weight)){
+                    
+                    if let weightAsString = item.weight, let weight = weightAsString.doubleValue {
                         //make sure goalunit and itemunit can be converted to each other....this means that the user has to make sure they are storing units correctly for their goals to ne accurate
                         if isGoalLiquid == item.isLiquid {
                             //multiply weight of item by the quantity
-                            let totalWeight = Float(weight)! * Float(item.quantity)
+                            let totalWeight = Float(weight) * Float(item.quantity)
                             //convert the totalweight to goal unit
                             let totalAmountInCorrectUnits = convert(Amount: totalWeight, FromItemUnit: itemUnit, GoalUnit: inGoalUnits, isLiquid: isGoalLiquid)
                             //add it to method property and then return it after loops

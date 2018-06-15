@@ -269,7 +269,7 @@ extension MainViewController {
         
         let newStartFrame = CGRect(x: 0 + self.view.frame.width, y: 0, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
         
-        let newEndframe = CGRect(x: 0, y: view.frame.height * 0.08, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
+        let newEndframe = CGRect(x: 0, y: inset, width: view.frame.width, height: view.frame.height - (view.frame.height * 0.08))
         
         let oldfinishFrame = CGRect(x: 0 - self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         

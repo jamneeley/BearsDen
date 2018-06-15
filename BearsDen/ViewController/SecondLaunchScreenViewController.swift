@@ -28,12 +28,12 @@ class SecondLaunchScreenViewController: UIViewController {
     //check if this is the users first time opening the app
     func isNewUser() {
         if UserDefaults.standard.object(forKey: "isCurrentUser") as? Bool == true {
+            print("existing user")
             segueToExistingUser()
             UserController.shared.loadFromCoreData()
-            print("existing user")
         } else {
-            segueToNewUserView()
             print("new user")
+            segueToNewUserView()
         }
     }
     
